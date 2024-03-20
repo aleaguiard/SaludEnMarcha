@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecoveryMail">
+
+    <TextView
+        android:id="@+id/recuperarCuenta"
+        android:layout_width="416dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/font_mono"
+        android:text="@string/recupera_tu_contrasena"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEmail"
+        android:layout_width="345dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="64dp"
+        android:textColorHint="@color/black"
+        app:boxBackgroundColor="@color/grey2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recuperarTexto"
+        app:startIconDrawable="@drawable/ic_mail">
+
+        <requestFocus />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cajaEmailRestablecer"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_mono"
+            android:hint="@string/hintEmail"
+            android:textColorHint="@color/grey" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/botonRecuperar"
+        android:layout_width="211dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="64dp"
+        android:backgroundTint="@color/grey"
+        android:fontFamily="@font/font_mono"
+        android:text="@string/enviar_enlace"
+        android:textSize="18sp"
+        app:cornerRadius="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutEmail" />
+
+    <ImageButton
+        android:id="@+id/backBoton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/navigate_back"
+        app:layout_constraintBottom_toTopOf="@+id/recuperarCuenta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/layoutEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recuperarCuenta"
+        app:layout_constraintVertical_bias="0.0"
+        android:contentDescription="@string/icono_lock"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
+
+    <TextView
+        android:id="@+id/recuperarTexto"
+        android:layout_width="345dp"
+        android:layout_height="83dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/font_mono"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/texto_recuperar"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

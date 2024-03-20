@@ -1,3 +1,43 @@
 <resources>
     <string name="app_name">SaludEnMarcha</string>
+    <string name="hintEmail">Email</string>
+    <string name="hintPassword">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="account">Don\'t have account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="mas">Más</string>
+    <string name="logout">Logout</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="crea_tu_cuenta">Crea tu cuenta</string>
+    <string name="nombre">Nombre</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="usuario_creado">Usuario creado</string>
+    <string name="nueva_tarea">Nueva Tarea</string>
+    <string name="anadir">Añadir</string>
+    <string name="tarea_anadida">Tarea añadida</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="done">Done</string>
+    <string name="recupera_tu_contrasena">Restablece tu contraseña</string>
+    <string name="enviar_enlace">Enviar enlace</string>
+    <string name="texto_recuperar">Te enviaremos un link al correo asociado a tu cuenta para que puedas restablecer tu contraseña</string>
+    <string name="icono_lock">icono lock</string>
+    <string name="link_enviado">Link enviado</string>
+    <string name="mis_tareas">Mis Tareas</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="or_login_with">Or Login with</string>
+    <string name="icono_de_google">icono de Google</string>
+    <string name="actualizar_tarea">Actualizar tarea</string>
+    <string name="guardar">Guardar</string>
+    <string name="tarea_actualizada">Tarea actualizada</string>
+    <string name="fallo_actualizar_tarea">Fallo al actualizar</string>
+    <string name="defaul_web_client_id" translatable="false">111629018942-q3ep2tmkgpt46rbgbj2ch0jf993gslq5.apps.googleusercontent.com</string>
+    <string name="error_mail_vacio">El campo email no puede estar vacío</string>
+    <string name="fallo_tarea">Fallo al crear tarea</string>
+    <string name="autenticacion_fallida">Autenticación fallida</string>
+    <string name="introduce_email_contrasena">Introduce Email y contraseña</string>
+    <string name="fallo_inesperado">Fallo inesperado</string>
+    <string name="email_invalido">Formato de email inválido</string>
+    <string name="campo_obligatorio">Este campo no puede estar vacío</string>
+    <string name="tarea_vacia">La tarea no puede estar vacía</string>
+    <string name="formato_correo_incorrecto">Formato de correo incorrecto</string>
 </resources>
