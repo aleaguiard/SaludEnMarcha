@@ -15,6 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM"/>
+
+
+        <activity
+            android:name=".TrackingActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Login"
             android:exported="true">
@@ -33,7 +48,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>
