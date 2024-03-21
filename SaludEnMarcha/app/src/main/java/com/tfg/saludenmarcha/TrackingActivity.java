@@ -52,6 +52,15 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private List<LatLng> pathPoints = new ArrayList<>(); // Lista para almacenar los puntos del camino
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
+    //Botones
+    private Button startButton;
+    private Button stopButton;
+    private Button pauseButton;
+    private Button resumeButton;
+
+    private long timeElapsed;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +95,41 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
             chronometer = findViewById(R.id.chronometer);
 
-            Button startButton = findViewById(R.id.startButton);
+            pauseButton = findViewById(R.id.pauseButton);
+            pauseButton.setVisibility(View.GONE);
+
+            //Boton RESUME
+            resumeButton = findViewById(R.id.resumeButton);
+            resumeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isTracking = true;
+                    chronometer.setBase(SystemClock.elapsedRealtime() - timeElapsed);
+                    chronometer.start();
+                    startLocationUpdates();
+                    //Desaparece el boton de resume y aparece el de pausa
+                    resumeButton.setVisibility(View.GONE);
+                    pauseButton.setVisibility(View.VISIBLE);
+                    startButton.setVisibility(View.GONE);
+                }
+            });
+
+            //Boton PAUSA
+            pauseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isTracking = false;
+                    timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
+                    chronometer.stop();
+                    stopLocationUpdates();
+                    //Desaparece el boton de pausa y aparece el de resume
+                    pauseButton.setVisibility(View.GONE);
+                    resumeButton.setVisibility(View.VISIBLE);
+                }
+            });
+
+            //Boton START
+            startButton = findViewById(R.id.startButton);
             startButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,11 +140,15 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                         chronometer.setBase(SystemClock.elapsedRealtime());
                         chronometer.start();
                         startLocationUpdates();
+                        //Desaparece el boton de start y aparece el de pausa
+                        startButton.setVisibility(View.GONE);
+                        pauseButton.setVisibility(View.VISIBLE);
                     }
                 }
             });
 
-            Button stopButton = findViewById(R.id.stopButton);
+            //BOTON PARAR
+            stopButton = findViewById(R.id.stopButton);
             stopButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -148,17 +195,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             return insets;
         });
     }
-/*
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        //coordenadas
-        LatLng ciudadReal = new LatLng(38.98626, -3.92907);
-        //punto para marcador
-        mMap.addMarker(new MarkerOptions().position(ciudadReal).title("Ciudad Real"));
-        //donde posiciona la camara
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ciudadReal));
-    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
