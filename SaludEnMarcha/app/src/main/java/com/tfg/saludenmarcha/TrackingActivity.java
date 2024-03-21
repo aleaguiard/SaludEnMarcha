@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -31,10 +32,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 public class TrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -60,6 +70,14 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     private long timeElapsed;
 
+    private FirebaseAuth mAuth;
+    FirebaseFirestore db;
+    CollectionReference pathPointsRef;
+    List<LatLngData> pathPointsData;
+    String raceId;
+    DocumentReference raceRef;
+
+    private static final String TAG = "TrackingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,22 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             locationRequest.setFastestInterval(5000); // Establece la tasa más rápida para las actualizaciones de ubicación activas, en milisegundos.
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); // Establece la prioridad de la solicitud.
 
+
+            //
+            db = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
+            //***NOMBRE DE LA COLECCION QUE LE TENGO QUE PONER A LOS PUNTOS DE REFERENCIA PARA GUARDARLOS EN FIREBASE PARA LAS RUTAS
+            pathPointsRef = db.collection("pathPoints");
+
+            //**************
+
+            // Genera un ID único para la carrera
+            raceId = UUID.randomUUID().toString();
+            // Crea una referencia al nuevo documento para esta carrera
+            raceRef = db.collection("pathPoints").document(raceId);
+            // Crea una lista de LatLngData para almacenar los pathPoints
+            pathPointsData = new ArrayList<>();
+
             chronometer = findViewById(R.id.chronometer);
 
             pauseButton = findViewById(R.id.pauseButton);
@@ -123,7 +157,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     isTracking = false;
                     timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
                     chronometer.stop();
-                    stopLocationUpdates();
+                    locationUpdates();
                     //Desaparece el boton de pausa y aparece el de resume
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.VISIBLE);
@@ -156,7 +190,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View v) {
                     isTracking = false;
                     chronometer.stop();
-                    stopLocationUpdates();
+                    locationUpdates();
 
                     startButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);
@@ -165,7 +199,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             });
 
             distanceTextView = findViewById(R.id.distanceTextView); // TextView con id 'distanceTextView' en tu layout
-
+            // define un LocationCallback que se utiliza para recibir actualizaciones de ubicación del FusedLocationProviderClient.
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
@@ -173,6 +207,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                         return;
                     }
                     for (Location location : locationResult.getLocations()) {
+                        // Si la ubicación no es nula y el seguimiento está activado, añade la ubicación a la lista de puntos del camino y actualiza el mapa.
                         if (location != null && isTracking) {
                             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             pathPoints.add(newLocation);
@@ -220,9 +255,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
-    private void stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -233,6 +265,34 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 // Permiso denegado
             }
         }
+    }
+
+    private void locationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+
+        // Guarda los pathPoints en Firebase
+        for (LatLng point : pathPoints) {
+            pathPointsData.add(new LatLngData(point.latitude, point.longitude));
+        }
+
+        // Crea un nuevo objeto para almacenar en el documento
+        Map<String, Object> raceData = new HashMap<>();
+        raceData.put("pathPoints", pathPointsData);
+
+        // Guarda los pathPoints en el nuevo documento
+        raceRef.set(raceData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
 }
