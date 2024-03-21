@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.dam.saludenmarcha"
+    namespace = "com.tfg.saludenmarcha"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.dam.saludenmarcha"
+        applicationId = "com.tfg.saludenmarcha"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

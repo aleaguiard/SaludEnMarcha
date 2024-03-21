@@ -1,4 +1,4 @@
-package com.dam.saludenmarcha;
+package com.tfg.saludenmarcha;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
 
     private void configurarGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.defaul_web_client_id))
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
     }

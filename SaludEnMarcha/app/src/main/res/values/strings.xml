@@ -30,7 +30,7 @@
     <string name="guardar">Guardar</string>
     <string name="tarea_actualizada">Tarea actualizada</string>
     <string name="fallo_actualizar_tarea">Fallo al actualizar</string>
-    <string name="defaul_web_client_id" translatable="false">111629018942-q3ep2tmkgpt46rbgbj2ch0jf993gslq5.apps.googleusercontent.com</string>
+    <string name="default_web_client_id" translatable="false">194834969977-2e450jonp4tm6il5hmqdqbicatec31jv.apps.googleusercontent.com</string>
     <string name="error_mail_vacio">El campo email no puede estar vacío</string>
     <string name="fallo_tarea">Fallo al crear tarea</string>
     <string name="autenticacion_fallida">Autenticación fallida</string>
