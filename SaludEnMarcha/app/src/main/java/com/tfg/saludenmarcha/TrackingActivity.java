@@ -8,7 +8,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 public class TrackingActivity extends AppCompatActivity {
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +26,22 @@ public class TrackingActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
+
     }
+
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        //coordenadas
+        LatLng ciudadReal = new LatLng(38.98626, -3.92907);
+        //punto para marcador
+        mMap.addMarker(new MarkerOptions().position(ciudadReal).title("Ciudad Real"));
+        //donde posiciona la camara
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ciudadReal));
+    }
+
+    //que pueda escuchar el clic
 }
