@@ -21,6 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"
         map:cameraZoom="13"
         map:uiZoomControls="true"
-        map:uirotateGestures="true" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
