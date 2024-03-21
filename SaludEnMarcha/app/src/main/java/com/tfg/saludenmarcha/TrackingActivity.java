@@ -96,10 +96,12 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             chronometer = findViewById(R.id.chronometer);
 
             pauseButton = findViewById(R.id.pauseButton);
+            //boton pause y resume invisible al principio
             pauseButton.setVisibility(View.GONE);
 
             //Boton RESUME
             resumeButton = findViewById(R.id.resumeButton);
+            resumeButton.setVisibility(View.GONE);
             resumeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -155,6 +157,10 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     isTracking = false;
                     chronometer.stop();
                     stopLocationUpdates();
+
+                    startButton.setVisibility(View.VISIBLE);
+                    pauseButton.setVisibility(View.GONE);
+                    resumeButton.setVisibility(View.GONE);
                 }
             });
 
