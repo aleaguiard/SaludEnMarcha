@@ -163,7 +163,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
+                    if (locationResult == null || !isTracking) {
                         return;
                     }
                     for (Location location : locationResult.getLocations()) {
