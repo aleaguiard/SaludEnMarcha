@@ -1,4 +1,4 @@
-package com.dam.saludenmarcha;
+package com.tfg.saludenmarcha;
 
 import org.junit.Test;
 
