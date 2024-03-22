@@ -40,4 +40,10 @@
     <string name="campo_obligatorio">Este campo no puede estar vacío</string>
     <string name="tarea_vacia">La tarea no puede estar vacía</string>
     <string name="formato_correo_incorrecto">Formato de correo incorrecto</string>
+    <string name="botonAndar">Andar</string>
+    <string name="botonCorrer">Correr</string>
+    <string name="botonCiclismo">Ciclismo</string>
+    <string name="botonVolver">Volver</string>
+    <string name="tituloMenuActividad">Selecciona deporte</string>
+
 </resources>

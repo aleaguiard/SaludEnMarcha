@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -19,11 +20,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM"/>
+            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
 
 
         <activity
-            android:name=".TrackingActivity"
+            android:name=".ActividadMenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,10 +32,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+        <activity
+            android:name=".TrackingActivity"
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".Login"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".RecoveryMail"
             android:exported="false" />

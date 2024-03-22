@@ -102,7 +102,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             mapFragment.getMapAsync(this);*/
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             mapFragment.getMapAsync((OnMapReadyCallback) this);
-
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             polylineOptions = new PolylineOptions().width(10).color(Color.RED);
 
@@ -246,6 +245,19 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         }
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        // Obtiene la última ubicación conocida
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // En algunos casos raros, la ubicación devuelta puede ser nula
+                        if (location != null) {
+                            LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                        }
+                    }
+                });
     }
 
     private void startLocationUpdates() {
