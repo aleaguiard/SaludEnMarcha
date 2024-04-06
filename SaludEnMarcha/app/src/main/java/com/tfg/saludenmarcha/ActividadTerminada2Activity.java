@@ -30,43 +30,49 @@ import java.util.Map;
 
 public class ActividadTerminada2Activity extends AppCompatActivity implements OnMapReadyCallback {
 
+    // Declaración de variables para GoogleMap, Firestore y el ID de la carrera
     private GoogleMap mMap;
     private FirebaseFirestore db;
     private String raceId; // El ID de la carrera que quieres mostrar y que hemos pasado del TrackingActivity
 
+    // Variable para guardar el tipo de actividad
     private String actividadTipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_actividad_terminada2);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        // Configuración de la vista para adaptarse a los bordes de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Inicialización del fragmento del mapa y configuración para que se cargue de forma asíncrona
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        // Recuperación del ID de la carrera y el tipo de actividad del Intent
         raceId = getIntent().getStringExtra("raceId").toString();
         actividadTipo = getIntent().getStringExtra("tipoActividad").toString();
 
+        // Inicialización de Firestore y obtención de la referencia del documento en Firestore
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("pathPoints").document(raceId);
 
+        // Recuperación de los puntos de ruta de Firestore
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Aquí puedes recuperar los puntos de ruta
+                        // Recuperación de los puntos de ruta
                         List<Map<String, Object>> pathPointsData = (List<Map<String, Object>>) document.get("pathPoints");
 
-                        // Convertir los datos en objetos LatLng
+                        // Conversión de los datos en objetos LatLng
                         List<LatLng> pathPoints = new ArrayList<>();
                         for (Map<String, Object> data : pathPointsData) {
                             double lat = (double) data.get("latitude");
@@ -74,13 +80,13 @@ public class ActividadTerminada2Activity extends AppCompatActivity implements On
                             pathPoints.add(new LatLng(lat, lng));
                         }
 
-                        // Crea un PolylineOptions y añade todos los puntos de ruta
+                        // Creación de un PolylineOptions y adición de todos los puntos de ruta
                         PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.RED);
                         for (LatLng point : pathPoints) {
                             polylineOptions.add(point);
                         }
 
-                        // Añade el PolylineOptions al mapa
+                        // Adición del PolylineOptions al mapa
                         mMap.addPolyline(polylineOptions);
                     } else {
                         Log.d("ActividadTerminada2", "No such document");
@@ -94,6 +100,7 @@ public class ActividadTerminada2Activity extends AppCompatActivity implements On
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        // Inicialización del mapa cuando está listo
         mMap = googleMap;
     }
 }

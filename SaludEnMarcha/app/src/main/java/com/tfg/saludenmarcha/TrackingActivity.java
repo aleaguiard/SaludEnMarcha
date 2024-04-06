@@ -43,6 +43,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,6 +80,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     List<LatLngData> pathPointsData;
     String raceId;
     DocumentReference raceRef;
+    String activityType;
 
     private static final String TAG = "TrackingActivity";
 
@@ -129,7 +131,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
             // ****************************
 
-
+            Intent intent = getIntent();
+            activityType = intent.getStringExtra("tipoActividad");
 
 
             // Crea una lista de LatLngData para almacenar los pathPoints
@@ -203,8 +206,64 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.GONE);
 
-                    Intent intent = new Intent(TrackingActivity.this, ActividadTerminada2Activity.class);
+                    // Obtén el tiempo transcurrido
+                    long timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
+
+                    // Obtén la fecha y hora actual
+                    Calendar calendar = Calendar.getInstance();
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    int month = calendar.get(Calendar.MONTH);
+                    int year = calendar.get(Calendar.YEAR);
+                    int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int startMinute = calendar.get(Calendar.MINUTE);
+
+                    // Obtén la hora y minuto de finalización
+                    int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int endMinute = calendar.get(Calendar.MINUTE);
+
+                    // Crea un nuevo objeto para almacenar en el documento
+                    Map<String, Object> raceData = new HashMap<>();
+                    raceData.put("timeElapsed", timeElapsed);
+                    raceData.put("totalDistance", totalDistance); // Guarda la distancia total
+                    raceData.put("day", day);
+                    raceData.put("month", month);
+                    raceData.put("year", year);
+                    raceData.put("startHour", startHour);
+                    raceData.put("startMinute", startMinute);
+                    raceData.put("endHour", endHour); // Guarda la hora de finalización
+                    raceData.put("endMinute", endMinute); // Guarda el minuto de finalización
+                    raceData.put("activityType", activityType); // Guarda el tipo de actividad
+
+                    // Guarda el tiempo y la distancia en el documento de la carrera
+                    raceRef.update(raceData)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot actualizado correctamente!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error actualizando el documento", e);
+                                }
+                            });
+
+
+
+                    Intent intent = new Intent(TrackingActivity.this, DetallesCarreraActivity.class);
                     intent.putExtra("raceId", raceId);
+                    intent.putExtra("timeElapsed", timeElapsed);
+                    intent.putExtra("totalDistance", totalDistance); // Guarda la distancia total
+                    intent.putExtra("day", day);
+                    intent.putExtra("month", month);
+                    intent.putExtra("year", year);
+                    intent.putExtra("startHour", startHour);
+                    intent.putExtra("startMinute", startMinute);
+                    intent.putExtra("endHour", endHour); // Guarda la hora de finalización
+                    intent.putExtra("endMinute", endMinute); // Guarda el minuto de finalización
+                    intent.putExtra("activityType", activityType); // Guarda el tipo de actividad
+                    startActivity(intent);
                     startActivity(intent);
                 }
             });
@@ -294,32 +353,41 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     //guardar todos los pathPoints en un solo documento, guarda cada LatLngData como un documento individual en una colección cuyo nombre es el raceId
     private void locationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+    fusedLocationClient.removeLocationUpdates(locationCallback);
 
-        // Guarda los pathPoints en Firebase
-        for (LatLng point : pathPoints) {
-            pathPointsData.add(new LatLngData(point.latitude, point.longitude));
-        }
-
-        // Crea un nuevo objeto para almacenar en el documento
-        Map<String, Object> raceData = new HashMap<>();
-        raceData.put("pathPoints", pathPointsData);
-
-        // Guarda los pathPoints en el nuevo documento
-        raceRef.set(raceData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot escrito correctamente!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error escribiendo el documento", e);
-                    }
-                });
+    // Guarda los pathPoints en Firebase
+    for (LatLng point : pathPoints) {
+        pathPointsData.add(new LatLngData(point.latitude, point.longitude));
     }
+
+    // Obtén la fecha actual
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    int month = calendar.get(Calendar.MONTH);
+    int year = calendar.get(Calendar.YEAR);
+
+    // Crea un nuevo objeto para almacenar en el documento
+    Map<String, Object> raceData = new HashMap<>();
+    raceData.put("pathPoints", pathPointsData);
+    raceData.put("day", day);
+    raceData.put("month", month);
+    raceData.put("year", year);
+
+    // Guarda los pathPoints en el nuevo documento
+    raceRef.set(raceData)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot escrito correctamente!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error escribiendo el documento", e);
+                }
+            });
+}
 
 
 }
