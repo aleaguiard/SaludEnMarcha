@@ -15,70 +15,60 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Locale;
 
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.Locale;
+
 public class DetallesCarreraActivity extends AppCompatActivity {
 
-    private String raceId; // ID de la carrera que quiero mostrar
-    private String timeElapsed;
-    private String totalDistance; // Guarda la distancia total
-    private String day;
-    private String month;
-    private String year;
-    private String startHour;
-    private String startMinute;
-    private String endHour; // Guarda la hora de finalización
-    private String endMinute; // Guarda el minuto de finalización
-    private String activityType;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalles_carrera); // Establezco el layout de la actividad
+        setContentView(R.layout.activity_detalles_carrera);
 
-        // Recupero los datos del Intent
-        if(getIntent().hasExtra("raceId")) {
-            raceId = getIntent().getStringExtra("raceId");
-        }
-        if(getIntent().hasExtra("timeElapsed")) {
-            timeElapsed = getIntent().getStringExtra("timeElapsed");
-        }
-        if(getIntent().hasExtra("totalDistance")) {
-            totalDistance = getIntent().getStringExtra("totalDistance"); // Guarda la distancia total
-        }
-        if(getIntent().hasExtra("day")) {
-            day = getIntent().getStringExtra("day");
-        }
-        if(getIntent().hasExtra("month")) {
-            month = getIntent().getStringExtra("month");
-        }
-        if(getIntent().hasExtra("year")) {
-            year = getIntent().getStringExtra("year");
-        }
-        if(getIntent().hasExtra("startHour")) {
-            startHour = getIntent().getStringExtra("startHour");
-        }
-        if(getIntent().hasExtra("startMinute")) {
-            startMinute = getIntent().getStringExtra("startMinute");
-        }
-        if(getIntent().hasExtra("endHour")) {
-            endHour = getIntent().getStringExtra("endHour"); // Guarda la hora de finalización
-        }
-        if(getIntent().hasExtra("endMinute")) {
-            endMinute = getIntent().getStringExtra("endMinute"); // Guarda el minuto de finalización
-        }
-        if(getIntent().hasExtra("activityType")) {
-            activityType = getIntent().getStringExtra("activityType"); // Guarda el tipo de actividad
-}
+        // Recuperar los datos del Intent
+        if (getIntent().hasExtra("carreraData")) {
+            CarreraData carreraData = (CarreraData) getIntent().getSerializableExtra("carreraData");
 
-        // Muestro los datos en la interfaz de usuario
-        // Asegúrate de tener los TextViews correspondientes en tu layout
-        ((TextView) findViewById(R.id.activityTypeTextView)).setText(activityType);
-        ((TextView) findViewById(R.id.totalDistanceTextView)).setText(String.format(Locale.getDefault(), "%.2f km", Float.parseFloat(totalDistance)));
-        ((TextView) findViewById(R.id.timeElapsedTextView)).setText(String.format(Locale.getDefault(), "%d ms", Long.parseLong(timeElapsed)));
-        ((TextView) findViewById(R.id.startTimeTextView)).setText(String.format(Locale.getDefault(), "%02d:%02d", Integer.parseInt(startHour), Integer.parseInt(startMinute)));
-        ((TextView) findViewById(R.id.endTimeTextView)).setText(String.format(Locale.getDefault(), "%02d:%02d", Integer.parseInt(endHour), Integer.parseInt(endMinute)));
-        ((TextView) findViewById(R.id.dateTextView)).setText(String.format(Locale.getDefault(), "%02d/%02d/%d", Integer.parseInt(day), Integer.parseInt(month), Integer.parseInt(year)));
+            // Mostrar los datos en la interfaz de usuario
+            TextView activityTypeTextView = findViewById(R.id.activityTypeTextView);
+            TextView totalDistanceTextView = findViewById(R.id.totalDistanceTextView);
+            TextView timeElapsedTextView = findViewById(R.id.timeElapsedTextView);
+            TextView startTimeTextView = findViewById(R.id.startTimeTextView);
+            TextView endTimeTextView = findViewById(R.id.endTimeTextView);
+            TextView dateTextView = findViewById(R.id.dateTextView);
+
+            // Establecer el texto en los TextView
+            if (carreraData != null) {
+                activityTypeTextView.setText(carreraData.getActivityType());
+
+                double totalDistance = carreraData.getTotalDistance();
+                totalDistanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", totalDistance));
+
+                long timeElapsed = carreraData.getTimeElapsed();
+                timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
+
+                int startHour = carreraData.getStartHour();
+                int startMinute = carreraData.getStartMinute();
+                startTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", startHour, startMinute));
+
+                int endHour = carreraData.getEndHour();
+                int endMinute = carreraData.getEndMinute();
+                endTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", endHour, endMinute));
+
+                int day = carreraData.getDay();
+                int month = carreraData.getMonth();
+                int year = carreraData.getYear();
+                dateTextView.setText(String.format(Locale.getDefault(), "%02d/%02d/%d", day, month, year));
+            } else {
+                // Manejar el caso cuando no se encuentra el objeto CarreraData en el Intent
+            }
+        }
     }
 }
+
 /*
 //BOTON PARAR
             stopButton = findViewById(R.id.stopButton);

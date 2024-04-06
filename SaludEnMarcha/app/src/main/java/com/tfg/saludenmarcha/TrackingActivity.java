@@ -195,6 +195,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             });
 
             //BOTON PARAR
+            //BOTON PARAR
             stopButton = findViewById(R.id.stopButton);
             stopButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -221,52 +222,27 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     int endHour = calendar.get(Calendar.HOUR_OF_DAY);
                     int endMinute = calendar.get(Calendar.MINUTE);
 
-                    // Crea un nuevo objeto para almacenar en el documento
-                    Map<String, Object> raceData = new HashMap<>();
-                    raceData.put("timeElapsed", timeElapsed);
-                    raceData.put("totalDistance", totalDistance); // Guarda la distancia total
-                    raceData.put("day", day);
-                    raceData.put("month", month);
-                    raceData.put("year", year);
-                    raceData.put("startHour", startHour);
-                    raceData.put("startMinute", startMinute);
-                    raceData.put("endHour", endHour); // Guarda la hora de finalización
-                    raceData.put("endMinute", endMinute); // Guarda el minuto de finalización
-                    raceData.put("activityType", activityType); // Guarda el tipo de actividad
+                    // Crea un nuevo objeto CarreraData para almacenar los datos de la carrera
+                    CarreraData carreraData = new CarreraData();
+                    carreraData.setRaceId(raceId);
+                    carreraData.setTimeElapsed(timeElapsed);
+                    carreraData.setTotalDistance(totalDistance);
+                    carreraData.setDay(day);
+                    carreraData.setMonth(month);
+                    carreraData.setYear(year);
+                    carreraData.setStartHour(startHour);
+                    carreraData.setStartMinute(startMinute);
+                    carreraData.setEndHour(endHour);
+                    carreraData.setEndMinute(endMinute);
+                    carreraData.setActivityType(activityType);
 
-                    // Guarda el tiempo y la distancia en el documento de la carrera
-                    raceRef.update(raceData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot actualizado correctamente!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error actualizando el documento", e);
-                                }
-                            });
-
-
-
+                    // Crea un Intent y pasa el objeto CarreraData como un extra
                     Intent intent = new Intent(TrackingActivity.this, DetallesCarreraActivity.class);
-                    intent.putExtra("raceId", raceId);
-                    intent.putExtra("timeElapsed", timeElapsed);
-                    intent.putExtra("totalDistance", totalDistance); // Guarda la distancia total
-                    intent.putExtra("day", day);
-                    intent.putExtra("month", month);
-                    intent.putExtra("year", year);
-                    intent.putExtra("startHour", startHour);
-                    intent.putExtra("startMinute", startMinute);
-                    intent.putExtra("endHour", endHour); // Guarda la hora de finalización
-                    intent.putExtra("endMinute", endMinute); // Guarda el minuto de finalización
-                    intent.putExtra("activityType", activityType); // Guarda el tipo de actividad
-                    startActivity(intent);
+                    intent.putExtra("carreraData", carreraData);
                     startActivity(intent);
                 }
             });
+
 
             distanceTextView = findViewById(R.id.distanceTextView); // TextView con id 'distanceTextView' en tu layout
             // define un LocationCallback que se utiliza para recibir actualizaciones de ubicación del FusedLocationProviderClient.
