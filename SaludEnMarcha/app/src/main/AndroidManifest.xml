@@ -17,11 +17,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
+        <activity
+            android:name=".AlimentacionHistorialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AlimentacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadTerminada2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadTerminadaActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
-
 
         <activity
             android:name=".ActividadMenuActivity"
@@ -32,17 +43,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
         <activity
             android:name=".TrackingActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".RecoveryMail"
             android:exported="false" />

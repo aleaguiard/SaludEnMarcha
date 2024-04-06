@@ -82,7 +82,7 @@ public class ActividadMenuActivity extends AppCompatActivity {
     }
     public void onclickVolver(View view) {
         Toast.makeText(ActividadMenuActivity.this, "Andar", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AlimentacionHistorialActivity.class);
         startActivity(intent);
     }
 }

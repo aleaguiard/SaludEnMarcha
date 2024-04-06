@@ -1,6 +1,8 @@
 package com.tfg.saludenmarcha;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -38,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +126,12 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             raceId = UUID.randomUUID().toString();
             // Crea una referencia al nuevo documento para esta carrera
             raceRef = db.collection("pathPoints").document(raceId);
+
+            // ****************************
+
+
+
+
             // Crea una lista de LatLngData para almacenar los pathPoints
             pathPointsData = new ArrayList<>();
 
@@ -190,10 +199,13 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     isTracking = false;
                     chronometer.stop();
                     locationUpdates();
-
                     startButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.GONE);
+
+                    Intent intent = new Intent(TrackingActivity.this, ActividadTerminada2Activity.class);
+                    intent.putExtra("raceId", raceId);
+                    startActivity(intent);
                 }
             });
 
@@ -279,6 +291,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+
+    //guardar todos los pathPoints en un solo documento, guarda cada LatLngData como un documento individual en una colección cuyo nombre es el raceId
     private void locationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback);
 
@@ -296,15 +310,16 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Log.d(TAG, "DocumentSnapshot escrito correctamente!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
+                        Log.w(TAG, "Error escribiendo el documento", e);
                     }
                 });
     }
+
 
 }
