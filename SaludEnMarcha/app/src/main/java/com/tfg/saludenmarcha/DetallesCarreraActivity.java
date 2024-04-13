@@ -1,7 +1,10 @@
 package com.tfg.saludenmarcha;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,10 +26,12 @@ import java.util.Locale;
 
 public class DetallesCarreraActivity extends AppCompatActivity {
 
+    private Button volverButton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_carrera);
+        volverButton = findViewById(R.id.volverDetallesButton);
 
         // Recuperar los datos del Intent
         if (getIntent().hasExtra("carreraData")) {
@@ -66,6 +71,14 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                 // Manejar el caso cuando no se encuentra el objeto CarreraData en el Intent
             }
         }
+
+        volverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
 

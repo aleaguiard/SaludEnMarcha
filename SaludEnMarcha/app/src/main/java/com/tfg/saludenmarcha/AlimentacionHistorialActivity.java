@@ -3,6 +3,7 @@ package com.tfg.saludenmarcha;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -32,6 +33,7 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
     private TextView lunchText;
     private TextView dinnerText;
     private Button datePickerButton;
+    private Button volverButton;
 
     // Declaración de variables para Firestore
     private FirebaseFirestore db;
@@ -47,7 +49,7 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
         lunchText = findViewById(R.id.lunch_text);
         dinnerText = findViewById(R.id.dinner_text);
         datePickerButton = findViewById(R.id.date_picker_button);
-
+        volverButton = findViewById(R.id.volverHistorialAlimencacionButton);
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -71,6 +73,14 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
                             }
                         }, year, month, day);
                 datePickerDialog.show();
+            }
+        });
+
+        volverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AlimentacionHistorialActivity.this, MenuActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -195,5 +205,6 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
                         }
                     });
         }
+
     }
 }

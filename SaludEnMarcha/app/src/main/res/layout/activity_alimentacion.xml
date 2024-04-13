@@ -13,6 +13,8 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+
     <Button
         android:id="@+id/date_picker_button"
         android:layout_width="wrap_content"
@@ -45,5 +47,12 @@
             android:layout_height="wrap_content"
             android:text="Guardar" />
 
+        <Button
+            android:id="@+id/buttonHistorial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Historial de Alimentación" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+

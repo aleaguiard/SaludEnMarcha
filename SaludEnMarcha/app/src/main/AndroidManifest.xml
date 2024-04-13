@@ -18,6 +18,15 @@
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
         <activity
+            android:name=".MenuActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".DetallesCarreraActivity"
             android:exported="false" />
         <activity

@@ -1,6 +1,7 @@
 package com.tfg.saludenmarcha;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class AlimentacionActivity extends AppCompatActivity {
     private Button saveButton;
     private Button datePickerButton;
 
+    private Button botonHistorial;
+
     // Declaración de variables para Firestore
     private FirebaseFirestore db;
     private int selectedDay; // Variable para guardar el día seleccionado
@@ -58,6 +61,7 @@ public class AlimentacionActivity extends AppCompatActivity {
         dinnerInput = findViewById(R.id.dinner_input);
         saveButton = findViewById(R.id.save_button);
         datePickerButton = findViewById(R.id.date_picker_button);
+        botonHistorial = findViewById(R.id.buttonHistorial);
 
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
@@ -119,6 +123,14 @@ public class AlimentacionActivity extends AppCompatActivity {
                                 Toast.makeText(AlimentacionActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
+            }
+        });
+
+        botonHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AlimentacionActivity.this, AlimentacionHistorialActivity.class);
+                startActivity(intent);
             }
         });
     }
