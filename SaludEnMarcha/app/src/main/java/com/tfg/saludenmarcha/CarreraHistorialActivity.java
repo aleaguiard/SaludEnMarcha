@@ -103,7 +103,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         horaFinText.setText("Hora de finalización: ");
 
         // Búsqueda en la base de datos de las comidas de la fecha seleccionada y actualización de los TextViews con estos datos
-        db.collection("meals")
+        db.collection("actividades")
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month)
                 .whereEqualTo("year", year)
