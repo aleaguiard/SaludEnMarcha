@@ -119,8 +119,8 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(DetallesCarreraActivity.this, "Actividad Guardada Correctamente", Toast.LENGTH_LONG).show();
                                 // Cambiar a MenuActivity después de que los datos se hayan guardado con éxito
-                               // Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
-                              //  startActivity(intent);
+                                Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
+                                startActivity(intent);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

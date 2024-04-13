@@ -12,34 +12,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="50dp"
         android:text="Seleccionar fecha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textoHistorialActividad" />
 
     <TextView
-        android:id="@+id/breakfast_text"
+        android:id="@+id/textoHistorialActividad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="30dp"
         android:text="Resumen actividad del día seleccionado: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="30dp" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="144dp"
+        android:layout_marginStart="12dp"
 
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/breakfast_text">
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_buttonHistorial">
 
         <TextView
             android:id="@+id/tipoActividadHistorial"
@@ -93,6 +92,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:text="@string/botonVolver"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

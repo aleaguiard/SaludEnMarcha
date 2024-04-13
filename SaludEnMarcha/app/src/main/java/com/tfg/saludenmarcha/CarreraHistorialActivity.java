@@ -71,6 +71,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // El usuario ha seleccionado una fecha, por lo que se buscan las comidas de esa fecha en la base de datos
                                 fetchActivitiesForDate(year, monthOfYear + 1, dayOfMonth);
+                                //fetchMealsForDate(year, monthOfYear + 1, dayOfMonth);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -101,8 +102,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         horaInicioText.setText("Hora de inicio: ");
         horaFinText.setText("Hora de finalización: ");
 
-        // Búsqueda en la base de datos de las actividades de la fecha seleccionada y actualización de los TextViews con estos datos
-        db.collection("actividades")
+        // Búsqueda en la base de datos de las comidas de la fecha seleccionada y actualización de los TextViews con estos datos
+        db.collection("meals")
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month)
                 .whereEqualTo("year", year)
@@ -115,8 +116,9 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
                         distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
                         tiempoText.setText("Tiempo transcurrido: " + activity.get("timeElapsed") + " ms");
-                        horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + activity.get("startMinute"));
-                        horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + activity.get("endMinute"));
+                     //   horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + ((Number) activity.get("startMinute")).intValue());
+                      //  horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
+
                     } else {
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
                     }
@@ -125,4 +127,34 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                     Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
+    // Para el historial de comidas
+    private void fetchMealsForDate(int year, int month, int day) {
+        // Limpieza de los TextViews antes de realizar la búsqueda
+        tipoActividadText.setText("Desayuno: ");
+        distanciaTotalText.setText("Comida: ");
+        tiempoText.setText("Cena: ");
+
+        // Búsqueda en la base de datos de las comidas de la fecha seleccionada y actualización de los TextViews con estos datos
+        db.collection("meals")
+                .whereEqualTo("day", day)
+                .whereEqualTo("month", month)
+                .whereEqualTo("year", year)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
+                        currentMealDocument = document.getReference();
+                        Map<String, Object> meal = document.getData();
+                        tipoActividadText.setText("Desayuno: " + meal.get("breakfast"));
+                        distanciaTotalText.setText("Comida: " + meal.get("lunch"));
+                        tiempoText.setText("Cena: " + meal.get("dinner"));
+                    } else {
+                        Toast.makeText(CarreraHistorialActivity.this, "No hay datos de comidas para esta fecha", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
+
 }
