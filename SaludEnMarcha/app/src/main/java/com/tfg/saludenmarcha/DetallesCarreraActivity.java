@@ -16,34 +16,47 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
+import java.util.Map;
 
 public class DetallesCarreraActivity extends AppCompatActivity {
-
+    private TextView activityTypeTextView;
+    private TextView totalDistanceTextView;
+    private TextView timeElapsedTextView;
+    private TextView startTimeTextView;
+    private TextView endTimeTextView;
+    private TextView dateTextView;
     private Button volverButton;
+    private Button guardarButton;
+    CarreraData carreraData;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_carrera);
         volverButton = findViewById(R.id.volverDetallesButton);
+        guardarButton = findViewById(R.id.GuardarDetallesButton);
 
         // Recuperar los datos del Intent
         if (getIntent().hasExtra("carreraData")) {
-            CarreraData carreraData = (CarreraData) getIntent().getSerializableExtra("carreraData");
+            carreraData = (CarreraData) getIntent().getSerializableExtra("carreraData");
+
 
             // Mostrar los datos en la interfaz de usuario
-            TextView activityTypeTextView = findViewById(R.id.activityTypeTextView);
-            TextView totalDistanceTextView = findViewById(R.id.totalDistanceTextView);
-            TextView timeElapsedTextView = findViewById(R.id.timeElapsedTextView);
-            TextView startTimeTextView = findViewById(R.id.startTimeTextView);
-            TextView endTimeTextView = findViewById(R.id.endTimeTextView);
-            TextView dateTextView = findViewById(R.id.dateTextView);
+            activityTypeTextView = findViewById(R.id.activityTypeTextView);
+            totalDistanceTextView = findViewById(R.id.totalDistanceTextView);
+            timeElapsedTextView = findViewById(R.id.timeElapsedTextView);
+            startTimeTextView = findViewById(R.id.startTimeTextView);
+            endTimeTextView = findViewById(R.id.endTimeTextView);
+            dateTextView = findViewById(R.id.dateTextView);
 
             // Establecer el texto en los TextView
             if (carreraData != null) {
@@ -77,6 +90,45 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
                 startActivity(intent);
+            }
+        });
+
+       guardarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Inicializar Firestore
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                // Crear un nuevo objeto para almacenar en el documento
+                Map<String, Object> raceData = new HashMap<>();
+                raceData.put("timeElapsed", carreraData.getTimeElapsed());
+                raceData.put("totalDistance", carreraData.getTotalDistance()); // Guarda la distancia total
+                raceData.put("day", carreraData.getDay());
+                raceData.put("month", carreraData.getMonth());
+                raceData.put("year", carreraData.getYear());
+                raceData.put("startHour", carreraData.getStartHour());
+                raceData.put("startMinute", carreraData.getStartMinute());
+                raceData.put("endHour", carreraData.getEndHour()); // Guarda la hora de finalización
+                raceData.put("endMinute", carreraData.getEndMinute()); // Guarda el minuto de finalización
+                raceData.put("activityType", carreraData.getActivityType()); // Guarda el tipo de actividad
+
+                // Guardar los datos en la colección "actividades"
+                db.collection("actividades").add(raceData)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(DetallesCarreraActivity.this, "Actividad Guardada Correctamente", Toast.LENGTH_LONG).show();
+                                // Cambiar a MenuActivity después de que los datos se hayan guardado con éxito
+                               // Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
+                              //  startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(DetallesCarreraActivity.this, "Error al guardar la actividad", Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
     }
