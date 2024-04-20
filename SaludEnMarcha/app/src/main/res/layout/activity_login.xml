@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:fontFamily="@font/font_mono"
-        android:text="@string/mis_tareas"
+        android:text="@string/salud_en_marcha"
+        android:textAlignment="center"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +25,7 @@
         android:layout_height="57dp"
         android:layout_marginTop="72dp"
         android:textColorHint="@color/black"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -35,7 +36,7 @@
             android:layout_width="344dp"
             android:layout_height="wrap_content"
             android:hint="@string/hintEmail"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/blue" />
 
         <requestFocus />
     </com.google.android.material.textfield.TextInputLayout>
@@ -45,7 +46,7 @@
         android:layout_width="345dp"
         android:layout_height="57dp"
         android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
@@ -58,7 +59,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hintPassword"
             android:inputType="textPassword"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/blue" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +69,7 @@
         android:layout_width="211dp"
         android:layout_height="61dp"
         android:layout_marginTop="72dp"
-        android:backgroundTint="@color/grey"
+        android:backgroundTint="@color/blue"
         android:text="@string/login"
         android:textSize="18sp"
         app:cornerRadius="32sp"
@@ -150,8 +151,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@+id/layoutEmail"
