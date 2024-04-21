@@ -51,10 +51,6 @@ public class RecoveryMail extends AppCompatActivity {
         if (!validateEmail()) {
             return;
         }
-        /* Envío del link para password olvidada.
-         Se podría mejorar haciendo una comprobación previa en la BBDD
-         para corroborar si el usuario está o no registrado
-        */
         mAuth.sendPasswordResetEmail(strEmail)
 
                 .addOnSuccessListener(unused -> {

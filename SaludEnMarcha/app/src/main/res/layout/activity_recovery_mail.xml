@@ -11,7 +11,7 @@
         android:layout_width="416dp"
         android:layout_height="97dp"
         android:layout_marginTop="72dp"
-        android:fontFamily="@font/font_mono"
+        android:fontFamily="@font/font_logo"
         android:text="@string/recupera_tu_contrasena"
         android:textAlignment="center"
         android:textSize="40sp"
@@ -23,9 +23,9 @@
         android:id="@+id/layoutEmail"
         android:layout_width="345dp"
         android:layout_height="57dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="56dp"
         android:textColorHint="@color/black"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recuperarTexto"
@@ -37,9 +37,9 @@
             android:id="@+id/cajaEmailRestablecer"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font_mono"
+            android:fontFamily="@font/font_body"
             android:hint="@string/hintEmail"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,8 +48,8 @@
         android:layout_width="211dp"
         android:layout_height="61dp"
         android:layout_marginTop="64dp"
-        android:backgroundTint="@color/grey"
-        android:fontFamily="@font/font_mono"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="@font/font_body"
         android:text="@string/enviar_enlace"
         android:textSize="18sp"
         app:cornerRadius="32sp"
@@ -88,13 +88,14 @@
 
     <TextView
         android:id="@+id/recuperarTexto"
-        android:layout_width="345dp"
-        android:layout_height="83dp"
+        android:layout_width="347dp"
+        android:layout_height="108dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/font_mono"
+        android:fontFamily="@font/font_body"
         android:lineSpacingExtra="8sp"
         android:text="@string/texto_recuperar"
         android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />

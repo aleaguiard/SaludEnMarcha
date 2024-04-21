@@ -3,28 +3,210 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/buttonHistorial"
+        android:backgroundTint="@color/blue"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="48dp"
+        android:text="Historial"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="Button"
+        android:id="@+id/buttonNutricion"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="48dp"
+        android:text="Nutrición"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTension" />
+
+    <Button
+        android:id="@+id/buttonGlucosa"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="128dp"
+        android:text="Glucosa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPeso" />
+
+    <Button
+        android:id="@+id/buttonResumen"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="48dp"
+        android:text="Resumen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalendario" />
+
+    <Button
+        android:id="@+id/buttonPeso"
+        android:layout_width="128dp"
+        android:backgroundTint="@color/blue"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="128dp"
+        android:text="Peso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonActividad" />
+
+    <Button
+        android:id="@+id/buttonMedicacion"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="128dp"
+        android:text="Medicación"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGlucosa" />
+
+    <Button
+        android:id="@+id/buttonEmergencia"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="128dp"
+        android:text="Emergencia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMedicacion" />
+
+    <Button
+        android:id="@+id/buttonActividad"
+        android:layout_width="128dp"
+        android:backgroundTint="@color/blue"
+        android:layout_height="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="128dp"
+        android:text="Actividad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <Button
+        android:id="@+id/buttonTension"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/blue"
+        android:layout_marginEnd="48dp"
+        android:text="PA - FC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonHistorial" />
+
+    <Button
+        android:id="@+id/buttonCalendario"
+        android:backgroundTint="@color/blue"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="48dp"
+        android:text="Calendario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNutricion" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="164dp"
+        android:layout_height="103dp"
+        android:layout_marginTop="128dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/app_icon" />
+    />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
+
+    <LinearLayout
+        android:layout_width="113dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="72dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_light_mode" />
+
+        <Switch
+            android:id="@+id/themeSwitch"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="24dp"
+            android:scrollbarSize="4dp"
+            android:switchMinWidth="36dp" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_dark_mode" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

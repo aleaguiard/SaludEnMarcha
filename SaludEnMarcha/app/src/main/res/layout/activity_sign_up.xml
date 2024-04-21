@@ -11,19 +11,22 @@
         android:id="@+id/tituloCrearCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="128dp"
+        android:fontFamily="@font/font_logo"
         android:text="@string/crea_tu_cuenta"
         android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Campo de Nombre -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="345dp"
+        android:layout_height="57dp"
         android:layout_marginTop="32dp"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tituloCrearCuenta">
 
@@ -32,16 +35,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nombre"
-            android:textColorHint="@color/grey" />
+
+            android:textColorHint="@color/blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Campo de Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEmail"
-        android:layout_width="match_parent"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutNombre">
 
@@ -50,17 +55,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hintEmail"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Campo de Contraseña -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="match_parent"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/grey2"
+        app:boxBackgroundColor="@color/blue2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
         app:passwordToggleEnabled="true">
@@ -71,17 +77,17 @@
             android:layout_height="wrap_content"
             android:hint="@string/hintPassword"
             android:inputType="textPassword"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/blue" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botón de Crear Cuenta -->
     <Button
         android:id="@+id/botonCrear"
-        android:layout_width="0dp"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/grey"
+        android:backgroundTint="@color/blue"
         android:text="@string/crear_cuenta"
         android:textSize="18sp"
         app:cornerRadius="32sp"
@@ -94,12 +100,13 @@
         android:id="@+id/backBoton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="300dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/navigate_back"
         app:layout_constraintBottom_toTopOf="@+id/tituloCrearCuenta"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
