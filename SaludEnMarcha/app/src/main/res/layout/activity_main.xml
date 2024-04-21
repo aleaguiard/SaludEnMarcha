@@ -162,4 +162,38 @@
         android:layout_height="wrap_content"
         app:barrierDirection="top" />
 
+    <LinearLayout
+        android:layout_width="113dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="72dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_light_mode" />
+
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:width="24dp"
+            android:scrollbarSize="4dp"
+            android:switchMinWidth="36dp" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_dark_mode" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
