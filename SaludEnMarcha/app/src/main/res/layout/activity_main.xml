@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/buttonHistorial"
+        android:backgroundTint="@color/blue"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
@@ -24,6 +26,7 @@
         android:id="@+id/buttonNutricion"
         android:layout_width="128dp"
         android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
@@ -37,6 +40,7 @@
         android:id="@+id/buttonGlucosa"
         android:layout_width="128dp"
         android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
@@ -50,6 +54,7 @@
         android:id="@+id/buttonResumen"
         android:layout_width="128dp"
         android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
@@ -62,6 +67,7 @@
     <Button
         android:id="@+id/buttonPeso"
         android:layout_width="128dp"
+        android:backgroundTint="@color/blue"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
@@ -76,6 +82,7 @@
         android:id="@+id/buttonMedicacion"
         android:layout_width="128dp"
         android:layout_height="48dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
@@ -90,6 +97,7 @@
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
         android:text="Emergencia"
@@ -101,6 +109,7 @@
     <Button
         android:id="@+id/buttonActividad"
         android:layout_width="128dp"
+        android:backgroundTint="@color/blue"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="64dp"
@@ -117,6 +126,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/blue"
         android:layout_marginEnd="48dp"
         android:text="PA - FC"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,6 +136,7 @@
 
     <Button
         android:id="@+id/buttonCalendario"
+        android:backgroundTint="@color/blue"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
@@ -139,13 +150,15 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_width="164dp"
+        android:layout_height="103dp"
+        android:layout_marginTop="128dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/app_icon" />
+    />
 
     <androidx.constraintlayout.widget.Barrier
         android:layout_width="wrap_content"
@@ -180,7 +193,7 @@
             app:srcCompat="@drawable/ic_light_mode" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/themeSwitch"
             android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -1,9 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SaludEnMarcha" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Base application theme. -->
+    <style name="Base.Theme.SaludEnMarcha" parent="Theme.Material3.Light">
+        <item name="android:fontFamily">@font/font_body</item>
     </style>
 
     <style name="Theme.SaludEnMarcha" parent="Base.Theme.SaludEnMarcha" />
+
+    <!-- Light mode -->
+    <style name="Theme.Light" parent="Base.Theme.SaludEnMarcha">
+        <item name="android:background">#403D3D</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>

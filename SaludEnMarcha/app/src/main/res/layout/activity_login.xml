@@ -10,11 +10,13 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
-        android:fontFamily="@font/font_mono"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/font_logo"
         android:text="@string/salud_en_marcha"
         android:textAlignment="center"
-        android:textSize="50sp"
+        android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +37,7 @@
             android:id="@+id/cajaEmail"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font_body"
             android:hint="@string/hintEmail"
             android:textColorHint="@color/blue" />
 
@@ -45,6 +48,7 @@
         android:id="@+id/textInputLayout"
         android:layout_width="345dp"
         android:layout_height="57dp"
+        android:fontFamily="@font/font_body"
         android:layout_marginTop="16dp"
         app:boxBackgroundColor="@color/blue2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +59,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cajaPassword"
+            android:fontFamily="@font/font_body"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
             android:hint="@string/hintPassword"
@@ -70,6 +75,7 @@
         android:layout_height="61dp"
         android:layout_marginTop="72dp"
         android:backgroundTint="@color/blue"
+        android:fontFamily="@font/font_body"
         android:text="@string/login"
         android:textSize="18sp"
         app:cornerRadius="32sp"
@@ -81,6 +87,7 @@
         android:id="@+id/linearLayoutSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/font_body"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -91,10 +98,12 @@
         <TextView
             android:id="@+id/account"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/font_body"
             android:layout_height="wrap_content"
             android:text="@string/account" />
 
         <TextView
+            android:fontFamily="@font/font_body"
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,6 +115,7 @@
         android:id="@+id/rememberPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/font_body"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="32dp"
@@ -141,6 +151,7 @@
         android:layout_width="194dp"
         android:layout_height="21dp"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/font_body"
         android:layout_marginBottom="32dp"
         android:text="@string/or_login_with"
         android:textAlignment="center"
