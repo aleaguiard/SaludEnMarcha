@@ -41,6 +41,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
+        setupButtonClick(R.id.buttonActividad, ActividadMenuActivity.class);
+       /* setupButtonClick(R.id.buttonPeso, PesoActivity.class);
+        setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
+        setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
+        setupButtonClick(R.id.buttonEmergencia, EmergenciaActivity.class);
+        setupButtonClick(R.id.buttonHistorial, HistorialActivity.class);
+        setupButtonClick(R.id.buttonNutricion, NutricionActivity.class);
+        setupButtonClick(R.id.buttonTension, TensionActivity.class);
+        setupButtonClick(R.id.buttonCalendario, CalendarioActivity.class);
+        setupButtonClick(R.id.buttonResumen, ResumenActivity.class);
+      */
         // Configuración del tema
         themeSwitch = findViewById(R.id.themeSwitch);
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE);
@@ -72,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         idUser = mAuth.getCurrentUser().getEmail();
         db = FirebaseFirestore.getInstance();
+
+
     }
 
     @Override
@@ -102,20 +115,3 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
-
-
-
-
-/*
-        setupButtonClick(R.id.buttonActividad, ActividadActivity.class);
-        setupButtonClick(R.id.buttonPeso, PesoActivity.class);
-        setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
-        setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
-        setupButtonClick(R.id.buttonEmergencia, EmergenciaActivity.class);
-        setupButtonClick(R.id.buttonHistorial, HistorialActivity.class);
-        setupButtonClick(R.id.buttonNutricion, NutricionActivity.class);
-        setupButtonClick(R.id.buttonTension, TensionActivity.class);
-        setupButtonClick(R.id.buttonCalendario, CalendarioActivity.class);
-        setupButtonClick(R.id.buttonResumen, ResumenActivity.class);
-
-*/

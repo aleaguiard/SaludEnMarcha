@@ -17,18 +17,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
+
+        <!-- Actividad de inicio de sesión (Login) -->
         <activity
-            android:name=".CarreraHistorialActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MenuActivity"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Otras actividades -->
+        <activity
+            android:name=".MenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ActividadMenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".TrackingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
         <activity
             android:name=".DetallesCarreraActivity"
             android:exported="false" />
@@ -44,35 +56,18 @@
         <activity
             android:name=".ActividadTerminadaActivity"
             android:exported="true" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
-
-        <activity
-            android:name=".ActividadMenuActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".TrackingActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Login"
-            android:exported="true" />
         <activity
             android:name=".RecoveryMail"
             android:exported="false" />
         <activity
             android:name=".SignUp"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+
+        <!-- Meta-data -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
+
     </application>
 
 </manifest>
