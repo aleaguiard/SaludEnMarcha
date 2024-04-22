@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -16,7 +18,10 @@
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
         <activity
-            android:name=".Login"
+            android:name=".CarreraHistorialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +29,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetallesCarreraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AlimentacionHistorialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AlimentacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadTerminada2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadTerminadaActivity"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
+
+        <activity
+            android:name=".ActividadMenuActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".TrackingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Login"
+            android:exported="true" />
         <activity
             android:name=".RecoveryMail"
             android:exported="false" />
@@ -33,7 +73,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>
