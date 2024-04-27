@@ -88,21 +88,21 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
         breakfastText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("breakfast");
+                showEditDialog("desayuno");
             }
         });
 
         lunchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("lunch");
+                showEditDialog("comida");
             }
         });
 
         dinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("dinner");
+                showEditDialog("cena");
             }
         });
     }
