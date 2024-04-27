@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="108dp"
         android:text="DETALLES DE LA ACTIVIDAD"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +74,7 @@
 
     <Button
         android:id="@+id/volverDetallesButton"
+        android:backgroundTint="@color/blue"
         android:layout_width="105dp"
         android:layout_height="55dp"
         android:layout_marginTop="32dp"
@@ -85,6 +86,7 @@
 
     <Button
         android:id="@+id/GuardarDetallesButton"
+        android:backgroundTint="@color/blue"
         android:layout_width="118dp"
         android:layout_height="54dp"
         android:layout_marginTop="32dp"

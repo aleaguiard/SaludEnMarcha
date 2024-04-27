@@ -7,51 +7,66 @@
     android:layout_height="match_parent"
     tools:context=".AlimentacionActivity">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="100dp">
 
 
-
-    <Button
-        android:id="@+id/date_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar fecha" />
-
+        <Button
+            android:id="@+id/date_picker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Seleccionar fecha" />
 
 
         <EditText
             android:id="@+id/breakfast_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:hint="Desayuno" />
 
         <EditText
             android:id="@+id/lunch_input"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Comida" />
 
         <EditText
             android:id="@+id/dinner_input"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Cena" />
 
         <Button
             android:id="@+id/save_button"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
             android:text="Guardar" />
 
         <Button
             android:id="@+id/buttonHistorial"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
             android:text="Historial de Alimentación" />
+        <Button
+            android:id="@+id/volverAlimentacionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/botonVolver"
+ />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

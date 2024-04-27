@@ -34,6 +34,7 @@ public class AlimentacionActivity extends AppCompatActivity {
     private EditText dinnerInput;
     private Button saveButton;
     private Button datePickerButton;
+    private Button volverButton;
 
     private Button botonHistorial;
 
@@ -66,6 +67,7 @@ public class AlimentacionActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         datePickerButton = findViewById(R.id.date_picker_button);
         botonHistorial = findViewById(R.id.buttonHistorial);
+        volverButton = findViewById(R.id.volverAlimentacionButton);
 
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
@@ -144,6 +146,14 @@ public class AlimentacionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AlimentacionActivity.this, AlimentacionHistorialActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        volverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AlimentacionActivity.this, MenuActivity.class);
                 startActivity(intent);
             }
         });

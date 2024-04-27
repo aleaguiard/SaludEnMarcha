@@ -9,6 +9,7 @@
 
     <Button
         android:id="@+id/date_picker_buttonHistorial"
+        android:backgroundTint="@color/blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -23,7 +24,8 @@
         android:id="@+id/textoHistorialActividad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="12dp"
         android:text="Resumen actividad del día seleccionado: "
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="30dp" />

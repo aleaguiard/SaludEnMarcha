@@ -37,6 +37,7 @@
 
     <Button
         android:id="@+id/pauseButton"
+        android:backgroundTint="@color/blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -49,6 +50,7 @@
 
     <Button
         android:id="@+id/resumeButton"
+        android:backgroundTint="@color/blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -61,6 +63,7 @@
 
     <Button
         android:id="@+id/stopButton"
+        android:backgroundTint="@color/blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CarreraHistorialActivity extends AppCompatActivity {
     // Declaración de variables para los TextViews y el botón
@@ -121,7 +122,11 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         Map<String, Object> activity = document.getData();
                         tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
                         distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
-                        tiempoText.setText("Tiempo transcurrido: " + activity.get("timeElapsed") + " ms");
+                        long timeElapsedMs = (long) activity.get("timeElapsed");
+                        long hours = TimeUnit.MILLISECONDS.toHours(timeElapsedMs);
+                        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMs) % 60;
+                        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeElapsedMs) % 60;
+                        tiempoText.setText(String.format("Tiempo transcurrido: %02d:%02d:%02d", hours, minutes, seconds));
                         horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + ((Number) activity.get("startMinute")).intValue());
                         horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
 
