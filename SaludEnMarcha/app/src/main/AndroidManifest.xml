@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
         <activity
+            android:name=".EmergencyActivity"
+            android:exported="false" />
+        <activity
             android:name=".Splash"
             android:exported="true">
             <intent-filter>
@@ -25,16 +28,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- Actividad de inicio de sesión (Login) -->
+        </activity> <!-- Actividad de inicio de sesión (Login) -->
         <activity
             android:name=".Login"
             android:exported="true">
-          <!--  <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity> <!-- Otras actividades -->
         <!--
 <activity

@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
        // setupButtonClick(R.id.buttonPeso, PesoActivity.class);
        // setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
        // setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
-       // setupButtonClick(R.id.buttonEmergencia, EmergenciaActivity.class);
+        setupButtonClick(R.id.buttonEmergencia, EmergencyActivity.class);
         setupButtonClick(R.id.buttonHistorial, CarreraHistorialActivity.class);
         setupButtonClick(R.id.buttonNutricion, AlimentacionActivity.class);
         //setupButtonClick(R.id.buttonTension, TensionActivity.class);
