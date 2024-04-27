@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,9 +39,12 @@ public class AlimentacionActivity extends AppCompatActivity {
 
     // Declaración de variables para Firestore
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private int selectedDay; // Variable para guardar el día seleccionado
     private int selectedMonth; // Variable para guardar el mes seleccionado
     private int selectedYear; // Variable para guardar el año seleccionado
+    String idUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,9 @@ public class AlimentacionActivity extends AppCompatActivity {
 
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        idUser = mAuth.getCurrentUser().getUid();
 
         // Establecimiento del OnClickListener para el botón de selección de fecha
         datePickerButton.setOnClickListener(new View.OnClickListener() {
@@ -94,37 +101,44 @@ public class AlimentacionActivity extends AppCompatActivity {
 
         // Establecimiento del OnClickListener para el botón de guardar
         saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Guardado de la información introducida por el usuario
-                String breakfast = breakfastInput.getText().toString();
-                String lunch = lunchInput.getText().toString();
-                String dinner = dinnerInput.getText().toString();
-
-                // Creación de un nuevo documento en la colección "meals"
-                Map<String, Object> meal = new HashMap<>();
-                meal.put("breakfast", breakfast);
-                meal.put("lunch", lunch);
-                meal.put("dinner", dinner);
-                meal.put("day", selectedDay); // Guardado del día seleccionado en Firebase
-                meal.put("month", selectedMonth); // Guardado del mes seleccionado en Firebase
-                meal.put("year", selectedYear); // Guardado del año seleccionado en Firebase
-
-                db.collection("meals").add(meal)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(AlimentacionActivity.this, "Alimentación añadida correctamente: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AlimentacionActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+        @Override
+        public void onClick(View v) {
+            // Verificación de que selectedDay, selectedMonth y selectedYear no estén vacíos
+            if (selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {
+                Toast.makeText(AlimentacionActivity.this, "Por favor, selecciona una fecha", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
+
+            // Guardado de la información introducida por el usuario
+            String breakfast = breakfastInput.getText().toString();
+            String lunch = lunchInput.getText().toString();
+            String dinner = dinnerInput.getText().toString();
+
+            // Creación de un nuevo documento en la colección "meals"
+            Map<String, Object> meal = new HashMap<>();
+            meal.put("idUser", idUser);
+            meal.put("breakfast", breakfast);
+            meal.put("lunch", lunch);
+            meal.put("dinner", dinner);
+            meal.put("day", selectedDay); // Guardado del día seleccionado en Firebase
+            meal.put("month", selectedMonth); // Guardado del mes seleccionado en Firebase
+            meal.put("year", selectedYear); // Guardado del año seleccionado en Firebase
+
+            db.collection("meals").add(meal)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(AlimentacionActivity.this, "Alimentación añadida correctamente: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AlimentacionActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+    });
 
         botonHistorial.setOnClickListener(new View.OnClickListener() {
             @Override

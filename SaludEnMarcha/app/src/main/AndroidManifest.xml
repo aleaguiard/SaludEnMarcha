@@ -62,6 +62,9 @@
         <activity
             android:name=".SignUp"
             android:exported="false" />
+        <activity
+            android:name=".CarreraHistorialActivity"
+            android:exported="false" />
 
         <!-- Meta-data -->
         <meta-data
