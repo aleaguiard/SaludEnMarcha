@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,6 +39,10 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
     // Declaración de variables para Firestore
     private FirebaseFirestore db;
     private DocumentReference currentMealDocument;
+    private FirebaseAuth mAuth;
+
+    //Variables para altas y consultas de firebase
+    String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,8 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
         volverButton = findViewById(R.id.volverHistorialAlimencacionButton);
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        idUser = mAuth.getCurrentUser().getUid();
 
         // Establecimiento del OnClickListener para el botón de selección de fecha
         datePickerButton.setOnClickListener(new View.OnClickListener() {
@@ -88,21 +95,21 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
         breakfastText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("desayuno");
+                showEditDialog("breakfast");
             }
         });
 
         lunchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("comida");
+                showEditDialog("lunch");
             }
         });
 
         dinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showEditDialog("cena");
+                showEditDialog("dinner");
             }
         });
     }
@@ -116,6 +123,7 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
 
         // Búsqueda en la base de datos de las comidas de la fecha seleccionada y actualización de los TextViews con estos datos
         db.collection("meals")
+                .whereEqualTo("idUser", idUser)
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month)
                 .whereEqualTo("year", year)
