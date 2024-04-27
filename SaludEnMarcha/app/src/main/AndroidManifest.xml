@@ -17,21 +17,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaludEnMarcha"
         tools:targetApi="31">
+        <activity
+            android:name=".Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- Actividad de inicio de sesión (Login) -->
         <activity
             android:name=".Login"
             android:exported="true">
-            <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
-        <!-- Otras actividades -->
-        <!--<activity
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity> <!-- Otras actividades -->
+        <!--
+<activity
             android:name=".MenuActivity"
-            android:exported="true" /> -->
+            android:exported="true" />
+        -->
         <activity
             android:name=".ActividadMenuActivity"
             android:exported="true" />
@@ -64,13 +73,10 @@
             android:exported="false" />
         <activity
             android:name=".CarreraHistorialActivity"
-            android:exported="false" />
-
-        <!-- Meta-data -->
+            android:exported="false" /> <!-- Meta-data -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNHEf8LwxA6vpgWx6f50Vh-e8mZQs4kmM" />
-
     </application>
 
 </manifest>
