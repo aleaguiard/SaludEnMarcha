@@ -86,7 +86,7 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AlimentacionHistorialActivity.this, MenuActivity.class);
+                Intent intent = new Intent(AlimentacionHistorialActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

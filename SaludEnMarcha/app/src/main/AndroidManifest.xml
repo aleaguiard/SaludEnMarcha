@@ -29,9 +29,9 @@
         </activity>
 
         <!-- Otras actividades -->
-        <activity
+        <!--<activity
             android:name=".MenuActivity"
-            android:exported="true" />
+            android:exported="true" /> -->
         <activity
             android:name=".ActividadMenuActivity"
             android:exported="true" />

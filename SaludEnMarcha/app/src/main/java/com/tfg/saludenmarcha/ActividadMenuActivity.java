@@ -81,7 +81,7 @@ public class ActividadMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void onclickVolver(View view) {
-        Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

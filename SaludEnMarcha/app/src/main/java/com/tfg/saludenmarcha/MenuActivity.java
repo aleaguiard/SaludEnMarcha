@@ -1,4 +1,4 @@
-package com.tfg.saludenmarcha;
+/*package com.tfg.saludenmarcha;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -147,3 +147,4 @@ public class MenuActivity extends AppCompatActivity {
     }
 }
 
+*/

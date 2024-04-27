@@ -114,7 +114,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
+                Intent intent = new Intent(DetallesCarreraActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -152,7 +152,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                                 endTimeTextView.setText("0");
                                 dateTextView.setText("0");
                                 // Cambiar a MenuActivity después de que los datos se hayan guardado con éxito
-                                Intent intent = new Intent(DetallesCarreraActivity.this, MenuActivity.class);
+                                Intent intent = new Intent(DetallesCarreraActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
                         })

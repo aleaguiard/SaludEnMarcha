@@ -10,9 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,19 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
 
-        setupButtonClick(R.id.buttonActividad, ActividadMenuActivity.class);
-       /* setupButtonClick(R.id.buttonPeso, PesoActivity.class);
-        setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
-        setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
-        setupButtonClick(R.id.buttonEmergencia, EmergenciaActivity.class);
-        setupButtonClick(R.id.buttonHistorial, HistorialActivity.class);
-        setupButtonClick(R.id.buttonNutricion, NutricionActivity.class);
-        setupButtonClick(R.id.buttonTension, TensionActivity.class);
-        setupButtonClick(R.id.buttonCalendario, CalendarioActivity.class);
-        setupButtonClick(R.id.buttonResumen, ResumenActivity.class);
-      */
         // Configuración del tema
         themeSwitch = findViewById(R.id.themeSwitch);
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE);
@@ -84,7 +76,25 @@ public class MainActivity extends AppCompatActivity {
         idUser = mAuth.getCurrentUser().getEmail();
         db = FirebaseFirestore.getInstance();
 
+        // Añadir ajustes a la vista
+        EdgeToEdge.enable(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
+        // Manejar clics en los botones
+        setupButtonClick(R.id.buttonActividad, ActividadMenuActivity.class);
+       // setupButtonClick(R.id.buttonPeso, PesoActivity.class);
+       // setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
+       // setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
+       // setupButtonClick(R.id.buttonEmergencia, EmergenciaActivity.class);
+        setupButtonClick(R.id.buttonHistorial, CarreraHistorialActivity.class);
+        setupButtonClick(R.id.buttonNutricion, AlimentacionActivity.class);
+        //setupButtonClick(R.id.buttonTension, TensionActivity.class);
+        //setupButtonClick(R.id.buttonCalendario, CalendarioActivity.class);
+        //setupButtonClick(R.id.buttonResumen, ResumenActivity.class);*/
     }
 
     @Override
