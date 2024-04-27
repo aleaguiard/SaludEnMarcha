@@ -3,6 +3,10 @@ package com.tfg.saludenmarcha;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,5 +35,14 @@ public class Splash extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+
+        TextView copyright = findViewById(R.id.copyright_text);
+        Animation anim1 = AnimationUtils.loadAnimation(this, R.anim.text_animation);
+        copyright.startAnimation(anim1);
+
+        ImageView logoInicial = findViewById(R.id.splash_image);
+        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.logo_animation);
+        logoInicial.startAnimation(anim2);
+
     }
 }
