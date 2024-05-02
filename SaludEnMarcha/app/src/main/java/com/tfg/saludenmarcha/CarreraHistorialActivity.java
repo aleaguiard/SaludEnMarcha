@@ -124,7 +124,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         horaInicioText.setText("Hora de inicio: ");
         horaFinText.setText("Hora de finalización: ");
 
-        // Búsqueda en la base de datos de las comidas de la fecha seleccionada y actualización de los TextViews con estos datos
+        // Búsqueda en la base de datos de las actividades de la fecha seleccionada y actualización de los TextViews con estos datos
         db.collection("activities")
                 .whereEqualTo("idUser", idUser)
                 .whereEqualTo("day", day)
@@ -147,7 +147,16 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
 
                         // Verificar si la actividad tiene coordenadas GPS
-                        if (rutaGps != null) {
+                        if (activity.containsKey("routeGps")) {
+                            // Obtener la lista de GeoPoints
+                            geoPoints = (List<GeoPoint>) activity.get("routeGps");
+
+                            // Convertir los GeoPoints a LatLng
+                            rutaGps = new ArrayList<>();
+                            for (GeoPoint geoPoint : geoPoints) {
+                                LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                rutaGps.add(latLng);
+                            }
 
                             // Dentro del método onCreate() de tu actividad
                             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment_historial);
@@ -163,36 +172,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                                     mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
                                     mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
 
-                                    // Verificar si la actividad tiene coordenadas GPS
-                                    if (activity.containsKey("routeGps")) {
-                                        // Obtener la lista de GeoPoints
-                                        geoPoints = (List<GeoPoint>) activity.get("routeGps");
-
-                                        // Convertir los GeoPoints a LatLng
-                                        rutaGps = new ArrayList<LatLng>();
-                                        for (GeoPoint geoPoint : geoPoints) {
-                                            LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                            rutaGps.add(latLng);
-                                        }
-
-                                        // Dibujar las polilíneas en el mapa
-                                        drawPolylineOnMap(rutaGps);
-                                    } else {
-                                        Toast.makeText(CarreraHistorialActivity.this, "La actividad no contiene coordenadas GPS", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    // Agregar las polilíneas al mapa
-                                    PolylineOptions polylineOptions = new PolylineOptions();
-                                    polylineOptions.color(Color.RED);
-                                    polylineOptions.width(5);
-
-                                    for (LatLng point : rutaGps) {
-                                        polylineOptions.add(point);
-                                    }
-
-                                    mMap.addPolyline(polylineOptions);
-
-                                    // Centrar el mapa en la primera ubicación de la ruta
+                                    // Dibujar las polilíneas en el mapa
+                                    drawPolylineOnMap(rutaGps);
                                     if (!rutaGps.isEmpty()) {
                                         LatLng firstLocation = rutaGps.get(0);
                                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
@@ -201,7 +182,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             });
 
                         } else {
-                            // Manejar el caso cuando no se encuentra la lista de coordenadas en el Intent
+                            Toast.makeText(CarreraHistorialActivity.this, "La actividad no contiene coordenadas GPS", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
@@ -211,6 +192,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                     Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
+
 
     // Método para dibujar las polilíneas en el mapa
     private void drawPolylineOnMap(ArrayList<LatLng> rutaGpsLatLng) {
