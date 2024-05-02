@@ -212,7 +212,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     // Obtén la fecha y hora actual
                     Calendar calendar = Calendar.getInstance();
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
-                    int month = calendar.get(Calendar.MONTH);
+                    int month = calendar.get(Calendar.MONTH) + 1; //Calendar.MONTH empieza los meses desde 0 hay que añadir uno
                     int year = calendar.get(Calendar.YEAR);
                     int startHour = calendar.get(Calendar.HOUR_OF_DAY);
                     int startMinute = calendar.get(Calendar.MINUTE);

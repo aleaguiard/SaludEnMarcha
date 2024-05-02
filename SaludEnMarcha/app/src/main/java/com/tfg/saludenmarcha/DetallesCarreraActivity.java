@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,6 +193,17 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                 raceData.put("endHour", carreraData.getEndHour()); // Guarda la hora de finalización
                 raceData.put("endMinute", carreraData.getEndMinute()); // Guarda el minuto de finalización
                 raceData.put("activityType", carreraData.getActivityType()); // Guarda el tipo de actividad
+
+                // Convertir las coordenadas de rutaGps a GeoPoints
+                ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+                if (rutaGps != null) {
+                    for (LatLng latLng : rutaGps) {
+                        GeoPoint geoPoint = new GeoPoint(latLng.latitude, latLng.longitude);
+                        geoPoints.add(geoPoint);
+                    }
+                }
+                // Guardar la lista de GeoPoints en Firebase Firestore
+                raceData.put("routeGps", geoPoints);
 
                 // Guardar los datos en la colección "actividades"
                 db.collection("activities").add(raceData)
