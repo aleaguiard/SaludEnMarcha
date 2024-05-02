@@ -1,5 +1,4 @@
 package com.tfg.saludenmarcha;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -168,7 +167,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     isTracking = false;
                     timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
                     chronometer.stop();
-                    locationUpdates();
+                    pauseLocationUpdates();
                     //Desaparece el boton de pausa y aparece el de resume
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.VISIBLE);
@@ -202,7 +201,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View v) {
                     isTracking = false;
                     chronometer.stop();
-                    locationUpdates();
+                    //locationUpdates();
                     startButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.GONE);
@@ -222,7 +221,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     int endHour = calendar.get(Calendar.HOUR_OF_DAY);
                     int endMinute = calendar.get(Calendar.MINUTE);
 
-                    // Crea un nuevo objeto CarreraData para almacenar los datos de la carrera
+                    // Crear un nuevo objeto CarreraData para almacenar los datos de la carrera
                     CarreraData carreraData = new CarreraData();
                     carreraData.setRaceId(raceId);
                     carreraData.setTimeElapsed(timeElapsed);
@@ -236,9 +235,10 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     carreraData.setEndMinute(endMinute);
                     carreraData.setActivityType(activityType);
 
-                    // Crea un Intent y pasa el objeto CarreraData como un extra
+                    // Crear un Intent para pasar los detalles de la carrera y las coordenadas GPS al otro Activity
                     Intent intent = new Intent(TrackingActivity.this, DetallesCarreraActivity.class);
                     intent.putExtra("carreraData", carreraData);
+                    intent.putParcelableArrayListExtra("ruta_gps", (ArrayList<LatLng>) pathPoints);
                     startActivity(intent);
                 }
             });
@@ -257,7 +257,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                         if (location != null && isTracking) {
                             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             pathPoints.add(newLocation);
-                            polylineOptions.addAll(pathPoints);
+                            polylineOptions.add(newLocation); // Añadir solo el nuevo punto a la polylineOptions
                             mMap.clear();
                             mMap.addPolyline(polylineOptions);
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 15));
@@ -313,6 +313,13 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+    private void pauseLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -328,42 +335,42 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     //guardar todos los pathPoints en un solo documento, guarda cada LatLngData como un documento individual en una colección cuyo nombre es el raceId
-    private void locationUpdates() {
-    fusedLocationClient.removeLocationUpdates(locationCallback);
+ /*   private void locationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
 
-    // Guarda los pathPoints en Firebase
-    for (LatLng point : pathPoints) {
-        pathPointsData.add(new LatLngData(point.latitude, point.longitude));
-    }
+        // Guarda los pathPoints en Firebase
+        for (LatLng point : pathPoints) {
+            pathPointsData.add(new LatLngData(point.latitude, point.longitude));
+        }
 
-    // Obtén la fecha actual
-    Calendar calendar = Calendar.getInstance();
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    int month = calendar.get(Calendar.MONTH);
-    int year = calendar.get(Calendar.YEAR);
+        // Obtén la fecha actual
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
 
-    // Crea un nuevo objeto para almacenar en el documento
-    Map<String, Object> raceData = new HashMap<>();
-    raceData.put("pathPoints", pathPointsData);
-    raceData.put("day", day);
-    raceData.put("month", month);
-    raceData.put("year", year);
+        // Crea un nuevo objeto para almacenar en el documento
+        Map<String, Object> raceData = new HashMap<>();
+        raceData.put("pathPoints", pathPointsData);
+        raceData.put("day", day);
+        raceData.put("month", month);
+        raceData.put("year", year);
 
-    // Guarda los pathPoints en el nuevo documento
-    raceRef.set(raceData)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "DocumentSnapshot escrito correctamente!");
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w(TAG, "Error escribiendo el documento", e);
-                }
-            });
-}
+        // Guarda los pathPoints en el nuevo documento
+        raceRef.set(raceData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot escrito correctamente!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error escribiendo el documento", e);
+                    }
+                });
+    }*/
 
 
 }

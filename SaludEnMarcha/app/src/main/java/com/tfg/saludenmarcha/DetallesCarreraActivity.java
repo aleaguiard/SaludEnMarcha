@@ -1,6 +1,10 @@
 package com.tfg.saludenmarcha;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +16,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +40,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,6 +69,10 @@ public class DetallesCarreraActivity extends AppCompatActivity {
     int day;
     int month;
     int year;
+    private GoogleMap mMap;
+
+    ArrayList<LatLng> rutaGps;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +90,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         // Recuperar los datos del Intent
         if (getIntent().hasExtra("carreraData")) {
             carreraData = (CarreraData) getIntent().getSerializableExtra("carreraData");
-
+            rutaGps = getIntent().getParcelableArrayListExtra("ruta_gps");
 
             // Mostrar los datos en la interfaz de usuario
             activityTypeTextView = findViewById(R.id.activityTypeTextView);
@@ -83,6 +99,46 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             startTimeTextView = findViewById(R.id.startTimeTextView);
             endTimeTextView = findViewById(R.id.endTimeTextView);
             dateTextView = findViewById(R.id.dateTextView);
+
+            // Mostrar la ruta en el mapa
+            // Verificar si la lista de coordenadas no es nula
+            if (rutaGps != null) {
+                // Dentro del método onCreate() de tu actividad
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+                final Activity activity = DetallesCarreraActivity.this; // Almacena una referencia a la actividad actual
+
+                mapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        mMap = googleMap;
+                        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                        mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
+                        mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
+
+                        // Agregar las polilíneas al mapa
+                        PolylineOptions polylineOptions = new PolylineOptions();
+                        polylineOptions.color(Color.RED);
+                        polylineOptions.width(5);
+
+                        for (LatLng point : rutaGps) {
+                            polylineOptions.add(point);
+                        }
+
+                        mMap.addPolyline(polylineOptions);
+
+                        // Centrar el mapa en la primera ubicación de la ruta
+                        if (!rutaGps.isEmpty()) {
+                            LatLng firstLocation = rutaGps.get(0);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
+                        }
+                    }
+                });
+
+            } else {
+                // Manejar el caso cuando no se encuentra la lista de coordenadas en el Intent
+            }
 
             // Establecer el texto en los TextView
             if (carreraData != null) {
@@ -123,7 +179,6 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 // Crear un nuevo objeto para almacenar en el documento
                 Map<String, Object> raceData = new HashMap<>();
                 raceData.put("idUser", idUser);
@@ -145,12 +200,12 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(DetallesCarreraActivity.this, "Actividad Guardada Correctamente", Toast.LENGTH_LONG).show();
                                 //resetear los valores
-                                activityTypeTextView.setText("0");
-                                totalDistanceTextView.setText("0");
-                                timeElapsedTextView.setText("0");
-                                startTimeTextView.setText("0");
-                                endTimeTextView.setText("0");
-                                dateTextView.setText("0");
+                                activityTypeTextView.setText("");
+                                totalDistanceTextView.setText("");
+                                timeElapsedTextView.setText("");
+                                startTimeTextView.setText("");
+                                endTimeTextView.setText("");
+                                dateTextView.setText("");
                                 // Cambiar a MenuActivity después de que los datos se hayan guardado con éxito
                                 Intent intent = new Intent(DetallesCarreraActivity.this, MainActivity.class);
                                 startActivity(intent);
