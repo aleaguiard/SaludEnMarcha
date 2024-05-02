@@ -202,7 +202,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                         geoPoints.add(geoPoint);
                     }
                 }
-                // Guardar la lista de GeoPoints en Firebase Firestore
+                // Guardar la lista de GeoPoints en Firebase Firestore.
                 raceData.put("routeGps", geoPoints);
 
                 // Guardar los datos en la colección "actividades"
