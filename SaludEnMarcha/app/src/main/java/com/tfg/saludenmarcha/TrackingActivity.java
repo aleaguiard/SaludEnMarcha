@@ -80,6 +80,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     String raceId;
     DocumentReference raceRef;
     String activityType;
+    CarreraData carreraData;
+
 
     private static final String TAG = "TrackingActivity";
 
@@ -114,6 +116,9 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             locationRequest.setFastestInterval(5000); // Establece la tasa más rápida para las actualizaciones de ubicación activas, en milisegundos.
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); // Establece la prioridad de la solicitud.
 
+
+            // Crear un nuevo objeto CarreraData para almacenar los datos de la carrera
+            carreraData = new CarreraData();
 
             //
             db = FirebaseFirestore.getInstance();
@@ -186,6 +191,18 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                         chronometer.setBase(SystemClock.elapsedRealtime());
                         chronometer.start();
                         startLocationUpdates();
+                        // Obtén la fecha y hora actual
+                        Calendar calendar = Calendar.getInstance();
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
+                        int month = calendar.get(Calendar.MONTH) + 1; //Calendar.MONTH empieza los meses desde 0 hay que añadir uno
+                        int year = calendar.get(Calendar.YEAR);
+                        int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+                        int startMinute = calendar.get(Calendar.MINUTE);
+                        carreraData.setDay(day);
+                        carreraData.setMonth(month);
+                        carreraData.setYear(year);
+                        carreraData.setStartHour(startHour);
+                        carreraData.setStartMinute(startMinute);
                         //Desaparece el boton de start y aparece el de pausa
                         startButton.setVisibility(View.GONE);
                         pauseButton.setVisibility(View.VISIBLE);
@@ -208,29 +225,13 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
                     // Obtén el tiempo transcurrido
                     long timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
-
-                    // Obtén la fecha y hora actual
                     Calendar calendar = Calendar.getInstance();
-                    int day = calendar.get(Calendar.DAY_OF_MONTH);
-                    int month = calendar.get(Calendar.MONTH) + 1; //Calendar.MONTH empieza los meses desde 0 hay que añadir uno
-                    int year = calendar.get(Calendar.YEAR);
-                    int startHour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int startMinute = calendar.get(Calendar.MINUTE);
-
                     // Obtén la hora y minuto de finalización
                     int endHour = calendar.get(Calendar.HOUR_OF_DAY);
                     int endMinute = calendar.get(Calendar.MINUTE);
-
-                    // Crear un nuevo objeto CarreraData para almacenar los datos de la carrera
-                    CarreraData carreraData = new CarreraData();
                     carreraData.setRaceId(raceId);
                     carreraData.setTimeElapsed(timeElapsed);
                     carreraData.setTotalDistance(totalDistance);
-                    carreraData.setDay(day);
-                    carreraData.setMonth(month);
-                    carreraData.setYear(year);
-                    carreraData.setStartHour(startHour);
-                    carreraData.setStartMinute(startMinute);
                     carreraData.setEndHour(endHour);
                     carreraData.setEndMinute(endMinute);
                     carreraData.setActivityType(activityType);
@@ -260,7 +261,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                             polylineOptions.add(newLocation); // Añadir solo el nuevo punto a la polylineOptions
                             mMap.clear();
                             mMap.addPolyline(polylineOptions);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 15));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 20));
 
                             // Calcular la distancia
                             if (lastLocation != null) {

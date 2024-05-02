@@ -1,7 +1,11 @@
 package com.tfg.saludenmarcha;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,16 +15,26 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +54,9 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     String idUser;
     private DocumentReference currentActivityDocument;
+    private GoogleMap mMap;
+    ArrayList<LatLng> rutaGps;
+    List<GeoPoint> geoPoints;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +93,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 // El usuario ha seleccionado una fecha, por lo que se buscan las comidas de esa fecha en la base de datos
-                                fetchActivitiesForDate(year, monthOfYear , dayOfMonth);
-                                //fetchMealsForDate(year, monthOfYear + 1, dayOfMonth);
+                                fetchActivitiesForDate(year, monthOfYear+1 , dayOfMonth);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -130,6 +146,63 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + ((Number) activity.get("startMinute")).intValue());
                         horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
 
+                        // Verificar si la actividad tiene coordenadas GPS
+                        if (rutaGps != null) {
+
+                            // Dentro del método onCreate() de tu actividad
+                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment_historial);
+                            final Activity activityHistorial = CarreraHistorialActivity.this; // Almacena una referencia a la actividad actual
+
+                            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(GoogleMap googleMap) {
+                                    mMap = googleMap;
+                                    if (ActivityCompat.checkSelfPermission(activityHistorial, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activityHistorial, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                        return;
+                                    }
+                                    mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
+                                    mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
+
+                                    // Verificar si la actividad tiene coordenadas GPS
+                                    if (activity.containsKey("routeGps")) {
+                                        // Obtener la lista de GeoPoints
+                                        geoPoints = (List<GeoPoint>) activity.get("routeGps");
+
+                                        // Convertir los GeoPoints a LatLng
+                                        rutaGps = new ArrayList<LatLng>();
+                                        for (GeoPoint geoPoint : geoPoints) {
+                                            LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                                            rutaGps.add(latLng);
+                                        }
+
+                                        // Dibujar las polilíneas en el mapa
+                                        drawPolylineOnMap(rutaGps);
+                                    } else {
+                                        Toast.makeText(CarreraHistorialActivity.this, "La actividad no contiene coordenadas GPS", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    // Agregar las polilíneas al mapa
+                                    PolylineOptions polylineOptions = new PolylineOptions();
+                                    polylineOptions.color(Color.RED);
+                                    polylineOptions.width(5);
+
+                                    for (LatLng point : rutaGps) {
+                                        polylineOptions.add(point);
+                                    }
+
+                                    mMap.addPolyline(polylineOptions);
+
+                                    // Centrar el mapa en la primera ubicación de la ruta
+                                    if (!rutaGps.isEmpty()) {
+                                        LatLng firstLocation = rutaGps.get(0);
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
+                                    }
+                                }
+                            });
+
+                        } else {
+                            // Manejar el caso cuando no se encuentra la lista de coordenadas en el Intent
+                        }
                     } else {
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
                     }
@@ -137,6 +210,20 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    // Método para dibujar las polilíneas en el mapa
+    private void drawPolylineOnMap(ArrayList<LatLng> rutaGpsLatLng) {
+        // Agregar las polilíneas al mapa
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.color(Color.BLUE);
+        polylineOptions.width(5);
+
+        for (LatLng point : rutaGpsLatLng) {
+            polylineOptions.add(point);
+        }
+
+        mMap.addPolyline(polylineOptions);
     }
 
 }
