@@ -137,7 +137,11 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         currentActivityDocument = document.getReference();
                         Map<String, Object> activity = document.getData();
                         tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
-                        distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
+                        //distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
+                        double distanciaTotal = (double) activity.get("totalDistance");
+                        String distanciaFormateada = String.format("%.2f", distanciaTotal); // Formatea la distancia con dos decimales
+                        distanciaTotalText.setText("Distancia total: " + distanciaFormateada + " km");
+
                         long timeElapsedMs = (long) activity.get("timeElapsed");
                         long hours = TimeUnit.MILLISECONDS.toHours(timeElapsedMs);
                         long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMs) % 60;
