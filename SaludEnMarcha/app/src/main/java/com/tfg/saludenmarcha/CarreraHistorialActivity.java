@@ -156,14 +156,21 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private void showActivityOptions(List<DocumentSnapshot> activityDocuments) {
         // Crear un cuadro de diálogo para que el usuario elija la actividad
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Seleccione una actividad");
+        builder.setTitle("Hay varias actividades ese mismo día. Seleccione una actividad");
 
         // Crear una lista de nombres de actividad para mostrar en el diálogo
         List<String> activityNames = new ArrayList<>();
         for (DocumentSnapshot document : activityDocuments) {
             Map<String, Object> activityData = document.getData();
             if (activityData != null && activityData.containsKey("activityType")) {
-                activityNames.add((String) activityData.get("activityType"));
+                //activityNames.add((String) activityData.get("activityType"));
+                String activityType = (String) activityData.get("activityType");
+                String hour = activityData.get("startHour").toString();
+                String minute = activityData.get("startMinute").toString();
+
+                // Concatenar el nombre de la actividad con la hora y el minuto
+                String activityInfo = activityType + " - " + hour + ":" + minute;
+                activityNames.add(activityInfo);
             }
         }
 
@@ -213,7 +220,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 rutaGps.add(latLng);
             }
 
-            // Dentro del método onCreate() de tu actividad
+            // Inicializar el mapa
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment_historial);
             final Activity activityHistorial = CarreraHistorialActivity.this; // Almacena una referencia a la actividad actual
 
@@ -246,7 +253,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private void drawPolylineOnMap(ArrayList<LatLng> rutaGpsLatLng) {
         // Agregar las polilíneas al mapa
         PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.color(Color.BLUE);
+        polylineOptions.color(Color.RED);
         polylineOptions.width(5);
 
         for (LatLng point : rutaGpsLatLng) {
