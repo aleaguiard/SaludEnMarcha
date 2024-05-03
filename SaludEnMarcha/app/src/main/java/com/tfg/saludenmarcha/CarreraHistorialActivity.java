@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -28,6 +29,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -49,6 +52,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private TextView horaFinText;
     private Button datePickerButton;
     private Button volverButton;
+    private Button deleteActivityButton;
+
     private DocumentReference currentMealDocument;
 
     // Declaración de variables para Firestore
@@ -73,6 +78,9 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         horaFinText = findViewById(R.id.endTimeHistorial);
         datePickerButton = findViewById(R.id.date_picker_buttonHistorial);
         volverButton = findViewById(R.id.volverHistorialButton);
+        deleteActivityButton = findViewById(R.id.deleteActivityButton);
+        deleteActivityButton.setVisibility(View.GONE);
+        //deleteActivityButton.setVisibility(View.VISIBLE);
 
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
@@ -101,7 +109,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-
+        //Boton volver
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +122,48 @@ public class CarreraHistorialActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        //Boton para borrar la actividad
+        // Configurar OnClickListener para el botón de eliminación de actividad
+        deleteActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Verificar si hay una actividad seleccionada actualmente para eliminar
+                if (currentActivityDocument != null) {
+                    // Eliminar la actividad de Firebase
+                    currentActivityDocument.delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // La actividad se eliminó correctamente
+                                    Toast.makeText(CarreraHistorialActivity.this, "La actividad se ha eliminado correctamente", Toast.LENGTH_SHORT).show();
+                                    // Limpiar los TextViews después de eliminar la actividad
+                                    tipoActividadText.setText("Tipo de actividad: ");
+                                    distanciaTotalText.setText("Distancia total: ");
+                                    tiempoText.setText("Tiempo transcurrido: ");
+                                    horaInicioText.setText("Hora de inicio: ");
+                                    horaFinText.setText("Hora de finalización: ");
+                                    // Limpiar el mapa después de eliminar la actividad
+                                    if (mMap != null) {
+                                        mMap.clear();
+                                    }
+                                    // Ocultar el botón de eliminación de actividad
+                                    deleteActivityButton.setVisibility(View.GONE);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Error al eliminar la actividad
+                                    Toast.makeText(CarreraHistorialActivity.this, "Error al eliminar la actividad: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    // No hay actividad seleccionada para eliminar
+                    Toast.makeText(CarreraHistorialActivity.this, "No hay actividad seleccionada para eliminar", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
@@ -191,6 +241,12 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     }
 
     private void showActivity(DocumentSnapshot document) {
+        // Limpiar el mapa antes de mostrar la nueva actividad
+        if (mMap != null) {
+            mMap.clear();
+        }
+        // Mostrar el botón de eliminación de actividad
+        deleteActivityButton.setVisibility(View.VISIBLE);
         // Mostrar los detalles de la actividad seleccionada
         currentActivityDocument = document.getReference();
         Map<String, Object> activity = document.getData();
