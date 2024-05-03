@@ -195,6 +195,11 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             showActivityOptions(documents);
                         }
                     } else {
+                        if (mMap != null) {
+                            mMap.clear();
+                        }
+                        //Quitar boton de borrar actividad
+                        deleteActivityButton.setVisibility(View.GONE);
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
                     }
                 })
