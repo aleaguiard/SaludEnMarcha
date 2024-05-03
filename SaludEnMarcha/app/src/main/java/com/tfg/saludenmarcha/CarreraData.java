@@ -1,11 +1,14 @@
 package com.tfg.saludenmarcha;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.io.Serializable;
 
 // Clase CarreraData para almacenar los datos de la carrera
 import java.io.Serializable;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CarreraData implements Serializable {
     private String raceId;
@@ -19,6 +22,7 @@ public class CarreraData implements Serializable {
     private int endHour;
     private int endMinute;
     private String activityType;
+    private List<GeoPoint> routeGps;
 
     // Constructor de la clase
     public CarreraData() {
@@ -90,5 +94,11 @@ public class CarreraData implements Serializable {
     }
     public void setActivityType(String activityType) {
         this.activityType = activityType;
+    }
+    public List<GeoPoint> getRouteGps() {
+        return routeGps;
+    }
+    public void setRouteGps(List<GeoPoint> routeGps) {
+        this.routeGps = routeGps;
     }
 }

@@ -2,7 +2,9 @@ package com.tfg.saludenmarcha;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -133,60 +135,14 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                        currentActivityDocument = document.getReference();
-                        Map<String, Object> activity = document.getData();
-                        tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
-                        //distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
-                        double distanciaTotal = (double) activity.get("totalDistance");
-                        String distanciaFormateada = String.format("%.2f", distanciaTotal); // Formatea la distancia con dos decimales
-                        distanciaTotalText.setText("Distancia total: " + distanciaFormateada + " km");
-
-                        long timeElapsedMs = (long) activity.get("timeElapsed");
-                        long hours = TimeUnit.MILLISECONDS.toHours(timeElapsedMs);
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMs) % 60;
-                        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeElapsedMs) % 60;
-                        tiempoText.setText(String.format("Tiempo transcurrido: %02d:%02d:%02d", hours, minutes, seconds));
-                        horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + ((Number) activity.get("startMinute")).intValue());
-                        horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
-
-                        // Verificar si la actividad tiene coordenadas GPS
-                        if (activity.containsKey("routeGps")) {
-                            // Obtener la lista de GeoPoints
-                            geoPoints = (List<GeoPoint>) activity.get("routeGps");
-
-                            // Convertir los GeoPoints a LatLng
-                            rutaGps = new ArrayList<>();
-                            for (GeoPoint geoPoint : geoPoints) {
-                                LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                                rutaGps.add(latLng);
-                            }
-
-                            // Dentro del método onCreate() de tu actividad
-                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment_historial);
-                            final Activity activityHistorial = CarreraHistorialActivity.this; // Almacena una referencia a la actividad actual
-
-                            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                @Override
-                                public void onMapReady(GoogleMap googleMap) {
-                                    mMap = googleMap;
-                                    if (ActivityCompat.checkSelfPermission(activityHistorial, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activityHistorial, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                        return;
-                                    }
-                                    mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
-                                    mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
-
-                                    // Dibujar las polilíneas en el mapa
-                                    drawPolylineOnMap(rutaGps);
-                                    if (!rutaGps.isEmpty()) {
-                                        LatLng firstLocation = rutaGps.get(0);
-                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
-                                    }
-                                }
-                            });
-
+                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                        if (documents.size() == 1) {
+                            // Solo hay una actividad, mostrarla
+                            DocumentSnapshot document = documents.get(0);
+                            showActivity(document);
                         } else {
-                            Toast.makeText(CarreraHistorialActivity.this, "La actividad no contiene coordenadas GPS", Toast.LENGTH_SHORT).show();
+                            // Hay más de una actividad, permitir al usuario elegir
+                            showActivityOptions(documents);
                         }
                     } else {
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
@@ -195,6 +151,94 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
+    }
+
+    private void showActivityOptions(List<DocumentSnapshot> activityDocuments) {
+        // Crear un cuadro de diálogo para que el usuario elija la actividad
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Seleccione una actividad");
+
+        // Crear una lista de nombres de actividad para mostrar en el diálogo
+        List<String> activityNames = new ArrayList<>();
+        for (DocumentSnapshot document : activityDocuments) {
+            Map<String, Object> activityData = document.getData();
+            if (activityData != null && activityData.containsKey("activityType")) {
+                activityNames.add((String) activityData.get("activityType"));
+            }
+        }
+
+        // Convertir la lista a un array de cadenas
+        final String[] activityNamesArray = activityNames.toArray(new String[0]);
+
+        // Configurar el cuadro de diálogo para mostrar la lista de nombres de actividad y manejar la selección del usuario
+        builder.setItems(activityNamesArray, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DocumentSnapshot selectedActivityDocument = activityDocuments.get(which);
+                showActivity(selectedActivityDocument);
+            }
+        });
+
+        // Mostrar el cuadro de diálogo
+        builder.show();
+    }
+
+    private void showActivity(DocumentSnapshot document) {
+        // Mostrar los detalles de la actividad seleccionada
+        currentActivityDocument = document.getReference();
+        Map<String, Object> activity = document.getData();
+        tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
+        //distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
+        double distanciaTotal = (double) activity.get("totalDistance");
+        String distanciaFormateada = String.format("%.2f", distanciaTotal); // Formatea la distancia con dos decimales
+        distanciaTotalText.setText("Distancia total: " + distanciaFormateada + " km");
+
+        long timeElapsedMs = (long) activity.get("timeElapsed");
+        long hours = TimeUnit.MILLISECONDS.toHours(timeElapsedMs);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMs) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeElapsedMs) % 60;
+        tiempoText.setText(String.format("Tiempo transcurrido: %02d:%02d:%02d", hours, minutes, seconds));
+        horaInicioText.setText("Hora de inicio: " + activity.get("startHour") + ":" + ((Number) activity.get("startMinute")).intValue());
+        horaFinText.setText("Hora de finalización: " + activity.get("endHour") + ":" + ((Number) activity.get("endMinute")).intValue());
+
+        // Verificar si la actividad tiene coordenadas GPS
+        if (activity.containsKey("routeGps")) {
+            // Obtener la lista de GeoPoints
+            geoPoints = (List<GeoPoint>) activity.get("routeGps");
+
+            // Convertir los GeoPoints a LatLng
+            rutaGps = new ArrayList<>();
+            for (GeoPoint geoPoint : geoPoints) {
+                LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
+                rutaGps.add(latLng);
+            }
+
+            // Dentro del método onCreate() de tu actividad
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment_historial);
+            final Activity activityHistorial = CarreraHistorialActivity.this; // Almacena una referencia a la actividad actual
+
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    mMap = googleMap;
+                    if (ActivityCompat.checkSelfPermission(activityHistorial, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activityHistorial, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
+                    mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
+
+                    // Dibujar las polilíneas en el mapa
+                    drawPolylineOnMap(rutaGps);
+                    if (!rutaGps.isEmpty()) {
+                        LatLng firstLocation = rutaGps.get(0);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
+                    }
+                }
+            });
+
+        } else {
+            Toast.makeText(CarreraHistorialActivity.this, "La actividad no contiene coordenadas GPS", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ import java.util.UUID;
 public class TrackingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     private FusedLocationProviderClient fusedLocationClient;
     private PolylineOptions polylineOptions;
     private boolean isTracking = false;
@@ -81,6 +81,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     DocumentReference raceRef;
     String activityType;
     CarreraData carreraData;
+    List<GeoPoint> geoPoints;
 
 
     private static final String TAG = "TrackingActivity";
@@ -119,25 +120,18 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
             // Crear un nuevo objeto CarreraData para almacenar los datos de la carrera
             carreraData = new CarreraData();
-
             //
             db = FirebaseFirestore.getInstance();
             mAuth = FirebaseAuth.getInstance();
-            //***NOMBRE DE LA COLECCION QUE LE TENGO QUE PONER A LOS PUNTOS DE REFERENCIA PARA GUARDARLOS EN FIREBASE PARA LAS RUTAS
-            pathPointsRef = db.collection("pathPoints");
 
             //**************
 
             // Genera un ID único para la carrera
             raceId = UUID.randomUUID().toString();
-            // Crea una referencia al nuevo documento para esta carrera
-            raceRef = db.collection("pathPoints").document(raceId);
-
             // ****************************
 
             Intent intent = getIntent();
             activityType = intent.getStringExtra("tipoActividad");
-
 
             // Crea una lista de LatLngData para almacenar los pathPoints
             pathPointsData = new ArrayList<>();
@@ -210,7 +204,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
-            //BOTON PARAR
             //BOTON PARAR
             stopButton = findViewById(R.id.stopButton);
             stopButton.setOnClickListener(new View.OnClickListener() {
@@ -333,45 +326,6 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
     }
-
-
-    //guardar todos los pathPoints en un solo documento, guarda cada LatLngData como un documento individual en una colección cuyo nombre es el raceId
- /*   private void locationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-
-        // Guarda los pathPoints en Firebase
-        for (LatLng point : pathPoints) {
-            pathPointsData.add(new LatLngData(point.latitude, point.longitude));
-        }
-
-        // Obtén la fecha actual
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-
-        // Crea un nuevo objeto para almacenar en el documento
-        Map<String, Object> raceData = new HashMap<>();
-        raceData.put("pathPoints", pathPointsData);
-        raceData.put("day", day);
-        raceData.put("month", month);
-        raceData.put("year", year);
-
-        // Guarda los pathPoints en el nuevo documento
-        raceRef.set(raceData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot escrito correctamente!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error escribiendo el documento", e);
-                    }
-                });
-    }*/
 
 
 }
