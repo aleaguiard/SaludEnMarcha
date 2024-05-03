@@ -65,12 +65,6 @@
             android:name=".AlimentacionActivity"
             android:exported="false" />
         <activity
-            android:name=".ActividadTerminada2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".ActividadTerminadaActivity"
-            android:exported="true" />
-        <activity
             android:name=".RecoveryMail"
             android:exported="false" />
         <activity
