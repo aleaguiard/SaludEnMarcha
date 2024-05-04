@@ -1,16 +1,12 @@
 package com.tfg.saludenmarcha;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,7 +52,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * DetallesCarreraActivity es una actividad que muestra los detalles de una carrera específica.
+ * También permite guardar los detalles de la carrera en la base de datos de Firebase Firestore.
+ */
 public class DetallesCarreraActivity extends AppCompatActivity {
+    // Variables de la interfaz de usuario
     private TextView activityTypeTextView;
     private TextView totalDistanceTextView;
     private TextView timeElapsedTextView;
@@ -65,130 +66,173 @@ public class DetallesCarreraActivity extends AppCompatActivity {
     private TextView dateTextView;
     private Button volverButton;
     private Button guardarButton;
-    CarreraData carreraData;
+
+    // Variables para almacenar los datos de la carrera
+    private CarreraData carreraData;
+    private ArrayList<LatLng> rutaGps;
+
+    // Variables para la autenticación y la base de datos de Firebase
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseFirestore miBaseDatos;
+    private String idUser;
 
-    //Variables para altas y consultas de firebase
-    FirebaseFirestore db;
-    FirebaseFirestore miBaseDatos;
-    String idUser;
-    double totalDistance;
-    long timeElapsed;
-    int startHour;
-    int startMinute;
-    int endHour;
-    int endMinute;
-    int day;
-    int month;
-    int year;
+    // Variables para almacenar los detalles de la carrera
+    private double totalDistance;
+    private long timeElapsed;
+    private int startHour;
+    private int startMinute;
+    private int endHour;
+    private int endMinute;
+    private int day;
+    private int month;
+    private int year;
+
+    // Variables para el mapa de Google
     private GoogleMap mMap;
-    private long nextId;
-    long idActividad;
-    Long highestId;
 
-    ArrayList<LatLng> rutaGps;
+    // Variables para el ID de la actividad
+    private long nextId;
+    private long idActividad;
+    private Long highestId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_carrera);
-        volverButton = findViewById(R.id.volverDetallesButton);
-        guardarButton = findViewById(R.id.GuardarDetallesButton);
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
-        //Inicializo variables para altas y consultas
-        db = FirebaseFirestore.getInstance();
-        idUser = mAuth.getCurrentUser().getUid();
-        miBaseDatos = FirebaseFirestore.getInstance();
+        // Inicializar las variables de la interfaz de usuario
+        initUI();
 
-        //*****************************
-        // Obtiene una referencia a la colección 'activities'
-        CollectionReference activitiesRef = db.collection("activities");
+        // Inicializar Firebase Auth y Firestore
+        initFirebase();
 
-        // Realiza la consulta para obtener el ID más alto
+        // Obtener el ID más alto de la colección 'activities'
         obtenerIdMasAltoActividad();
 
-        // Recuperar los datos del Intent
+        // Recuperar los datos de la carrera del Intent
+        recuperarDatosCarrera();
+
+        // Configurar los botones
+        configurarBotones();
+    }
+
+    /**
+     * Inicializa las variables de la interfaz de usuario.
+     */
+    private void initUI() {
+        activityTypeTextView = findViewById(R.id.activityTypeTextView);
+        totalDistanceTextView = findViewById(R.id.totalDistanceTextView);
+        timeElapsedTextView = findViewById(R.id.timeElapsedTextView);
+        startTimeTextView = findViewById(R.id.startTimeTextView);
+        endTimeTextView = findViewById(R.id.endTimeTextView);
+        dateTextView = findViewById(R.id.dateTextView);
+        volverButton = findViewById(R.id.volverDetallesButton);
+        guardarButton = findViewById(R.id.GuardarDetallesButton);
+    }
+
+    /**
+     * Inicializa Firebase Auth y Firestore.
+     */
+    private void initFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        miBaseDatos = FirebaseFirestore.getInstance();
+        idUser = mAuth.getCurrentUser().getUid();
+    }
+
+    /**
+     * Recupera los datos de la carrera del Intent.
+     */
+    private void recuperarDatosCarrera() {
         if (getIntent().hasExtra("carreraData")) {
             carreraData = (CarreraData) getIntent().getSerializableExtra("carreraData");
             rutaGps = getIntent().getParcelableArrayListExtra("ruta_gps");
 
             // Mostrar los datos en la interfaz de usuario
-            activityTypeTextView = findViewById(R.id.activityTypeTextView);
-            totalDistanceTextView = findViewById(R.id.totalDistanceTextView);
-            timeElapsedTextView = findViewById(R.id.timeElapsedTextView);
-            startTimeTextView = findViewById(R.id.startTimeTextView);
-            endTimeTextView = findViewById(R.id.endTimeTextView);
-            dateTextView = findViewById(R.id.dateTextView);
+            mostrarDatosCarrera();
 
             // Mostrar la ruta en el mapa
-            // Verificar si la lista de coordenadas no es nula
-            if (rutaGps != null) {
-                // Dentro del método onCreate() de tu actividad
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
-                final Activity activity = DetallesCarreraActivity.this; // Almacena una referencia a la actividad actual
+            mostrarRutaMapa();
+        }
+    }
 
-                mapFragment.getMapAsync(new OnMapReadyCallback() {
-                    @Override
-                    public void onMapReady(GoogleMap googleMap) {
-                        mMap = googleMap;
-                        if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        mMap.setMyLocationEnabled(true); // Habilitar la capa de mi ubicación
-                        mMap.getUiSettings().setZoomControlsEnabled(true); // Habilitar controles de zoom
+    /**
+     * Muestra los datos de la carrera en la interfaz de usuario.
+     */
+    private void mostrarDatosCarrera() {
+        if (carreraData != null) {
+            activityTypeTextView.setText(carreraData.getActivityType());
 
-                        // Agregar las polilíneas al mapa
-                        PolylineOptions polylineOptions = new PolylineOptions();
-                        polylineOptions.color(Color.RED);
-                        polylineOptions.width(5);
+            totalDistance = carreraData.getTotalDistance();
+            totalDistanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", totalDistance));
 
-                        for (LatLng point : rutaGps) {
-                            polylineOptions.add(point);
-                        }
+            timeElapsed = carreraData.getTimeElapsed();
+            timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
 
-                        mMap.addPolyline(polylineOptions);
+            startHour = carreraData.getStartHour();
+            startMinute = carreraData.getStartMinute();
+            startTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", startHour, startMinute));
 
-                        // Centrar el mapa en la primera ubicación de la ruta
-                        if (!rutaGps.isEmpty()) {
-                            LatLng firstLocation = rutaGps.get(0);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
-                        }
+            endHour = carreraData.getEndHour();
+            endMinute = carreraData.getEndMinute();
+            endTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", endHour, endMinute));
+
+            day = carreraData.getDay();
+            month = carreraData.getMonth();
+            year = carreraData.getYear();
+            dateTextView.setText(String.format(Locale.getDefault(), "%02d/%02d/%d", day, month, year));
+        }
+    }
+
+    /**
+     * Muestra la ruta de la carrera en el mapa.
+     */
+    private void mostrarRutaMapa() {
+        if (rutaGps != null) {
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+            final Activity activity = DetallesCarreraActivity.this;
+
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    mMap = googleMap;
+                    if (ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
                     }
-                });
+                    mMap.setMyLocationEnabled(true);
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
 
-            } else {
-                // Manejar el caso cuando no se encuentra la lista de coordenadas en el Intent
-            }
+                    agregarPolilineasMapa();
 
-            // Establecer el texto en los TextView
-            if (carreraData != null) {
-                activityTypeTextView.setText(carreraData.getActivityType());
+                    if (!rutaGps.isEmpty()) {
+                        LatLng firstLocation = rutaGps.get(0);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 15));
+                    }
+                }
+            });
+        }
+    }
 
-                totalDistance = carreraData.getTotalDistance();
-                totalDistanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", totalDistance));
+    /**
+     * Agrega las polilíneas al mapa.
+     */
+    private void agregarPolilineasMapa() {
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.color(Color.RED);
+        polylineOptions.width(5);
 
-                timeElapsed = carreraData.getTimeElapsed();
-                timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
-
-                startHour = carreraData.getStartHour();
-                startMinute = carreraData.getStartMinute();
-                startTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", startHour, startMinute));
-
-                endHour = carreraData.getEndHour();
-                endMinute = carreraData.getEndMinute();
-                endTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", endHour, endMinute));
-
-                day = carreraData.getDay();
-                month = carreraData.getMonth();
-                year = carreraData.getYear();
-                dateTextView.setText(String.format(Locale.getDefault(), "%02d/%02d/%d", day, month, year));
-            } else {
-                // Manejar el caso cuando no se encuentra el objeto CarreraData en el Intent
-            }
+        for (LatLng point : rutaGps) {
+            polylineOptions.add(point);
         }
 
+        mMap.addPolyline(polylineOptions);
+    }
+
+    /**
+     * Configura los botones de la interfaz de usuario.
+     */
+    private void configurarBotones() {
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,92 +244,96 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         guardarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Crear un id para la actividad
-                //long idActividad = obtenerIdMasAltoActividad();
-                // Crear un nuevo objeto para almacenar en el documento
-                Map<String, Object> raceData = new HashMap<>();
-                raceData.put("idUser", idUser);
-                raceData.put("id", idActividad);
-                raceData.put("timeElapsed", carreraData.getTimeElapsed());
-                raceData.put("totalDistance", carreraData.getTotalDistance()); // Guarda la distancia total
-                raceData.put("day", carreraData.getDay());
-                raceData.put("month", carreraData.getMonth());
-                raceData.put("year", carreraData.getYear());
-                raceData.put("startHour", carreraData.getStartHour());
-                raceData.put("startMinute", carreraData.getStartMinute());
-                raceData.put("endHour", carreraData.getEndHour()); // Guarda la hora de finalización
-                raceData.put("endMinute", carreraData.getEndMinute()); // Guarda el minuto de finalización
-                raceData.put("activityType", carreraData.getActivityType()); // Guarda el tipo de actividad
-
-                // Convertir las coordenadas de rutaGps a GeoPoints
-                ArrayList<GeoPoint> geoPoints = new ArrayList<>();
-                if (rutaGps != null) {
-                    for (LatLng latLng : rutaGps) {
-                        GeoPoint geoPoint = new GeoPoint(latLng.latitude, latLng.longitude);
-                        geoPoints.add(geoPoint);
-                    }
-                }
-                // Guardar la lista de GeoPoints en Firebase Firestore.
-                raceData.put("routeGps", geoPoints);
-
-                // Guardar los datos en la colección "actividades"
-                db.collection("activities").add(raceData)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(DetallesCarreraActivity.this, "Actividad Guardada Correctamente", Toast.LENGTH_LONG).show();
-                                //resetear los valores
-                                activityTypeTextView.setText("");
-                                totalDistanceTextView.setText("");
-                                timeElapsedTextView.setText("");
-                                startTimeTextView.setText("");
-                                endTimeTextView.setText("");
-                                dateTextView.setText("");
-                                // Cambiar a MenuActivity después de que los datos se hayan guardado con éxito
-                                Intent intent = new Intent(DetallesCarreraActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(DetallesCarreraActivity.this, "Error al guardar la actividad", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                guardarDatosCarrera();
             }
         });
-
     }
-    //Metodo para obtener el id más alto de la colección 'activities'
-    // y asignar el siguiente id a la nueva actividad
-    // solo de usuario que está logeado
+
+    /**
+     * Guarda los datos de la carrera en la base de datos de Firebase Firestore.
+     */
+    private void guardarDatosCarrera() {
+        Map<String, Object> raceData = new HashMap<>();
+        raceData.put("idUser", idUser);
+        raceData.put("id", idActividad);
+        raceData.put("timeElapsed", carreraData.getTimeElapsed());
+        raceData.put("totalDistance", carreraData.getTotalDistance());
+        raceData.put("day", carreraData.getDay());
+        raceData.put("month", carreraData.getMonth());
+        raceData.put("year", carreraData.getYear());
+        raceData.put("startHour", carreraData.getStartHour());
+        raceData.put("startMinute", carreraData.getStartMinute());
+        raceData.put("endHour", carreraData.getEndHour());
+        raceData.put("endMinute", carreraData.getEndMinute());
+        raceData.put("activityType", carreraData.getActivityType());
+
+        ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+        if (rutaGps != null) {
+            for (LatLng latLng : rutaGps) {
+                GeoPoint geoPoint = new GeoPoint(latLng.latitude, latLng.longitude);
+                geoPoints.add(geoPoint);
+            }
+        }
+        raceData.put("routeGps", geoPoints);
+
+        db.collection("activities").add(raceData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(DetallesCarreraActivity.this, "Actividad Guardada Correctamente", Toast.LENGTH_LONG).show();
+                        resetearValores();
+                        Intent intent = new Intent(DetallesCarreraActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(DetallesCarreraActivity.this, "Error al guardar la actividad", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    /**
+     * Resetea los valores de la interfaz de usuario.
+     */
+    private void resetearValores() {
+        activityTypeTextView.setText("");
+        totalDistanceTextView.setText("");
+        timeElapsedTextView.setText("");
+        startTimeTextView.setText("");
+        endTimeTextView.setText("");
+        dateTextView.setText("");
+    }
+
+    /**
+     * Obtiene el ID más alto de la colección 'activities' y asigna el siguiente ID a la nueva actividad.
+     * Solo para el usuario que está logeado.
+     */
     public void obtenerIdMasAltoActividad() {
         miBaseDatos.collection("Tareas")
-                .whereEqualTo("idUser", idUser) //Solo las tareas del usuario logeado
+                .whereEqualTo("idUser", idUser)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        if (e != null){
+                        if (e != null) {
                             return;
                         }
-                        // Obtiene una referencia a la colección 'activities'
                         CollectionReference activitiesRef = db.collection("activities");
-
-                        // Realiza la consulta para obtener el ID más alto
                         Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
                         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    if (!task.getResult().isEmpty()) { // Verifica que el resultado no esté vacío
-                                        idActividad = 0; // Define idActividad inicialmente
+                                    if (!task.getResult().isEmpty()) {
+                                        idActividad = 0;
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            if (document.contains("id")) { // Verifica que el documento contenga el campo 'id'
+                                            if (document.contains("id")) {
                                                 long highestId = document.getLong("id");
                                                 if (highestId > Integer.MAX_VALUE) {
                                                     System.out.println("El ID excede el máximo valor para un int");
                                                 } else {
-                                                    idActividad = (int) highestId + 1; // Conversión a int y incremento
+                                                    idActividad = (int) highestId + 1;
                                                     System.out.println("El ID de la próxima actividad será: " + idActividad);
                                                 }
                                             } else {
@@ -300,15 +348,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
-
                     }
                 });
-
     }
-
-
-
 }
-
-
