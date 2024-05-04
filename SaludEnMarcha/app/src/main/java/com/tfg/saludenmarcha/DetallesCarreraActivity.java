@@ -22,13 +22,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +54,7 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class DetallesCarreraActivity extends AppCompatActivity {
     private TextView activityTypeTextView;
@@ -60,6 +70,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
 
     //Variables para altas y consultas de firebase
     FirebaseFirestore db;
+    FirebaseFirestore miBaseDatos;
     String idUser;
     double totalDistance;
     long timeElapsed;
@@ -71,6 +82,9 @@ public class DetallesCarreraActivity extends AppCompatActivity {
     int month;
     int year;
     private GoogleMap mMap;
+    private long nextId;
+    long idActividad;
+    Long highestId;
 
     ArrayList<LatLng> rutaGps;
 
@@ -86,7 +100,42 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         //Inicializo variables para altas y consultas
         db = FirebaseFirestore.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
+        miBaseDatos = FirebaseFirestore.getInstance();
 
+        //*****************************
+        // Obtiene una referencia a la colección 'activities'
+        CollectionReference activitiesRef = db.collection("activities");
+
+        // Realiza la consulta para obtener el ID más alto
+        Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (!task.getResult().isEmpty()) { // Verifica que el resultado no esté vacío
+                        idActividad = 0; // Define idActividad inicialmente
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.contains("id")) { // Verifica que el documento contenga el campo 'id'
+                                long highestId = document.getLong("id");
+                                if (highestId > Integer.MAX_VALUE) {
+                                    System.out.println("El ID excede el máximo valor para un int");
+                                } else {
+                                    idActividad = (int) highestId + 1; // Conversión a int y incremento
+                                    System.out.println("El ID de la próxima actividad será: " + idActividad);
+                                }
+                            } else {
+                                System.out.println("Documento no contiene el campo 'id'.");
+                            }
+                        }
+                    } else {
+                        System.out.println("No se encontraron documentos.");
+                    }
+                } else {
+                    System.out.println("Error obteniendo documentos: " + task.getException());
+                }
+            }
+        });
+        //*****************************
 
         // Recuperar los datos del Intent
         if (getIntent().hasExtra("carreraData")) {
@@ -176,13 +225,15 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             }
         });
 
-       guardarButton.setOnClickListener(new View.OnClickListener() {
+        guardarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //Crear un id para la actividad
+                //long idActividad = obtenerIdMasAltoActividad();
                 // Crear un nuevo objeto para almacenar en el documento
                 Map<String, Object> raceData = new HashMap<>();
                 raceData.put("idUser", idUser);
+                raceData.put("id", idActividad);
                 raceData.put("timeElapsed", carreraData.getTimeElapsed());
                 raceData.put("totalDistance", carreraData.getTotalDistance()); // Guarda la distancia total
                 raceData.put("day", carreraData.getDay());
@@ -231,7 +282,59 @@ public class DetallesCarreraActivity extends AppCompatActivity {
                         });
             }
         });
+
     }
+
+    public void obtenerIdMasAltoActividad() {
+        miBaseDatos.collection("Tareas")
+                .whereEqualTo("idUser", idUser) //Solo las tareas del usuario logeado
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null){
+                            return;
+                        }
+                        // Obtiene una referencia a la colección 'activities'
+                        CollectionReference activitiesRef = db.collection("activities");
+
+                        // Realiza la consulta para obtener el ID más alto
+                        Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
+                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) { // Verifica que el resultado no esté vacío
+                                        idActividad = 0; // Define idActividad inicialmente
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document.contains("id")) { // Verifica que el documento contenga el campo 'id'
+                                                long highestId = document.getLong("id");
+                                                if (highestId > Integer.MAX_VALUE) {
+                                                    System.out.println("El ID excede el máximo valor para un int");
+                                                } else {
+                                                    idActividad = (int) highestId + 1; // Conversión a int y incremento
+                                                    System.out.println("El ID de la próxima actividad será: " + idActividad);
+                                                }
+                                            } else {
+                                                System.out.println("Documento no contiene el campo 'id'.");
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("No se encontraron documentos.");
+                                    }
+                                } else {
+                                    System.out.println("Error obteniendo documentos: " + task.getException());
+                                }
+                            }
+                        });
+
+
+                    }
+                });
+
+    }
+
+
+
 }
 
 
