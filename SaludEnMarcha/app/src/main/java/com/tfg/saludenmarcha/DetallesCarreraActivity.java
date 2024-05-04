@@ -107,35 +107,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         CollectionReference activitiesRef = db.collection("activities");
 
         // Realiza la consulta para obtener el ID más alto
-        Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (!task.getResult().isEmpty()) { // Verifica que el resultado no esté vacío
-                        idActividad = 0; // Define idActividad inicialmente
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.contains("id")) { // Verifica que el documento contenga el campo 'id'
-                                long highestId = document.getLong("id");
-                                if (highestId > Integer.MAX_VALUE) {
-                                    System.out.println("El ID excede el máximo valor para un int");
-                                } else {
-                                    idActividad = (int) highestId + 1; // Conversión a int y incremento
-                                    System.out.println("El ID de la próxima actividad será: " + idActividad);
-                                }
-                            } else {
-                                System.out.println("Documento no contiene el campo 'id'.");
-                            }
-                        }
-                    } else {
-                        System.out.println("No se encontraron documentos.");
-                    }
-                } else {
-                    System.out.println("Error obteniendo documentos: " + task.getException());
-                }
-            }
-        });
-        //*****************************
+        obtenerIdMasAltoActividad();
 
         // Recuperar los datos del Intent
         if (getIntent().hasExtra("carreraData")) {
@@ -284,7 +256,9 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         });
 
     }
-
+    //Metodo para obtener el id más alto de la colección 'activities'
+    // y asignar el siguiente id a la nueva actividad
+    // solo de usuario que está logeado
     public void obtenerIdMasAltoActividad() {
         miBaseDatos.collection("Tareas")
                 .whereEqualTo("idUser", idUser) //Solo las tareas del usuario logeado
