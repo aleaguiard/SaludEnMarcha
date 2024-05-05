@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -320,17 +321,28 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     private void pauseLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permiso concedido
+            if (grantResults.length > 0 && allPermissionsGranted(grantResults)) {
+                // Todos los permisos han sido concedidos, recargar el Activity
+                finish(); // Finaliza el Activity actual
+                startActivity(getIntent()); // Inicia una nueva instancia del mismo Activity
             } else {
-                // Permiso denegado
+                // Manejar el caso donde los permisos no fueron concedidos
+                Toast.makeText(this, "Los permisos son necesarios para el funcionamiento de la app.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private boolean allPermissionsGranted(int[] grantResults) {
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
