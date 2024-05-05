@@ -151,8 +151,19 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             totalDistance = carreraData.getTotalDistance();
             totalDistanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", totalDistance));
 
-            timeElapsed = carreraData.getTimeElapsed();
-            timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
+            //timeElapsed = carreraData.getTimeElapsed();
+            //timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
+            // Obtiene el tiempo en milisegundos
+            long timeElapsed = carreraData.getTimeElapsed();
+
+            // Calcula horas, minutos y segundos
+            int hours = (int) (timeElapsed / 3600000);
+            int minutes = (int) ((timeElapsed % 3600000) / 60000);
+            int seconds = (int) ((timeElapsed % 60000) / 1000);
+
+            // Actualiza el TextView con el tiempo formateado
+            timeElapsedTextView.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
+
 
             startHour = carreraData.getStartHour();
             startMinute = carreraData.getStartMinute();
