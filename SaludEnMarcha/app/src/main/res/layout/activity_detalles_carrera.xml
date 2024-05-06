@@ -14,7 +14,9 @@
         android:layout_marginStart="108dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="108dp"
+        android:fontFamily="@font/font_logo"
         android:text="DETALLES DE LA ACTIVIDAD"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +29,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_fragment">
@@ -36,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Tipo de actividad" />
 
         <TextView
@@ -43,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Distancia total" />
 
         <TextView
@@ -50,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Tiempo transcurrido" />
 
         <TextView
@@ -57,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Hora de inicio" />
 
         <TextView
@@ -64,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Hora de finalización" />
 
         <TextView
@@ -71,27 +79,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:fontFamily="@font/font_body"
             tools:text="Fecha" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/volverDetallesButton"
-        android:layout_width="105dp"
-        android:layout_height="55dp"
+        android:layout_width="136dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="144dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue3"
         android:text="@string/botonVolver"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/GuardarDetallesButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/GuardarDetallesButton"
-        android:layout_width="118dp"
-        android:layout_height="54dp"
+        android:layout_width="136dp"
+        android:layout_height="48dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="144dp"
         android:backgroundTint="@color/blue"
         android:text="Guardar"
         app:layout_constraintEnd_toEndOf="parent"
