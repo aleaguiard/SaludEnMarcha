@@ -24,21 +24,25 @@
         android:id="@+id/textoHistorialActividad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginTop="88dp"
+        android:fontFamily="@font/font_logo"
+        android:textSize="24dp"
+        android:gravity="center"
         android:text="Resumen actividad del día seleccionado: "
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="30dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="144dp"
-        android:layout_marginStart="12dp"
-
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_picker_buttonHistorial">
 
@@ -104,6 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:text="@string/botonVolver"
+        android:backgroundTint="@color/blue3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
