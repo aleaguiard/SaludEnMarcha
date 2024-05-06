@@ -7,11 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".EmergencyActivity">
 
+    <TextView
+        android:id="@+id/textEmergencyInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Solo usar en caso de emergencia real"
+        android:textStyle="bold"
+        android:textSize="32dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/buttonCall"
         android:layout_width="222dp"
         android:layout_height="91dp"
-        android:backgroundTint="#EA122C"
+        android:backgroundTint="@color/red"
         android:text="Llamar 112"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +36,7 @@
         android:id="@+id/buttonVolver"
         android:layout_width="128dp"
         android:layout_height="48dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue3"
         android:text="Volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

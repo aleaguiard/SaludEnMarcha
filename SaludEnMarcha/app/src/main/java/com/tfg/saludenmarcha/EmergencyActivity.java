@@ -1,5 +1,7 @@
 package com.tfg.saludenmarcha;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,11 +43,28 @@ public class EmergencyActivity extends AppCompatActivity {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:1234567"));
-                startActivity(intent);
+                showCallConfirmationDialog();
             }
         });
+    }
+    private void showCallConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¿Llamar al 112?")
+                .setMessage("¿Estás seguro de que deseas llamar al servicio de emergencia?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        makeEmergencyCall();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void makeEmergencyCall() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:123456"));
+        startActivity(intent);
     }
 
 }
