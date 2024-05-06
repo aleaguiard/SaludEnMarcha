@@ -44,7 +44,7 @@
     <string name="botonCorrer">Correr</string>
     <string name="botonCiclismo">Ciclismo</string>
     <string name="botonVolver">Volver</string>
-    <string name="tituloMenuActividad">Selecciona deporte</string>
+    <string name="tituloMenuActividad">Selecciona una actividad</string>
     <string name="tituloResumenActividad">Resumen Actividad</string>
 
 </resources>
