@@ -9,10 +9,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="16dp"
-        android:layout_marginTop="100dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <Button
@@ -20,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Seleccionar fecha" />
+            android:text="Seleccionar fecha"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <EditText
@@ -29,44 +33,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Desayuno" />
+            android:background="@color/blue2"
+            android:hint="Desayuno"
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/lunch_input"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Comida" />
+            android:layout_marginTop="20dp"
+            android:background="@color/blue2"
+            android:hint="Comida"
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/dinner_input"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cena" />
+            android:layout_marginTop="20dp"
+            android:background="@color/blue2"
+            android:hint="Cena"
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/save_button"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+            android:layout_width="136dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/blue"
             android:text="Guardar" />
 
         <Button
             android:id="@+id/buttonHistorial"
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/blue"
             android:text="Historial de Alimentación" />
+
         <Button
             android:id="@+id/volverAlimentacionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/botonVolver"
- />
+            android:backgroundTint="@color/blue3"
+            android:text="@string/botonVolver" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

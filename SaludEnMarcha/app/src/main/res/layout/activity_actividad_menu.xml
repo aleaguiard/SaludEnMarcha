@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/buttonVolver"
-        android:backgroundTint="#1E88E5"
+        android:backgroundTint="@color/blue3"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="160dp"
