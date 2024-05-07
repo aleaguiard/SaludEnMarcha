@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    style="SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/buttonHistorial"
-        android:backgroundTint="@color/blue"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="48dp"
-        android:text="Historial"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_historial"
+        android:text="Historial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,14 +25,15 @@
 
     <Button
         android:id="@+id/buttonNutricion"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
-        android:text="Nutrición"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_nutri"
+        android:text="Nutrición"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,14 +41,15 @@
 
     <Button
         android:id="@+id/buttonGlucosa"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
-        android:text="Glucosa"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_glucosa"
+        android:text="Glucosa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,14 +57,15 @@
 
     <Button
         android:id="@+id/buttonResumen"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
-        android:text="Resumen"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_resumen"
+        android:text="Resumen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,14 +73,15 @@
 
     <Button
         android:id="@+id/buttonPeso"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
-        android:backgroundTint="@color/blue"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
-        android:text="Peso"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_peso"
+        android:text="Peso"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,14 +89,15 @@
 
     <Button
         android:id="@+id/buttonMedicacion"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
-        android:text="Medicina"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_medicacion"
+        android:text="Medicina"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,14 +105,15 @@
 
     <Button
         android:id="@+id/buttonEmergencia"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="128dp"
-        android:text="SOS"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_emergencia"
+        android:text="SOS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,14 +121,15 @@
 
     <Button
         android:id="@+id/buttonActividad"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
-        android:backgroundTint="@color/blue"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="128dp"
-        android:text="Actividad"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_actividad"
+        android:text="Actividad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,14 +137,15 @@
 
     <Button
         android:id="@+id/buttonTension"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="136dp"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/blue"
         android:layout_marginEnd="48dp"
-        android:text="PA - FC"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_pulso"
+        android:text="PA - FC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -145,14 +153,15 @@
 
     <Button
         android:id="@+id/buttonCalendario"
-        android:backgroundTint="@color/blue"
+        style="@style/Theme.SaludEnMarcha"
         android:layout_width="137dp"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
-        android:text="Calendario"
+        android:backgroundTint="@color/blue"
         android:drawableLeft="@drawable/ic_calendar"
+        android:text="Calendario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,6 +177,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/app_icon" />
+
+    <ImageButton
+        android:id="@+id/themeBtn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="128dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_theme" />
+
+    <TextView
+        android:id="@+id/themeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/themeBtn" />
     />
 
     <androidx.constraintlayout.widget.Barrier
@@ -185,38 +216,6 @@
         android:layout_height="wrap_content"
         app:barrierDirection="top" />
 
-    <LinearLayout
-        android:layout_width="113dp"
-        android:layout_height="29dp"
-        android:layout_marginBottom="72dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_light_mode" />
-
-        <Switch
-            android:id="@+id/themeSwitch"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:width="24dp"
-            android:scrollbarSize="4dp"
-            android:switchMinWidth="36dp" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_dark_mode" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

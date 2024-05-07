@@ -53,8 +53,6 @@ public class SignUp extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                      //  StyleableToast.makeText(SignUp.this, "Usuario creado", Toast.LENGTH_SHORT,
-                        //       R.style.usuarioRegistrado).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         Intent intent = new Intent(SignUp.this, MainActivity.class);
                         startActivity(intent);
