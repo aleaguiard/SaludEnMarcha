@@ -39,40 +39,48 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Obtener el estado del último tema y aplicarlo antes del oncreate
-        //para evitar delay en el cambio de tema
+        // Configurar el tema antes de llamar a super.onCreate() y setContentView()
         sharedPreferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
         nightMode = sharedPreferences.getBoolean("nightMode", false);
-        editor = sharedPreferences.edit();
-        themeText = findViewById(R.id.themeText);
-
-        // Configuración del tema basada en el estado actual
         if (nightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            themeText.setTextColor(getColor(R.color.white));
-            themeText.setText("Dark Mode");
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            themeText.setTextColor(getColor(R.color.black));
-            themeText.setText("Light Mode");
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Inicializar SharedPreferences y Editor
+        editor = sharedPreferences.edit();
 
+        // Inicializar themeText después de setContentView()
+        themeText = findViewById(R.id.themeText);
+
+        // Obtener el estado actual del modo nocturno
+        nightMode = sharedPreferences.getBoolean("nightMode", false);
+
+        // Configuración del tema basada en el estado actual
+        if (nightMode) {
+            themeText.setTextColor(getColor(R.color.white));
+            themeText.setText("Dark Mode");
+        } else {
+            themeText.setTextColor(getColor(R.color.black));
+            themeText.setText("Light Mode");
+        }
 
         // Configurar el botón de cambio de tema
         themeBtn = findViewById(R.id.themeBtn);
         themeBtn.setOnClickListener(v -> {
-            // Cambiar el estado del modo nocturno
-            nightMode = !nightMode;
+            // Get the current night mode state directly from sharedPreferences
+            boolean currentNightMode = sharedPreferences.getBoolean("nightMode", false);
 
-            // Guardar el estado del modo nocturno en SharedPreferences
-            editor.putBoolean("nightMode", nightMode);
+            // Toggle the night mode state and save it in sharedPreferences
+            editor.putBoolean("nightMode", !currentNightMode);
             editor.apply();
 
-            // Aplicar el nuevo tema según el estado del modo nocturno
-            if (nightMode) {
+            // Apply the new night mode state
+            if (!currentNightMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 themeText.setText("Dark Mode");
                 themeText.setTextColor(getColor(R.color.white));
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 themeText.setTextColor(getColor(R.color.black));
             }
         });
+
 
         // Configuración de inicio de sesión con Google y Firebase Auth
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -102,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Manejar clics en los botones
         setupButtonClick(R.id.buttonActividad, ActividadMenuActivity.class);
-       // setupButtonClick(R.id.buttonPeso, PesoActivity.class);
-       // setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
-       // setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
+        // setupButtonClick(R.id.buttonPeso, PesoActivity.class);
+        // setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
+        // setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
         setupButtonClick(R.id.buttonEmergencia, EmergencyActivity.class);
         setupButtonClick(R.id.buttonHistorial, CarreraHistorialActivity.class);
         setupButtonClick(R.id.buttonNutricion, AlimentacionActivity.class);
