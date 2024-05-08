@@ -63,7 +63,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
     //Botones
     private Button startButton;
     private Button stopButton;
-    private Button pauseButton;
+    private Button pauseButton, stopButtonVolver;
     private Button resumeButton;
 
     private long timeElapsed;
@@ -140,9 +140,13 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             chronometer = findViewById(R.id.chronometer);
 
             pauseButton = findViewById(R.id.pauseButton);
-            //boton pause y resume invisible al principio
+            //boton pause, stop y resume invisible al principio
             pauseButton.setVisibility(View.GONE);
+            stopButton = findViewById(R.id.stopButton);
+            stopButton.setVisibility(View.GONE);
 
+            stopButtonVolver = findViewById(R.id.stopButtonVolver);
+            stopButtonVolver.setVisibility(View.VISIBLE);
             //Boton RESUME
             resumeButton = findViewById(R.id.resumeButton);
             resumeButton.setVisibility(View.GONE);
@@ -160,6 +164,16 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
 
+            // BOTON VOLVER
+            stopButtonVolver.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TrackingActivity.this, ActividadMenuActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
             //Boton PAUSA
             pauseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,6 +185,8 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     //Desaparece el boton de pausa y aparece el de resume
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.VISIBLE);
+                    stopButtonVolver.setVisibility(View.GONE);
+                    stopButton.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -201,13 +217,13 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                         //Desaparece el boton de start y aparece el de pausa
                         startButton.setVisibility(View.GONE);
                         pauseButton.setVisibility(View.VISIBLE);
+                        stopButtonVolver.setVisibility(View.GONE);
+                        stopButton.setVisibility(View.VISIBLE);
                     }
                 }
             });
 
             //BOTON PARAR
-            // TODO: renderizar primero el boton de volver y luego el de parar
-            stopButton = findViewById(R.id.stopButton);
             stopButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,6 +233,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
                     startButton.setVisibility(View.VISIBLE);
                     pauseButton.setVisibility(View.GONE);
                     resumeButton.setVisibility(View.GONE);
+                    stopButtonVolver.setVisibility(View.GONE);
 
                     // Obtén el tiempo transcurrido
                     long timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
