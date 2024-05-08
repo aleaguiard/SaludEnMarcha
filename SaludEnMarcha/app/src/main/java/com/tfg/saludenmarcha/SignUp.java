@@ -18,7 +18,7 @@ public class SignUp extends AppCompatActivity {
     private Button botonCreate;
     private ImageButton botonBack;
     private FirebaseAuth mAuth;
-    private EditText nameText, emailText, passText;
+    private EditText emailText, passText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void inicializarVariables() {
-        nameText = findViewById(R.id.cajaNombreCrear);
         emailText = findViewById(R.id.cajaEmailCrear);
         passText = findViewById(R.id.cajaPasswordCrear);
         botonCreate = findViewById(R.id.botonCrear);
@@ -42,11 +41,10 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void crearUsuario() {
-        String nombre = nameText.getText().toString().trim();
         String email = emailText.getText().toString().trim();
         String password = passText.getText().toString().trim();
 
-        if (camposVacios(nombre, email, password) || !validarFormatoEmail(email) || !tamanoPassword(password)) {
+        if (camposVacios(email, password) || !validarFormatoEmail(email) || !tamanoPassword(password)) {
             return;
         }
 
@@ -65,13 +63,8 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    private boolean camposVacios(String nombre, String email, String password) {
+    private boolean camposVacios(String email, String password) {
         boolean camposVacios = false;
-
-        if (nombre.isEmpty()) {
-            nameText.setError(getString(R.string.campo_obligatorio));
-            camposVacios = true;
-        }
 
         if (email.isEmpty()) {
             emailText.setError(getString(R.string.campo_obligatorio));

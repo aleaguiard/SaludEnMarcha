@@ -16,6 +16,7 @@
         android:fontFamily="@font/font_logo"
         android:text="@string/salud_en_marcha"
         android:textAlignment="center"
+        android:textColor="@color/blue"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,11 +24,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEmail"
+        style="@style/CajaTexto"
         android:layout_width="345dp"
         android:layout_height="57dp"
-        android:layout_marginTop="72dp"
-        android:textColorHint="@color/black"
-        app:boxBackgroundColor="@color/blue2"
+        android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -35,22 +35,22 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cajaEmail"
+            style="@style/CajaTexto"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_body"
-            android:hint="@string/hintEmail"
-            android:textColorHint="@color/blue" />
+            android:hint="@string/hintEmail" />
 
         <requestFocus />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
+        style="@style/CajaTexto"
         android:layout_width="345dp"
         android:layout_height="57dp"
-        android:fontFamily="@font/font_body"
         android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/blue2"
+        android:fontFamily="@font/font_body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
@@ -59,22 +59,21 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cajaPassword"
-            android:fontFamily="@font/font_body"
             android:layout_width="344dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font_body"
             android:hint="@string/hintPassword"
-            android:inputType="textPassword"
-            android:textColorHint="@color/blue" />
+            android:inputType="textPassword" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/botonLogin"
+        style="@style/MyButtonStyle"
         android:layout_width="211dp"
         android:layout_height="61dp"
         android:layout_marginTop="72dp"
-        android:backgroundTint="@color/blue"
         android:fontFamily="@font/font_body"
         android:text="@string/login"
         android:textSize="18sp"
@@ -87,8 +86,8 @@
         android:id="@+id/linearLayoutSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_body"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_body"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,16 +97,16 @@
         <TextView
             android:id="@+id/account"
             android:layout_width="wrap_content"
-            android:fontFamily="@font/font_body"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font_body"
             android:text="@string/account" />
 
         <TextView
-            android:fontFamily="@font/font_body"
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:fontFamily="@font/font_body"
             android:text="@string/sign_up" />
     </LinearLayout>
 
@@ -115,10 +114,10 @@
         android:id="@+id/rememberPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_body"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="32dp"
+        android:fontFamily="@font/font_body"
         android:text="@string/forgot_password"
         app:layout_constraintBottom_toTopOf="@+id/botonLogin"
         app:layout_constraintEnd_toEndOf="parent"
@@ -151,8 +150,8 @@
         android:layout_width="194dp"
         android:layout_height="21dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/font_body"
         android:layout_marginBottom="32dp"
+        android:fontFamily="@font/font_body"
         android:text="@string/or_login_with"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutSocial"

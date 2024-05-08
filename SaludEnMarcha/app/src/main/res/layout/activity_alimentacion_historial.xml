@@ -21,13 +21,13 @@
         app:srcCompat="@drawable/app_icon" />
 
     <Button
+        style="@style/MyButtonStyle"
         android:id="@+id/date_picker_button"
-        android:layout_width="128dp"
-        android:layout_height="56dp"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="136dp"
         android:layout_marginEnd="50dp"
-        android:backgroundTint="@color/blue"
         android:text="Seleccionar fecha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:text="@string/botonVolver"
-        android:backgroundTint="@color/blue3"
+        style="@style/MyButtonStyleVolver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dinner_text" />

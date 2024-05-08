@@ -5,8 +5,16 @@
         <item name="android:fontFamily">@font/font_body</item>
     </style>
 
-    <style name="MyButtonStyle" parent="Theme.Material3.Light">
+    <style name="MyButtonStyle" parent="Theme.Material3.DayNight">
         <item name="android:backgroundTint">@color/blue</item>
+    </style>
+
+    <style name="MyButtonStyleVolver" parent="Theme.Material3.DayNight">
+        <item name="android:backgroundTint">@color/blue3</item>
+    </style>
+
+    <style name="CajaTexto" parent="Theme.Material3.DayNight">
+        <item name="android:textColorHint">@color/grey3</item>
     </style>
 
 </resources>

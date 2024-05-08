@@ -36,10 +36,10 @@
 
 
         <Button
+            style="@style/MyButtonStyle"
             android:id="@+id/date_picker_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
+            android:layout_width="160dp"
+            android:layout_height="48dp"
             android:text="Seleccionar fecha"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -49,16 +49,16 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:background="@color/blue2"
+            style="@style/CajaTexto"
             android:hint="Desayuno"
             android:padding="10dp" />
 
         <EditText
+            style="@style/CajaTexto"
             android:id="@+id/lunch_input"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:background="@color/blue2"
             android:hint="Comida"
             android:padding="10dp" />
 
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:background="@color/blue2"
+            style="@style/CajaTexto"
             android:hint="Cena"
             android:padding="10dp" />
 
@@ -76,7 +76,7 @@
             android:layout_width="136dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/blue"
+            style="@style/MyButtonStyle"
             android:text="Guardar" />
 
         <Button
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/blue"
+            style="@style/MyButtonStyle"
             android:text="Historial de Alimentación" />
 
         <Button
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/blue3"
+            style="@style/MyButtonStyleVolver"
             android:text="@string/botonVolver" />
 
     </LinearLayout>

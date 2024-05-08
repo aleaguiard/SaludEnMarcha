@@ -8,8 +8,8 @@
     tools:context=".ActividadMenuActivity">
 
     <Button
+        style="@style/MyButtonStyle"
         android:id="@+id/buttonAndar"
-        android:backgroundTint="@color/blue"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="160dp"
@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/buttonCorrer"
-        android:backgroundTint="@color/blue"
+        style="@style/MyButtonStyle"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="160dp"
@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/buttonCiclismo"
-        android:backgroundTint="@color/blue"
+        style="@style/MyButtonStyle"
         android:layout_width="135dp"
         android:layout_height="48dp"
         android:layout_marginStart="160dp"
@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/buttonVolver"
-        android:backgroundTint="@color/blue3"
+        style="@style/MyButtonStyleVolver"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginStart="160dp"

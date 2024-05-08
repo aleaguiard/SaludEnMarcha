@@ -14,58 +14,38 @@
         android:layout_marginTop="128dp"
         android:fontFamily="@font/font_logo"
         android:text="@string/crea_tu_cuenta"
+        android:textColor="@color/blue"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Campo de Nombre -->
+    <!-- Campo de Email -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutNombre"
+        android:id="@+id/layoutEmail"
+        style="@style/CajaTexto"
         android:layout_width="345dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="32dp"
-        app:boxBackgroundColor="@color/blue2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tituloCrearCuenta">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cajaNombreCrear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/nombre"
-
-            android:textColorHint="@color/blue" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Campo de Email -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutEmail"
-        android:layout_width="345dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/blue2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutNombre">
-
-        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cajaEmailCrear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hintEmail"
-            android:textColorHint="@color/blue" />
+            android:hint="@string/hintEmail" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Campo de Contraseña -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
+        style="@style/CajaTexto"
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:boxBackgroundColor="@color/blue2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
@@ -76,18 +56,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hintPassword"
-            android:inputType="textPassword"
-            android:textColorHint="@color/blue" />
+            android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botón de Crear Cuenta -->
     <Button
         android:id="@+id/botonCrear"
+        style="@style/MyButtonStyle"
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/blue"
         android:text="@string/crear_cuenta"
         android:textSize="18sp"
         app:cornerRadius="32sp"
@@ -103,7 +82,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="300dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@android:color/transparent"
         android:contentDescription="@string/navigate_back"
         app:layout_constraintBottom_toTopOf="@+id/tituloCrearCuenta"
         app:layout_constraintEnd_toEndOf="parent"

@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/date_picker_buttonHistorial"
-        android:backgroundTint="@color/blue"
+        style="@style/MyButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -27,6 +27,7 @@
         android:layout_marginTop="88dp"
         android:fontFamily="@font/font_logo"
         android:textSize="24dp"
+        android:textColor="@color/blue"
         android:gravity="center"
         android:text="Resumen actividad del día seleccionado: "
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:text="@string/botonVolver"
-        android:backgroundTint="@color/blue3"
+        style="@style/MyButtonStyleVolver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
