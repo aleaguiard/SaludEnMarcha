@@ -7,119 +7,137 @@
     android:layout_height="match_parent"
     tools:context=".DetallesCarreraActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="108dp"
-        android:fontFamily="@font/font_logo"
-        android:textColor="@color/blue"
-        android:text="DETALLES DE LA ACTIVIDAD"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_fragment">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/activityTypeTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Tipo de actividad" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/totalDistanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Distancia total" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="108dp"
+                android:fontFamily="@font/font_logo"
+                android:textColor="@color/blue"
+                android:text="DETALLES DE LA ACTIVIDAD"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/timeElapsedTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Tiempo transcurrido" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/map_fragment">
 
-        <TextView
-            android:id="@+id/startTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Hora de inicio" />
+                <TextView
+                    android:id="@+id/activityTypeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Tipo de actividad" />
 
-        <TextView
-            android:id="@+id/endTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Hora de finalización" />
+                <TextView
+                    android:id="@+id/totalDistanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Distancia total" />
 
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:fontFamily="@font/font_body"
-            tools:text="Fecha" />
+                <TextView
+                    android:id="@+id/timeElapsedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Tiempo transcurrido" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/startTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Hora de inicio" />
 
-    <Button
-        android:id="@+id/volverDetallesButton"
-        android:layout_width="136dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="32dp"
-        style="@style/MyButtonStyleVolver"
-        android:text="@string/botonVolver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <TextView
+                    android:id="@+id/endTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Hora de finalización" />
 
-    <Button
-        android:id="@+id/GuardarDetallesButton"
-        android:layout_width="136dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="144dp"
-        style="@style/MyButtonStyle"
-        android:text="Guardar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/font_body"
+                    tools:text="Fecha" />
 
-    <fragment
-        android:id="@+id/map_fragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="381dp"
-        android:layout_height="357dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/volverDetallesButton"
+                android:layout_width="136dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="144dp"
+                android:layout_marginTop="32dp"
+                style="@style/MyButtonStyleVolver"
+                android:text="@string/botonVolver"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <Button
+                android:id="@+id/GuardarDetallesButton"
+                android:layout_width="136dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="144dp"
+                style="@style/MyButtonStyle"
+                android:text="Guardar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map_fragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="381dp"
+                android:layout_height="357dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

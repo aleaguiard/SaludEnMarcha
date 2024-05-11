@@ -28,39 +28,39 @@ import java.util.Map;
 
 public class AlimentacionActivity extends AppCompatActivity {
 
-    // Declaración de variables para los EditTexts y los botones
-    private EditText breakfastInput;
-    private EditText lunchInput;
-    private EditText dinnerInput;
-    private Button saveButton;
-    private Button datePickerButton;
-    private Button volverButton;
+    // Variables de la interfaz de usuario para entrada de datos y botones
+    private EditText breakfastInput, lunchInput, dinnerInput;
+    private Button saveButton, datePickerButton, botonHistorial, volverButton;
 
-    private Button botonHistorial;
-
-    // Declaración de variables para Firestore
+    // Variables para manejar la autenticación y operaciones de base de datos con Firebase
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-    private int selectedDay; // Variable para guardar el día seleccionado
-    private int selectedMonth; // Variable para guardar el mes seleccionado
-    private int selectedYear; // Variable para guardar el año seleccionado
-    String idUser;
+    private String idUser;
 
+    // Variables para almacenar la fecha seleccionada por el usuario
+    private int selectedDay, selectedMonth, selectedYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_alimentacion);
+        EdgeToEdge.enable(this);
 
-        // Configuración de la vista para adaptarse a los bordes de la pantalla
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Inicialización de componentes de la interfaz de usuario
+        initUI();
 
-        // Inicialización de los EditTexts y los botones
+        // Configuración de las instancias de Firebase para autenticación y base de datos
+        initFirebase();
+
+        // Configuración de los listeners para los botones
+        setupListeners();
+    }
+
+    /**
+     * Inicializa las vistas de la interfaz de usuario.
+     */
+    private void initUI() {
+        // Obtención de referencias a los componentes de la interfaz de usuario desde el layout
         breakfastInput = findViewById(R.id.breakfast_input);
         lunchInput = findViewById(R.id.lunch_input);
         dinnerInput = findViewById(R.id.dinner_input);
@@ -69,93 +69,84 @@ public class AlimentacionActivity extends AppCompatActivity {
         botonHistorial = findViewById(R.id.buttonHistorial);
         volverButton = findViewById(R.id.volverAlimentacionButton);
 
-        // Inicialización de Firestore
-        db = FirebaseFirestore.getInstance();
+        // Ajuste de la vista principal para adaptarse a los bordes de la pantalla, considerando los insets
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
+    /**
+     * Configura las instancias de Firebase Auth y Firestore.
+     */
+    private void initFirebase() {
+        // Inicialización de FirebaseAuth y Firestore
         mAuth = FirebaseAuth.getInstance();
-
+        db = FirebaseFirestore.getInstance();
         idUser = mAuth.getCurrentUser().getUid();
+    }
 
-        // Establecimiento del OnClickListener para el botón de selección de fecha
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Obtención de la fecha actual
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+    /**
+     * Establece listeners para los botones de la interfaz de usuario.
+     */
+    private void setupListeners() {
+        // Listener para el botón de selección de fecha que abre un DatePickerDialog
+        datePickerButton.setOnClickListener(v -> openDatePicker());
 
-                // Creación y visualización de un nuevo DatePickerDialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AlimentacionActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                // Guardado del día, el mes y el año seleccionados en las variables
-                                selectedDay = dayOfMonth;
-                                selectedMonth = monthOfYear + 1; // Los meses empiezan en 0, por lo que se suma 1
-                                selectedYear = year;
-                                Toast.makeText(AlimentacionActivity.this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
-                            }
-                        }, year, month, day);
-                datePickerDialog.show();
-            }
-        });
+        // Listener para el botón de guardar que guarda los datos de las comidas en Firestore
+        saveButton.setOnClickListener(v -> saveMealData());
 
-        // Establecimiento del OnClickListener para el botón de guardar
-        saveButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // Verificación de que selectedDay, selectedMonth y selectedYear no estén vacíos
-            if (selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {
-                Toast.makeText(AlimentacionActivity.this, "Por favor, selecciona una fecha", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        // Listener para el botón de historial que abre la actividad de historial de alimentación
+        botonHistorial.setOnClickListener(v -> startActivity(new Intent(AlimentacionActivity.this, AlimentacionHistorialActivity.class)));
 
-            // Guardado de la información introducida por el usuario
-            String breakfast = breakfastInput.getText().toString();
-            String lunch = lunchInput.getText().toString();
-            String dinner = dinnerInput.getText().toString();
+        // Listener para el botón de volver que regresa a la actividad principal
+        volverButton.setOnClickListener(v -> startActivity(new Intent(AlimentacionActivity.this, MainActivity.class)));
+    }
 
-            // Creación de un nuevo documento en la colección "meals"
-            Map<String, Object> meal = new HashMap<>();
-            meal.put("idUser", idUser);
-            meal.put("breakfast", breakfast);
-            meal.put("lunch", lunch);
-            meal.put("dinner", dinner);
-            meal.put("day", selectedDay); // Guardado del día seleccionado en Firebase
-            meal.put("month", selectedMonth); // Guardado del mes seleccionado en Firebase
-            meal.put("year", selectedYear); // Guardado del año seleccionado en Firebase
+    /**
+     * Abre un DatePickerDialog para seleccionar la fecha.
+     */
+    private void openDatePicker() {
+        // Configuración del DatePickerDialog con la fecha actual como predeterminada
+        final Calendar c = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+            selectedDay = dayOfMonth;
+            selectedMonth = monthOfYear + 1;  // Ajuste porque Calendar.MONTH es 0-indexed
+            selectedYear = year;
+            Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
-            db.collection("meals").add(meal)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(AlimentacionActivity.this, "Alimentación añadida correctamente: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(AlimentacionActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+        datePickerDialog.show();
+    }
+
+    /**
+     * Guarda los datos de las comidas ingresados en Firestore.
+     */
+    private void saveMealData() {
+        // Verificación de que la fecha esté correctamente seleccionada
+        if (selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {
+            Toast.makeText(this, "Por favor, selecciona una fecha", Toast.LENGTH_SHORT).show();
+            return;
         }
-    });
 
-        botonHistorial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AlimentacionActivity.this, AlimentacionHistorialActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Recolección y preparación de los datos para su almacenamiento
+        String breakfast = breakfastInput.getText().toString();
+        String lunch = lunchInput.getText().toString();
+        String dinner = dinnerInput.getText().toString();
 
-        volverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AlimentacionActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        Map<String, Object> meal = new HashMap<>();
+        meal.put("idUser", idUser);
+        meal.put("breakfast", breakfast);
+        meal.put("lunch", lunch);
+        meal.put("dinner", dinner);
+        meal.put("day", selectedDay);
+        meal.put("month", selectedMonth);
+        meal.put("year", selectedYear);
+
+        // Adición del documento a la colección de Firestore
+        db.collection("meals").add(meal)
+                .addOnSuccessListener(documentReference -> Toast.makeText(this, "Alimentación añadida correctamente: ", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la alimentación", Toast.LENGTH_LONG).show());
     }
 }
