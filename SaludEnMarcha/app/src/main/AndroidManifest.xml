@@ -19,6 +19,9 @@
         android:theme="@style/Theme.SaludEnMarcha.Light"
         tools:targetApi="31">
         <activity
+            android:name=".GlucosaActivity"
+            android:exported="false" />
+        <activity
             android:name=".TensionActivity"
             android:exported="false" />
         <activity

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         // Manejar clics en los botones
         setupButtonClick(R.id.buttonActividad, ActividadMenuActivity.class);
         setupButtonClick(R.id.buttonPeso, PesoActivity.class);
-        // setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
+        setupButtonClick(R.id.buttonGlucosa, GlucosaActivity.class);
         // setupButtonClick(R.id.buttonMedicacion, MedicacionActivity.class);
         setupButtonClick(R.id.buttonEmergencia, EmergencyActivity.class);
         setupButtonClick(R.id.buttonHistorial, CarreraHistorialActivity.class);
