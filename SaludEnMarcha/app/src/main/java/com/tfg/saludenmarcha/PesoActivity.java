@@ -132,15 +132,20 @@ public class PesoActivity extends AppCompatActivity {
     private void saveWeight(View view) {
         String text = pesoInput.getText().toString();
 
-        if (!text.isEmpty()) {
-            try {
-                weight = Long.parseLong(text);
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Por favor, ingresa un número válido.", Toast.LENGTH_SHORT).show();
+        if (text.isEmpty()) {
+            Toast.makeText(this, "El campo de peso no puede estar vacío.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        long peso = 0;
+        try {
+            peso = Long.parseLong(text);
+            if (peso < 1 || peso > 250) {
+                Toast.makeText(this, "El peso debe estar entre 1 y 250.", Toast.LENGTH_SHORT).show();
                 return;
             }
-        } else {
-            Toast.makeText(this, "El campo de peso no puede estar vacío.", Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Por favor, ingresa un número válido.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -149,18 +154,19 @@ public class PesoActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> peso = new HashMap<>();
-        peso.put("idUser", idUser);
-        peso.put("weight", weight);
-        peso.put("day", selectedDay);
-        peso.put("month", selectedMonth);
-        peso.put("year", selectedYear);
-        peso.put("id", idActividad);
+        Map<String, Object> pesoData = new HashMap<>();
+        pesoData.put("idUser", idUser);
+        pesoData.put("weight", peso);
+        pesoData.put("day", selectedDay);
+        pesoData.put("month", selectedMonth);
+        pesoData.put("year", selectedYear);
+        pesoData.put("id", idActividad);
 
-        db.collection("weights").add(peso)
+        db.collection("weights").add(pesoData)
                 .addOnSuccessListener(docRef -> Toast.makeText(this, "Peso añadido correctamente: ", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar el peso: ", Toast.LENGTH_LONG).show());
     }
+
 
     /**
      * Navega a la actividad de historial.
