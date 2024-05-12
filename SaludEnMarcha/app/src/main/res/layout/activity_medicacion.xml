@@ -11,10 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        android:foregroundGravity="center"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -22,7 +24,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="164dp"
                 android:layout_height="103dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="80dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/date_picker_button"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,15 +34,14 @@
                 app:srcCompat="@drawable/app_icon" />
 
             <Button
-                style="@style/MyButtonStyle"
                 android:id="@+id/medicacion_picker_button"
-                android:layout_width="160dp"
+                style="@style/MyButtonStyle"
+                android:layout_width="168dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="136dp"
+                android:layout_marginTop="88dp"
                 android:layout_marginEnd="50dp"
                 android:text="Seleccionar fecha"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageView3" />
 
@@ -63,11 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:inputType="numberDecimal"
                 android:fontFamily="@font/font_body"
                 android:hint="Dosis: "
+                android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
@@ -75,10 +76,10 @@
 
             <Button
                 android:id="@+id/buttonSaveMedicacion"
+                style="@style/MyButtonStyle"
                 android:layout_width="136dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                style="@style/MyButtonStyle"
+                android:layout_marginTop="40dp"
                 android:text="Guardar" />
 
 
