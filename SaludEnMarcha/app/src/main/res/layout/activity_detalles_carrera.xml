@@ -16,11 +16,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="207dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="108dp"
                 android:layout_marginTop="50dp"
@@ -28,7 +29,7 @@
                 android:fontFamily="@font/font_logo"
                 android:text="DETALLES DE LA ACTIVIDAD"
                 android:textColor="@color/blue"
-                android:textSize="16dp"
+                android:textSize="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,38 +97,43 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/volverDetallesButton"
-                android:layout_width="136dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="144dp"
-                android:layout_marginTop="32dp"
-                style="@style/MyButtonStyleVolver"
-                android:text="@string/botonVolver"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                android:orientation="vertical">
 
-            <!--TODO: centrar boton de guardar -->
-            <Button
-                android:id="@+id/GuardarDetallesButton"
-                style="@style/MyButtonStyle"
-                android:layout_width="136dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="144dp"
-                android:gravity="center"
-                android:text="Guardar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <Button
+                    android:id="@+id/GuardarDetallesButton"
+                    style="@style/MyButtonStyle"
+                    android:layout_width="136dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Guardar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <Button
+                    android:id="@+id/volverDetallesButton"
+                    android:layout_width="136dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    style="@style/MyButtonStyleVolver"
+                    android:text="@string/botonVolver"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            </LinearLayout>
+
+
+
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map_fragment"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="381dp"
-                android:layout_height="357dp"
+                android:layout_width="376dp"
+                android:layout_height="360dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="14dp"
