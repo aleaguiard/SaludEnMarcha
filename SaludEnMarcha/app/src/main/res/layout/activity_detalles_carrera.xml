@@ -20,14 +20,14 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="207dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="108dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="108dp"
                 android:fontFamily="@font/font_logo"
-                android:textColor="@color/blue"
                 android:text="DETALLES DE LA ACTIVIDAD"
+                android:textColor="@color/blue"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,17 +104,20 @@
                 android:layout_marginTop="32dp"
                 style="@style/MyButtonStyleVolver"
                 android:text="@string/botonVolver"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+            <!--TODO: centrar boton de guardar -->
             <Button
                 android:id="@+id/GuardarDetallesButton"
+                style="@style/MyButtonStyle"
                 android:layout_width="136dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="144dp"
-                style="@style/MyButtonStyle"
+                android:gravity="center"
                 android:text="Guardar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
