@@ -13,26 +13,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--TODO: Cambiar disposición elementos -->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
-
-            <Button
-                android:id="@+id/date_picker_buttonHistorial"
-                style="@style/MyButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="50dp"
-                android:text="Seleccionar fecha"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textoHistorialActividad" />
-
 
             <TextView
                 android:id="@+id/textoHistorialActividad"
@@ -48,11 +33,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/date_picker_buttonHistorial"
+                style="@style/MyButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="50dp"
+                android:text="Seleccionar fecha"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textoHistorialActividad" />
+
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="144dp"
-                android:layout_marginLeft="36dp"
+                android:layout_marginLeft="56dp"
                 android:layout_marginRight="36dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
@@ -107,40 +106,52 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map_fragment_historial"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="381dp"
-                android:layout_height="357dp"
-                android:layout_marginStart="14dp"
+                android:layout_width="320dp"
+                android:layout_height="320dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="14dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-            <Button
-                android:id="@+id/volverHistorialButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="50dp"
-                android:text="@string/botonVolver"
-                style="@style/MyButtonStyleVolver"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial"
-                app:layout_constraintVertical_bias="0.18" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/deleteActivityButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Eliminar actividad"
-                android:backgroundTint="@color/red"
-                app:layout_constraintEnd_toStartOf="@+id/volverHistorialButton"
-                app:layout_constraintHorizontal_bias="0.154"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial" />
+                <Button
+                    android:id="@+id/volverHistorialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="40dp"
+                    android:text="@string/botonVolver"
+                    style="@style/MyButtonStyleVolver"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial"
+                    app:layout_constraintVertical_bias="0.18" />
+
+                <Button
+                    android:id="@+id/deleteActivityButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Eliminar actividad"
+                    android:backgroundTint="@color/red"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toStartOf="@+id/volverHistorialButton"
+                    app:layout_constraintHorizontal_bias="0.154"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
