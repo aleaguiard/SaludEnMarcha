@@ -14,87 +14,90 @@
         android:layout_height="103dp"
         android:layout_marginTop="80dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/app_icon" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imageView3">
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
-
-        <Button
-            style="@style/MyButtonStyle"
-            android:id="@+id/date_picker_button"
-            android:layout_width="160dp"
-            android:layout_height="48dp"
-            android:text="Seleccionar fecha"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-
-        <EditText
-            android:id="@+id/breakfast_input"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            style="@style/CajaTexto"
-            android:hint="Desayuno"
-            android:padding="10dp" />
-
-        <EditText
-            style="@style/CajaTexto"
-            android:id="@+id/lunch_input"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:hint="Comida"
-            android:padding="10dp" />
-
-        <EditText
-            android:id="@+id/dinner_input"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            style="@style/CajaTexto"
-            android:hint="Cena"
-            android:padding="10dp" />
-
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="136dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            style="@style/MyButtonStyle"
-            android:text="Guardar" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <Button
-            android:id="@+id/buttonHistorial"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            style="@style/MyButtonStyle"
-            android:text="Historial de Alimentación" />
+            <Button
+                android:id="@+id/date_picker_button"
+                style="@style/MyButtonStyle"
+                android:layout_width="160dp"
+                android:layout_height="48dp"
+                android:text="Seleccionar fecha"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/volverAlimentacionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            style="@style/MyButtonStyleVolver"
-            android:text="@string/botonVolver" />
+            <EditText
+                android:id="@+id/breakfast_input"
+                style="@style/CajaTexto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:hint="Desayuno"
+                android:padding="10dp" />
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/lunch_input"
+                style="@style/CajaTexto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:hint="Comida"
+                android:padding="10dp" />
 
+            <EditText
+                android:id="@+id/dinner_input"
+                style="@style/CajaTexto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:hint="Cena"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/save_button"
+                style="@style/MyButtonStyle"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Guardar" />
+
+            <Button
+                android:id="@+id/buttonHistorial"
+                style="@style/MyButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Historial de Alimentación" />
+
+            <Button
+                android:id="@+id/volverAlimentacionButton"
+                style="@style/MyButtonStyleVolver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/botonVolver" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
