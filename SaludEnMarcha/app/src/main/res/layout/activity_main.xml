@@ -7,175 +7,185 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="164dp"
-        android:layout_height="103dp"
-        android:layout_marginTop="80dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_icon" />
-
-    <TableLayout
-        android:id="@+id/buttonsTable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView3">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/buttonActividad"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_actividad"
-                android:text="Actividad" />
-
-            <Button
-                android:id="@+id/buttonNutricion"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_nutri"
-                android:text="Nutrición" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/buttonGlucosa"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_glucosa"
-                android:text="Glucosa" />
-
-            <Button
-                android:id="@+id/buttonHistorial"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_historial"
-                android:text="Historial" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/buttonPeso"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_peso"
-                android:text="Peso" />
-
-            <Button
-                android:id="@+id/buttonMedicacion"
-                style="@style/MyButtonStyle"
-                android:layout_width="148dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_medicacion"
-                android:text="Medicación" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/buttonTension"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_pulso"
-                android:text="PA - FC" />
-
-            <Button
-                android:id="@+id/buttonCalendario"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_calendar"
-                android:text="Calendario" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/buttonEmergencia"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_emergencia"
-                android:text="SOS" />
-
-            <Button
-                android:id="@+id/buttonResumen"
-                style="@style/MyButtonStyle"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:layout_margin="16dp"
-                android:drawableLeft="@drawable/ic_resumen"
-                android:text="Resumen" />
-
-        </TableRow>
-
-    </TableLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonsTable">
-
-        <ImageButton
-            android:id="@+id/themeBtn"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="40dp"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_theme" />
-
-        <TextView
-            android:id="@+id/themeText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/themeBtn" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="164dp"
+                android:layout_height="103dp"
+                android:layout_marginTop="80dp"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/app_icon" />
+
+            <TableLayout
+                android:id="@+id/buttonsTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:layout_gravity="center">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonActividad"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_actividad"
+                        android:text="Actividad" />
+
+                    <Button
+                        android:id="@+id/buttonNutricion"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_nutri"
+                        android:text="Nutrición" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonGlucosa"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_glucosa"
+                        android:text="Glucosa" />
+
+                    <Button
+                        android:id="@+id/buttonHistorial"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_historial"
+                        android:text="Historial" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonPeso"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_peso"
+                        android:text="Peso" />
+
+                    <Button
+                        android:id="@+id/buttonMedicacion"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="148dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_medicacion"
+                        android:text="Medicación" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonTension"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_pulso"
+                        android:text="PA - FC" />
+
+                    <Button
+                        android:id="@+id/buttonCalendario"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:text="Calendario" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/buttonEmergencia"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_emergencia"
+                        android:text="SOS" />
+
+                    <Button
+                        android:id="@+id/buttonResumen"
+                        style="@style/MyButtonStyle"
+                        android:layout_width="144dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="16dp"
+                        android:drawableLeft="@drawable/ic_resumen"
+                        android:text="Resumen" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp">
+
+                <ImageButton
+                    android:id="@+id/themeBtn"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_theme" />
+
+                <TextView
+                    android:id="@+id/themeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
