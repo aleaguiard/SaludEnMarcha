@@ -79,6 +79,11 @@
             android:layout_marginTop="20dp"
             android:text="@string/botonVolver" />
 
+        <com.anychart.AnyChartView
+            android:id="@+id/any_chart_peso"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
     </LinearLayout>
 
 

@@ -16,6 +16,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Line;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,9 +34,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
 
 public class PesoActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para entrada y botones
@@ -58,6 +68,30 @@ public class PesoActivity extends AppCompatActivity {
         initializeUI();
         initializeFirebase();
         setupListeners();
+
+        //Pie pie = AnyChart.pie(); //grafico  circular
+        AnyChartView anyChartView = findViewById(R.id.any_chart_peso);
+
+        // Crear el gráfico de líneas
+        Cartesian cartesian = AnyChart.line();
+
+        // Título del gráfico
+        cartesian.title("Evolución del Peso");
+
+        // Datos de ejemplo
+        List<DataEntry> seriesData = new ArrayList<>();
+        seriesData.add(new ValueDataEntry("Enero", 65));
+        seriesData.add(new ValueDataEntry("Febrero", 63));
+        seriesData.add(new ValueDataEntry("Marzo", 62));
+        seriesData.add(new ValueDataEntry("Abril", 61));
+        seriesData.add(new ValueDataEntry("Mayo", 60));
+
+        // Crear la serie y agregar los datos
+        Line series = cartesian.line(seriesData);
+        series.name("Peso");
+
+        // Configurar el gráfico con los datos
+        anyChartView.setChart(cartesian);
     }
 
     /**
