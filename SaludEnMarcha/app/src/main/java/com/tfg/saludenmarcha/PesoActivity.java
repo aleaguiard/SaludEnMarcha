@@ -288,7 +288,7 @@ public class PesoActivity extends AppCompatActivity {
 
                                     if (weightNumber != null && day != null && month != null && year != null) {
                                         // Ensamblar la fecha en un formato legible
-                                        String date = day + "/" + month + "/" + year;
+                                        String date = day + "/" + month + "/" + year + " " + id;  // Usar 'id' para diferenciar entre pesos del mismo día
                                         entries.add(new ValueDataEntry(date, weightNumber));
                                     }
                                 } else {
@@ -306,6 +306,7 @@ public class PesoActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 
 
