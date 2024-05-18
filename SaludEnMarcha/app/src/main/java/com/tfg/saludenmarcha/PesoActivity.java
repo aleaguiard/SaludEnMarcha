@@ -3,6 +3,7 @@ package com.tfg.saludenmarcha;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,28 +71,8 @@ public class PesoActivity extends AppCompatActivity {
         setupListeners();
 
         //Pie pie = AnyChart.pie(); //grafico  circular
-        AnyChartView anyChartView = findViewById(R.id.any_chart_peso);
-
-        // Crear el gráfico de líneas
-        Cartesian cartesian = AnyChart.line();
-
-        // Título del gráfico
-        cartesian.title("Evolución del Peso");
-
-        // Datos de ejemplo
-        List<DataEntry> seriesData = new ArrayList<>();
-        seriesData.add(new ValueDataEntry("Enero", 65));
-        seriesData.add(new ValueDataEntry("Febrero", 63));
-        seriesData.add(new ValueDataEntry("Marzo", 62));
-        seriesData.add(new ValueDataEntry("Abril", 61));
-        seriesData.add(new ValueDataEntry("Mayo", 60));
-
-        // Crear la serie y agregar los datos
-        Line series = cartesian.line(seriesData);
-        series.name("Peso");
-
-        // Configurar el gráfico con los datos
-        anyChartView.setChart(cartesian);
+        // Cargar los datos de peso desde Firebase
+        loadWeightData();
     }
 
     /**
@@ -193,8 +174,15 @@ public class PesoActivity extends AppCompatActivity {
         pesoData.put("id", idActividad);
 
         db.collection("weights").add(pesoData)
-                .addOnSuccessListener(docRef -> Toast.makeText(this, "Peso añadido correctamente: ", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar el peso: ", Toast.LENGTH_LONG).show());
+                .addOnSuccessListener(docRef -> {
+                    Toast.makeText(this, "Peso añadido correctamente.", Toast.LENGTH_SHORT).show();
+                    // Actualizar el gráfico después de guardar los datos
+                    loadWeightData();
+
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al guardar el peso.", Toast.LENGTH_LONG).show();
+                });
     }
 
 
@@ -259,4 +247,83 @@ public class PesoActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void loadWeightData() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("PesoActivity", "Cargando datos para el usuario: " + idUser);
+
+        db.collection("weights")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(10)  // Limitar a los 10 documentos con los IDs más altos para el usuario específico
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (value != null) {
+                            List<DataEntry> entries = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : value) {
+                                Log.d("PesoActivity", "Documento recuperado: " + document.getData());
+
+                                // Verifica si el documento tiene los campos 'weight', 'day', 'month', 'year'
+                                if (document.contains("weight") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
+                                    Long weightNumber = document.getLong("weight");
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+                                    Long id = document.getLong("id");
+
+                                    Log.d("PesoActivity", "ID: " + id + " Weight: " + weightNumber + " Date: " + day + "/" + month + "/" + year);
+
+                                    if (weightNumber != null && day != null && month != null && year != null) {
+                                        // Ensamblar la fecha en un formato legible
+                                        String date = day + "/" + month + "/" + year;
+                                        entries.add(new ValueDataEntry(date, weightNumber));
+                                    }
+                                } else {
+                                    Log.d("PesoActivity", "Documento sin 'weight', 'day', 'month', 'year' o 'id': " + document.getId());
+                                }
+                            }
+                            Log.d("PesoActivity", "Número de entradas: " + entries.size());
+                            if (!entries.isEmpty()) {
+                                // Asegurarse de actualizar el gráfico en el hilo principal
+                                runOnUiThread(() -> updateChart(entries));
+                            } else {
+                                Toast.makeText(PesoActivity.this, "No se encontraron datos de peso.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+
+
+    private void updateChart(List<DataEntry> entries) {
+        AnyChartView anyChartView = findViewById(R.id.any_chart_peso);
+
+        // Crear el gráfico de líneas
+        Cartesian cartesian = AnyChart.line();
+
+        // Establecer el título del gráfico
+        cartesian.title("Evolución del Peso");
+
+        // Crear la serie y agregar los datos
+        Line series = cartesian.line(entries);
+        series.name("Peso");
+
+        // Configurar el gráfico con los datos
+        anyChartView.setChart(cartesian);
+        anyChartView.invalidate(); // Forzar la invalidación de la vista
+    }
+
+
+
+
 }
