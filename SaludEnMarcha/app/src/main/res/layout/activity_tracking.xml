@@ -33,7 +33,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     map:cameraZoom="30"
-                    map:uiZoomControls="true" />
+                    map:uiZoomControls="true"
+                    tools:ignore="FragmentTagUsage" />
 
                 <Chronometer
                     android:id="@+id/chronometer"
@@ -65,7 +66,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     style="@style/MyButtonStyle"
-                    android:text="Start"
+                    android:text="@string/start"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chronometer" />
@@ -78,7 +79,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     style="@style/MyButtonStyleVolver"
-                    android:text="Pause"
+                    android:text="@string/pause"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chronometer" />
@@ -91,7 +92,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     style="@style/MyButtonStyle"
-                    android:text="Resume"
+                    android:text="@string/resume"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chronometer" />
@@ -104,7 +105,7 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     style="@style/MyButtonStyle"
-                    android:text="Stop"
+                    android:text="@string/stop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/map" />
@@ -117,7 +118,7 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="24dp"
                     style="@style/MyButtonStyleVolver"
-                    android:text="Volver"
+                    android:text="@string/volver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/map" />

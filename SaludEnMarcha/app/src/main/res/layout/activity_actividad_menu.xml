@@ -19,7 +19,8 @@
         android:drawableLeft="@drawable/ic_walk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:ignore="RtlHardcoded" />
 
     <Button
         android:id="@+id/buttonCorrer"
@@ -33,7 +34,8 @@
         android:drawableLeft="@drawable/ic_run"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAndar" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAndar"
+        tools:ignore="RtlHardcoded" />
 
     <Button
         android:id="@+id/buttonCiclismo"
@@ -47,7 +49,8 @@
         android:drawableLeft="@drawable/ic_bike"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCorrer" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCorrer"
+        tools:ignore="RtlHardcoded" />
 
     <Button
         android:id="@+id/buttonVolver"
@@ -60,7 +63,8 @@
         android:text="@string/botonVolver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCiclismo" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCiclismo"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/textView2"

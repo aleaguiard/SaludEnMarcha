@@ -27,7 +27,8 @@
                 android:layout_marginTop="80dp"
                 android:visibility="visible"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/app_icon" />
+                app:srcCompat="@drawable/app_icon"
+                android:contentDescription="@string/logo" />
 
             <TableLayout
                 android:id="@+id/buttonsTable"
@@ -47,7 +48,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_actividad"
-                        android:text="Actividad" />
+                        android:text="@string/actividad"
+                        tools:ignore="RtlHardcoded" />
 
                     <Button
                         android:id="@+id/buttonNutricion"
@@ -56,7 +58,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_nutri"
-                        android:text="Nutrición" />
+                        android:text="@string/nutrici_n"
+                        tools:ignore="RtlHardcoded" />
 
                 </TableRow>
 
@@ -71,7 +74,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_glucosa"
-                        android:text="Glucosa" />
+                        android:text="@string/glucosa"
+                        tools:ignore="RtlHardcoded" />
 
                     <Button
                         android:id="@+id/buttonHistorial"
@@ -80,7 +84,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_historial"
-                        android:text="Historial" />
+                        android:text="@string/historial"
+                        tools:ignore="RtlHardcoded" />
 
                 </TableRow>
 
@@ -95,7 +100,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_peso"
-                        android:text="Peso" />
+                        android:text="@string/peso"
+                        tools:ignore="RtlHardcoded" />
 
                     <Button
                         android:id="@+id/buttonMedicacion"
@@ -104,7 +110,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_medicacion"
-                        android:text="Medicación" />
+                        android:text="@string/medicaci_n"
+                        tools:ignore="RtlHardcoded" />
 
                 </TableRow>
 
@@ -119,7 +126,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_pulso"
-                        android:text="PA - FC" />
+                        android:text="@string/pa_fc"
+                        tools:ignore="RtlHardcoded" />
 
                     <Button
                         android:id="@+id/buttonCalendario"
@@ -128,7 +136,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_calendar"
-                        android:text="Calendario" />
+                        android:text="@string/calendario"
+                        tools:ignore="RtlHardcoded" />
 
                 </TableRow>
 
@@ -143,7 +152,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_emergencia"
-                        android:text="SOS" />
+                        android:text="@string/sos"
+                        tools:ignore="RtlHardcoded" />
 
                     <Button
                         android:id="@+id/buttonResumen"
@@ -152,7 +162,8 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_resumen"
-                        android:text="Resumen" />
+                        android:text="@string/resumen"
+                        tools:ignore="RtlHardcoded" />
 
                 </TableRow>
 
@@ -171,7 +182,8 @@
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/ic_theme" />
+                    app:srcCompat="@drawable/ic_theme"
+                    android:contentDescription="@string/darkmode" />
 
                 <TextView
                     android:id="@+id/themeText"

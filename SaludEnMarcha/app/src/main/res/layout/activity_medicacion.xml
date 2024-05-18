@@ -31,7 +31,8 @@
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon" />
+                app:srcCompat="@drawable/app_icon"
+                android:contentDescription="@string/logo" />
 
             <Button
                 android:id="@+id/medicacion_picker_button"
@@ -41,7 +42,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="88dp"
                 android:layout_marginEnd="50dp"
-                android:text="Seleccionar fecha"
+                android:text="@string/seleccionar_fecha"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageView3" />
 
@@ -54,10 +55,11 @@
                 android:layout_marginEnd="32dp"
                 android:inputType="text"
                 android:fontFamily="@font/font_body"
-                android:hint="Nombre medicación: "
+                android:hint="@string/nombre_medicaci_n"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
+                app:layout_constraintTop_toBottomOf="@id/date_picker_button"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/dosis_text"
@@ -67,11 +69,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:fontFamily="@font/font_body"
-                android:hint="Dosis: "
+                android:hint="@string/dosis"
                 android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
+                app:layout_constraintTop_toBottomOf="@id/date_picker_button"
+                android:autofillHints="" />
 
 
             <Button
@@ -80,7 +83,7 @@
                 android:layout_width="136dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="Guardar" />
+                android:text="@string/guardar" />
 
 
             <Button
@@ -90,7 +93,6 @@
                 android:layout_marginTop="20dp"
                 style="@style/MyButtonStyleVolver"
                 android:text="@string/botonVolver" />
-
 
         </LinearLayout>
 

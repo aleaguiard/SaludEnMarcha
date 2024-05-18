@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:animation="@anim/logo_animation"  />
+        android:animation="@anim/logo_animation"
+        android:contentDescription="@string/logo" />
 
     <TextView
         android:id="@+id/copyright_text"
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="176dp"
         android:gravity="center"
-        android:text="Creado por Alejandro Aguiar y Alberto Arroyo"
+        android:text="@string/creado_por_alejandro_aguiar_y_alberto_arroyo"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

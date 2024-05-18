@@ -18,7 +18,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_icon" />
+        app:srcCompat="@drawable/app_icon"
+        android:contentDescription="@string/logo" />
 
     <Button
         style="@style/MyButtonStyle"
@@ -28,7 +29,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="136dp"
         android:layout_marginEnd="50dp"
-        android:text="Seleccionar fecha"
+        android:text="@string/seleccionar_fecha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/imageView3" />
@@ -41,7 +42,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/font_body"
-        android:text="Desayuno: "
+        android:text="@string/desayuno"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
@@ -54,7 +55,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/font_body"
-        android:text="Comida: "
+        android:text="@string/comida"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/breakfast_text" />
@@ -67,7 +68,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/font_body"
-        android:text="Cena: "
+        android:text="@string/cena"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lunch_text" />

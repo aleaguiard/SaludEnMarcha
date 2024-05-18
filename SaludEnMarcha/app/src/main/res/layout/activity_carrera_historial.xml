@@ -26,9 +26,9 @@
                 android:layout_marginTop="88dp"
                 android:fontFamily="@font/font_logo"
                 android:gravity="center"
-                android:text="Resumen actividad del día seleccionado: "
+                android:text="@string/resumen_actividad_del_d_a_seleccionado"
                 android:textColor="@color/blue"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="50dp"
-                android:text="Seleccionar fecha"
+                android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textoHistorialActividad" />
@@ -57,7 +57,8 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_picker_buttonHistorial">
+                app:layout_constraintTop_toBottomOf="@+id/date_picker_buttonHistorial"
+                tools:ignore="RtlHardcoded">
 
                 <TextView
                     android:id="@+id/tipoActividadHistorial"
@@ -143,13 +144,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Eliminar actividad"
+                    android:text="@string/eliminar_actividad"
                     android:backgroundTint="@color/red"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toStartOf="@+id/volverHistorialButton"
                     app:layout_constraintHorizontal_bias="0.154"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial" />
+                    app:layout_constraintTop_toBottomOf="@+id/map_fragment_historial"
+                    tools:ignore="ButtonStyle" />
 
             </LinearLayout>
 

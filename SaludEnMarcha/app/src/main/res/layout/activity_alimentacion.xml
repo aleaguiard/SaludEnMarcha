@@ -18,7 +18,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_icon" />
+        app:srcCompat="@drawable/app_icon"
+        android:contentDescription="@string/logo" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -43,7 +44,7 @@
                 style="@style/MyButtonStyle"
                 android:layout_width="160dp"
                 android:layout_height="48dp"
-                android:text="Seleccionar fecha"
+                android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <EditText
@@ -52,8 +53,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
-                android:hint="Desayuno"
-                android:padding="10dp" />
+                android:hint="@string/desayuno"
+                android:padding="10dp"
+                android:autofillHints=""
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/lunch_input"
@@ -61,8 +64,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
-                android:hint="Comida"
-                android:padding="10dp" />
+                android:hint="@string/comida"
+                android:padding="10dp"
+                android:autofillHints=""
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/dinner_input"
@@ -70,8 +75,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
-                android:hint="Cena"
-                android:padding="10dp" />
+                android:hint="@string/cena"
+                android:padding="10dp"
+                android:autofillHints=""
+                android:inputType="text" />
 
             <Button
                 android:id="@+id/save_button"
@@ -79,7 +86,7 @@
                 android:layout_width="136dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Guardar" />
+                android:text="@string/guardar" />
 
             <Button
                 android:id="@+id/buttonHistorial"
@@ -87,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Historial de Alimentación" />
+                android:text="@string/historial_de_alimentaci_n" />
 
             <Button
                 android:id="@+id/volverAlimentacionButton"
@@ -95,7 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/botonVolver" />
+                android:text="@string/botonVolver"
+                tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
     </ScrollView>

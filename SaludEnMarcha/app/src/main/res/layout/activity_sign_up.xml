@@ -35,7 +35,8 @@
             android:id="@+id/cajaEmailCrear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hintEmail" />
+            android:hint="@string/hintEmail"
+            tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,7 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hintPassword"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,7 +66,7 @@
     <Button
         android:id="@+id/botonCrear"
         style="@style/MyButtonStyle"
-        android:layout_width="345dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/crear_cuenta"

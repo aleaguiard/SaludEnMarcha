@@ -31,7 +31,8 @@
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon" />
+                app:srcCompat="@drawable/app_icon"
+                android:contentDescription="@string/logo" />
 
             <Button
                 android:id="@+id/tension_picker_button"
@@ -41,7 +42,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="88dp"
                 android:layout_marginEnd="50dp"
-                android:text="Seleccionar fecha"
+                android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageView3" />
@@ -49,45 +50,51 @@
             <EditText
                 android:id="@+id/tension_sistolica_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="34dp"
                 android:layout_marginEnd="32dp"
-                android:hint="Sistólica (mmHg)"
+                android:hint="@string/sist_lica_mmhg"
                 style="@style/CajaTexto"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_picker_button" />
+                app:layout_constraintTop_toBottomOf="@id/date_picker_button"
+                android:autofillHints=""
+                tools:ignore="VisualLintTextFieldSize" />
 
 
             <EditText
                 android:id="@+id/tension_diastolica_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 style="@style/CajaTexto"
-                android:hint="Diastólica (mmHg)"
+                android:hint="@string/diast_lica_mmhg"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tension_sistolica_text" />
+                app:layout_constraintTop_toBottomOf="@id/tension_sistolica_text"
+                android:autofillHints=""
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/pulso_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 style="@style/CajaTexto"
-                android:hint="Pulso ppm:"
+                android:hint="@string/pulso_ppm"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tension_diastolica_text" />
+                app:layout_constraintTop_toBottomOf="@id/tension_diastolica_text"
+                android:autofillHints=""
+                tools:ignore="VisualLintTextFieldSize" />
 
             <Button
                 android:id="@+id/buttonSaveTension"
@@ -95,7 +102,7 @@
                 android:layout_width="136dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Guardar"
+                android:text="@string/guardar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/pulso_text" />
@@ -109,7 +116,8 @@
                 android:text="@string/botonVolver"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/buttonSaveTension" />
+                app:layout_constraintTop_toBottomOf="@id/buttonSaveTension"
+                tools:ignore="TextContrastCheck" />
 
 
         </LinearLayout>
