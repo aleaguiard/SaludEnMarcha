@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.os.Handler;
 
 
 public class PesoActivity extends AppCompatActivity {
@@ -177,7 +177,11 @@ public class PesoActivity extends AppCompatActivity {
                 .addOnSuccessListener(docRef -> {
                     Toast.makeText(this, "Peso añadido correctamente.", Toast.LENGTH_SHORT).show();
                     // Actualizar el gráfico después de guardar los datos
+                    pesoInput.setText("");
                     loadWeightData();
+                    // Esperar 3 segundos antes de actualizar el gráfico, para permitir que los datos se guarden en Firestore
+                    //new Handler().postDelayed(this::loadWeightData, 19000);
+                    startActivity(new Intent(this, PesoActivity.class));
 
                 })
                 .addOnFailureListener(e -> {
@@ -191,7 +195,8 @@ public class PesoActivity extends AppCompatActivity {
      */
     //TODO: Implementar la navegación al historial de pesos
     private void navigateToHistorial() {
-        startActivity(new Intent(this, AlimentacionHistorialActivity.class));
+        //startActivity(new Intent(this, AlimentacionHistorialActivity.class));
+        loadWeightData();
     }
 
     /**

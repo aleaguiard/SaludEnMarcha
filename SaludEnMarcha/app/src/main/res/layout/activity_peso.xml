@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Historial de peso" />
+            android:text="Historial***" />
 
         <Button
             android:id="@+id/volverPesoButton"
