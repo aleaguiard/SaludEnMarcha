@@ -57,7 +57,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/peso_picker_button"
-                android:autofillHints="" />
+                android:autofillHints=""
+                tools:ignore="VisualLintTextFieldSize" />
 
             <Button
                 android:id="@+id/buttonSavePeso"

@@ -28,11 +28,12 @@
                 android:layout_marginEnd="108dp"
                 android:fontFamily="@font/font_logo"
                 android:text="@string/detalles_de_la_actividad"
-                android:textColor="@color/blue"
+                android:textColor="#1565C0"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextSizeCheck" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"

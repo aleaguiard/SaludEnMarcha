@@ -3,11 +3,6 @@ package com.tfg.saludenmarcha;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
-
-// Clase CarreraData para almacenar los datos de la carrera
-import java.io.Serializable;
-
-import java.io.Serializable;
 import java.util.List;
 
 public class CarreraData implements Serializable {

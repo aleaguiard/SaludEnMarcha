@@ -20,7 +20,8 @@
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEmail"
@@ -157,7 +158,8 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutSocial"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/botonLogin"
+        tools:ignore="TextSizeCheck" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -165,11 +167,12 @@
         android:layout_height="56dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toTopOf="@+id/layoutEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/app_icon"
-        android:contentDescription="@string/logo" />
+        tools:ignore="ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

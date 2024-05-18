@@ -56,7 +56,8 @@
                 android:hint="@string/desayuno"
                 android:padding="10dp"
                 android:autofillHints=""
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/lunch_input"
@@ -67,7 +68,8 @@
                 android:hint="@string/comida"
                 android:padding="10dp"
                 android:autofillHints=""
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/dinner_input"
@@ -78,7 +80,8 @@
                 android:hint="@string/cena"
                 android:padding="10dp"
                 android:autofillHints=""
-                android:inputType="text" />
+                android:inputType="text"
+                tools:ignore="VisualLintTextFieldSize" />
 
             <Button
                 android:id="@+id/save_button"

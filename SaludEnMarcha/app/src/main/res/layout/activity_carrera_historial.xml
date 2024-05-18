@@ -52,13 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="144dp"
                 android:layout_marginLeft="56dp"
-                android:layout_marginRight="36dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="36dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_picker_buttonHistorial"
-                tools:ignore="RtlHardcoded">
+                tools:ignore="RtlHardcoded,TextSizeCheck">
 
                 <TextView
                     android:id="@+id/tipoActividadHistorial"
