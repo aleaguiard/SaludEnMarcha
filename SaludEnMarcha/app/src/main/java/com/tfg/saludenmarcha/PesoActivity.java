@@ -41,16 +41,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.os.Handler;
-
 
 public class PesoActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para entrada y botones
     private EditText pesoInput;
-    private Button saveButton, datePickerButton, volverButton, botonHistorial;
+    private Button saveButton, datePickerButton, volverButton, graficaPesoButton;
 
     // Variables para manejo de Firebase Firestore y autenticación
     private FirebaseFirestore db;
+    private AnyChartView anyChartView;
     private FirebaseAuth mAuth;
     private String idUser;
 
@@ -60,6 +59,7 @@ public class PesoActivity extends AppCompatActivity {
     // Variable para almacenar el peso y el ID de la actividad
     private Long weight = null;
     private long idActividad;
+    private boolean isChartVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +83,10 @@ public class PesoActivity extends AppCompatActivity {
         pesoInput = findViewById(R.id.peso_text);
         saveButton = findViewById(R.id.buttonSavePeso);
         datePickerButton = findViewById(R.id.peso_picker_button);
-        botonHistorial = findViewById(R.id.peso_historial_button);
+        graficaPesoButton = findViewById(R.id.graficaPesoButton);
         volverButton = findViewById(R.id.volverPesoButton);
+        anyChartView = findViewById(R.id.any_chart_peso);
+        anyChartView.setVisibility(View.GONE);
 
         // Ajuste de la vista para adaptarse a los bordes de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -117,7 +119,7 @@ public class PesoActivity extends AppCompatActivity {
     private void setupListeners() {
         datePickerButton.setOnClickListener(this::openDatePicker);
         saveButton.setOnClickListener(this::saveWeight);
-        botonHistorial.setOnClickListener(v -> navigateToHistorial());
+        graficaPesoButton.setOnClickListener(v -> showGraphic());
         volverButton.setOnClickListener(v -> navigateToMain());
     }
 
@@ -192,12 +194,16 @@ public class PesoActivity extends AppCompatActivity {
 
 
     /**
-     * Navega a la actividad de historial.
+     * Muestra u oculta la gráfica de peso.
      */
-    //TODO: Implementar la navegación al historial de pesos
-    private void navigateToHistorial() {
-        //startActivity(new Intent(this, AlimentacionHistorialActivity.class));
-        loadWeightData();
+    private void showGraphic() {
+        if (isChartVisible) {
+            anyChartView.setVisibility(View.GONE);
+            isChartVisible = false;
+        } else {
+            anyChartView.setVisibility(View.VISIBLE);
+            isChartVisible = true;
+        }
     }
 
     /**
