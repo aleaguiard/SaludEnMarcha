@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.os.Handler;
 
 
@@ -207,34 +208,45 @@ public class PesoActivity extends AppCompatActivity {
     }
 
     /**
-     * Obtiene el ID más alto registrado en la colección 'activities' y prepara el siguiente ID para una nueva entrada.
-     * Este método asume que la colección 'activities' utiliza un campo llamado 'id' para almacenar un identificador numérico.
+     * Obtiene el ID más alto registrado en la colección 'weights' y prepara el siguiente ID para una nueva entrada.
+     * Este método asume que la colección 'weights' utiliza un campo llamado 'id' para almacenar un identificador numérico.
      */
     private void obtenerIdMasAltoActividad() {
-        // Consulta a la colección 'activities' para encontrar el documento con el ID más alto.
+        // Consulta a la colección 'weights' para encontrar el documento con el ID más alto para el usuario actual.
         db.collection("weights")
                 .whereEqualTo("idUser", idUser)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        // Verificar si hay un error al escuchar los cambios en la base de datos.
                         if (e != null) {
                             return;
                         }
+
+                        // Crear una referencia a la colección 'weights'.
                         CollectionReference activitiesRef = db.collection("weights");
+
+                        // Crear una consulta para obtener el documento con el ID más alto, ordenando de forma descendente y limitando a 1 resultado.
                         Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
+
+                        // Ejecutar la consulta y manejar el resultado.
                         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
+                                    // Verificar si se encontraron documentos.
                                     if (!task.getResult().isEmpty()) {
                                         idActividad = 0;
+                                        // Iterar sobre los documentos recuperados (en este caso solo uno).
                                         for (QueryDocumentSnapshot document : task.getResult()) {
+                                            // Verificar si el documento contiene el campo 'id'.
                                             if (document.contains("id")) {
+                                                // Obtener el valor del campo 'id' y preparar el próximo ID.
                                                 long highestId = document.getLong("id");
                                                 if (highestId > Integer.MAX_VALUE) {
                                                     System.out.println("El ID excede el máximo valor para un int");
                                                 } else {
-                                                    idActividad = (int) highestId + 1;
+                                                    idActividad = highestId + 1;
                                                     System.out.println("El ID de la próxima actividad será: " + idActividad);
                                                 }
                                             } else {
@@ -252,7 +264,14 @@ public class PesoActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * Carga los datos de peso desde Firestore para el usuario actual.
+     * Ordena los documentos por el campo 'id' en orden descendente y limita a los 20 documentos más recientes.
+     * Cada entrada se agrega a una lista de datos que se utiliza para actualizar el gráfico.
+     */
     private void loadWeightData() {
+        // Verificar si el ID de usuario está disponible.
         if (idUser == null || idUser.isEmpty()) {
             Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
             return;
@@ -260,23 +279,27 @@ public class PesoActivity extends AppCompatActivity {
 
         Log.d("PesoActivity", "Cargando datos para el usuario: " + idUser);
 
+        // Consulta a la colección 'weights' para obtener los datos de peso del usuario actual, ordenados por 'id' en orden descendente.
         db.collection("weights")
                 .whereEqualTo("idUser", idUser)
                 .orderBy("id", Query.Direction.DESCENDING)
-                .limit(10)  // Limitar a los 10 documentos con los IDs más altos para el usuario específico
+                .limit(20)  // Limitar a los 20 documentos con los IDs más altos para el usuario específico.
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        // Verificar si hay un error al escuchar los cambios en la base de datos.
                         if (e != null) {
                             return;
                         }
 
+                        // Si hay resultados, procesar los documentos recuperados.
                         if (value != null) {
                             List<DataEntry> entries = new ArrayList<>();
+                            // Iterar sobre los documentos recuperados.
                             for (QueryDocumentSnapshot document : value) {
                                 Log.d("PesoActivity", "Documento recuperado: " + document.getData());
 
-                                // Verifica si el documento tiene los campos 'weight', 'day', 'month', 'year'
+                                // Verificar si el documento tiene los campos 'weight', 'day', 'month', 'year', y 'id'.
                                 if (document.contains("weight") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
                                     Long weightNumber = document.getLong("weight");
                                     Long day = document.getLong("day");
@@ -287,8 +310,8 @@ public class PesoActivity extends AppCompatActivity {
                                     Log.d("PesoActivity", "ID: " + id + " Weight: " + weightNumber + " Date: " + day + "/" + month + "/" + year);
 
                                     if (weightNumber != null && day != null && month != null && year != null) {
-                                        // Ensamblar la fecha en un formato legible
-                                        String date = day + "/" + month + "/" + year + " " + id;  // Usar 'id' para diferenciar entre pesos del mismo día
+                                        // Ensamblar la fecha en un formato legible y diferenciar entre pesos del mismo día usando 'id'.
+                                        String date = day + "/" + month + "/" + year + " " + id;
                                         entries.add(new ValueDataEntry(date, weightNumber));
                                     }
                                 } else {
@@ -297,7 +320,7 @@ public class PesoActivity extends AppCompatActivity {
                             }
                             Log.d("PesoActivity", "Número de entradas: " + entries.size());
                             if (!entries.isEmpty()) {
-                                // Asegurarse de actualizar el gráfico en el hilo principal
+                                // Asegurarse de actualizar el gráfico en el hilo principal.
                                 runOnUiThread(() -> updateChart(entries));
                             } else {
                                 Toast.makeText(PesoActivity.this, "No se encontraron datos de peso.", Toast.LENGTH_SHORT).show();
@@ -308,28 +331,31 @@ public class PesoActivity extends AppCompatActivity {
     }
 
 
-
-
-
+    /**
+     * Actualiza el gráfico de líneas con los datos proporcionados.
+     *
+     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
+     */
     private void updateChart(List<DataEntry> entries) {
+        // Obtener la vista del gráfico desde el layout.
         AnyChartView anyChartView = findViewById(R.id.any_chart_peso);
 
-        // Crear el gráfico de líneas
+        // Crear una instancia del gráfico de líneas.
         Cartesian cartesian = AnyChart.line();
 
-        // Establecer el título del gráfico
+        // Establecer el título del gráfico.
         cartesian.title("Evolución del Peso");
 
-        // Crear la serie y agregar los datos
+        // Crear una serie de líneas y agregar los datos a la serie.
         Line series = cartesian.line(entries);
         series.name("Peso");
 
-        // Configurar el gráfico con los datos
+        // Configurar el gráfico con los datos de la serie.
         anyChartView.setChart(cartesian);
-        anyChartView.invalidate(); // Forzar la invalidación de la vista
+
+        // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
+        anyChartView.invalidate();
     }
-
-
 
 
 }
