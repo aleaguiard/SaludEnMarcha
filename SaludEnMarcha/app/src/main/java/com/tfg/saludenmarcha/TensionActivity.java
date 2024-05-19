@@ -342,13 +342,13 @@ public class TensionActivity extends AppCompatActivity {
         Cartesian cartesian = AnyChart.line();
 
         cartesian.title("Evolución de la Tensión Arterial y Pulso");
-
         // Crear las series de líneas y agregar los datos a cada serie.
+        Line sistolicaSeries = cartesian.line(sistolicaEntries);
+        sistolicaSeries.name("Sistólica");
+
         Line diastolicaSeries = cartesian.line(diastolicaEntries);
         diastolicaSeries.name("Diastólica");
 
-        Line sistolicaSeries = cartesian.line(sistolicaEntries);
-        sistolicaSeries.name("Sistólica");
 
         Line pulseSeries = cartesian.line(pulseEntries);
         pulseSeries.name("Pulso");
