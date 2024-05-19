@@ -19,7 +19,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * AlimentacionActivity es una actividad que permite al usuario registrar y gestionar sus datos de alimentación diaria.
+ * El usuario puede ingresar información sobre el desayuno, el almuerzo y la cena, y seleccionar una fecha específica.
+ * Los datos de alimentación se almacenan en Firebase Firestore.
+ * También permite al usuario ver un historial de su alimentación y volver a la actividad principal.
+ */
 public class AlimentacionActivity extends AppCompatActivity {
 
     // Variables de la interfaz de usuario para entrada de datos y botones

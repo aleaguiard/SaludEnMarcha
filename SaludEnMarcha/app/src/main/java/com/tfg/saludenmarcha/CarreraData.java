@@ -4,7 +4,12 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 import java.util.List;
-
+/**
+ * CarreraData es una clase que representa los datos de una carrera o actividad física.
+ * Implementa la interfaz Serializable para permitir que los objetos de esta clase se puedan serializar.
+ * Almacena información como el ID de la carrera, tiempo transcurrido, distancia total, fecha y hora de inicio y finalización,
+ * tipo de actividad.
+ */
 public class CarreraData implements Serializable {
     private String raceId;
     private long timeElapsed;

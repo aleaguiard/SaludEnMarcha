@@ -48,6 +48,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import com.google.firebase.firestore.EventListener;
+/**
+ * CarreraHistorialActivity es una actividad que muestra el historial de actividades realizadas por el usuario.
+ * El usuario puede seleccionar una fecha para ver las actividades realizadas ese día.
+ * La actividad muestra detalles como el tipo de actividad, distancia total, tiempo transcurrido, y horas de inicio y fin.
+ * Además, el usuario puede eliminar una actividad seleccionada.
+ * Se integran las funcionalidades de Firebase Firestore para almacenar y recuperar datos de actividades, y Google Maps para mostrar la ruta GPS de las actividades.
+ */
 public class CarreraHistorialActivity extends AppCompatActivity {
     // Declaración de variables para los TextViews y botones
     private TextView tipoActividadText;

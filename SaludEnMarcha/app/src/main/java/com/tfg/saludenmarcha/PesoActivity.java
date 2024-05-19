@@ -41,8 +41,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
+/**
+ * PesoActivity es una actividad que permite al usuario registrar y gestionar sus datos de peso corporal diario.
+ * El usuario puede ingresar su peso, seleccionar una fecha específica y guardar los datos en Firebase Firestore.
+ * También permite visualizar un gráfico con la evolución del peso y regresar a la actividad principal.
+ */
 public class PesoActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para entrada y botones
     private EditText pesoInput;

@@ -30,7 +30,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * TensionActivity es una actividad que permite al usuario registrar y gestionar sus datos de tensión arterial y pulso.
+ * El usuario puede ingresar su presión sistólica, presión diastólica y pulso, seleccionar una fecha específica y guardar los datos en Firebase Firestore.
+ * También permite al usuario ver un historial de sus registros y regresar a la actividad principal.
+ */
 public class TensionActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para los campos de entrada y los botones.
     private EditText tensionInput, pulsoInput,sistolicaInput, diastolicaInput;

@@ -31,7 +31,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * MedicacionActivity es una actividad que permite al usuario registrar y gestionar sus datos de medicación diaria.
+ * El usuario puede ingresar información sobre la medicación, la dosis, y seleccionar una fecha específica.
+ * Los datos de la medicación se almacenan en Firebase Firestore.
+ * También permite al usuario volver a la actividad principal.
+ */
 public class MedicacionActivity extends AppCompatActivity {
     // Variables para los componentes de la interfaz de usuario
     private EditText medicacionInput, dosisInput;

@@ -1,5 +1,8 @@
 package com.tfg.saludenmarcha;
-//Clase que almacena la latitud y longitud de un punto para ser guardado en Firebase
+/**
+ * LatLngData es una clase que almacena la latitud y longitud de un punto geográfico.
+ * Esta clase se utiliza para guardar y recuperar datos de ubicación en Firebase.
+ */
 public class LatLngData {
     public double latitude;
     public double longitude;
