@@ -52,14 +52,15 @@
                         tools:ignore="RtlHardcoded" />
 
                     <Button
-                        android:id="@+id/buttonNutricion"
+                        android:id="@+id/buttonHistorial"
                         style="@style/MyButtonStyle"
                         android:layout_width="144dp"
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
-                        android:drawableLeft="@drawable/ic_nutri"
-                        android:text="@string/nutrici_n"
+                        android:drawableLeft="@drawable/ic_historial"
+                        android:text="@string/historial"
                         tools:ignore="RtlHardcoded" />
+
 
                 </TableRow>
 
@@ -78,13 +79,13 @@
                         tools:ignore="RtlHardcoded" />
 
                     <Button
-                        android:id="@+id/buttonHistorial"
+                        android:id="@+id/buttonNutricion"
                         style="@style/MyButtonStyle"
                         android:layout_width="144dp"
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
-                        android:drawableLeft="@drawable/ic_historial"
-                        android:text="@string/historial"
+                        android:drawableLeft="@drawable/ic_nutri"
+                        android:text="@string/nutrici_n"
                         tools:ignore="RtlHardcoded" />
 
                 </TableRow>
