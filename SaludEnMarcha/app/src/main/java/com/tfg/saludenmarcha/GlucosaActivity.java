@@ -3,6 +3,7 @@ package com.tfg.saludenmarcha;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Line;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +35,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  * GlucosaActivity es una actividad que permite al usuario registrar y gestionar sus niveles de glucosa diarios.
@@ -39,7 +48,7 @@ import java.util.Map;
 public class GlucosaActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para entrada y botones
     private EditText glucosaInput;
-    private Button saveButton, datePickerButton, volverButton, botonHistorial;
+    private Button saveButton, datePickerButton, volverButton, graficaGlucosaButton;
 
     // Variables para manejo de Firebase Firestore y autenticación
     private FirebaseFirestore db;
@@ -52,6 +61,8 @@ public class GlucosaActivity extends AppCompatActivity {
     // Variable para almacenar la glucosa y el ID de la actividad
     private Long glucoseLevel = null;
     private long idActividad;
+    private boolean isChartVisible = false;
+    private AnyChartView anyChartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,9 @@ public class GlucosaActivity extends AppCompatActivity {
         initializeUI();
         initializeFirebase();
         setupListeners();
+
+        // Cargar los datos de glucosa desde Firebase
+        loadGlucoseData();
     }
 
     /**
@@ -72,6 +86,9 @@ public class GlucosaActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.buttonSaveGlucosa);
         datePickerButton = findViewById(R.id.glucosa_picker_button);
         volverButton = findViewById(R.id.volverGlucosaButton);
+        graficaGlucosaButton = findViewById(R.id.graficaGlucosaButton);
+        anyChartView = findViewById(R.id.any_chart_glucosa);
+        anyChartView.setVisibility(View.GONE);
 
         // Ajuste de la vista para adaptarse a los bordes de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -102,6 +119,7 @@ public class GlucosaActivity extends AppCompatActivity {
     private void setupListeners() {
         datePickerButton.setOnClickListener(this::openDatePicker);
         saveButton.setOnClickListener(this::saveGlucoseLevel);
+        graficaGlucosaButton.setOnClickListener(v -> showGraphic());
         volverButton.setOnClickListener(v -> navigateToMain());
     }
 
@@ -159,25 +177,39 @@ public class GlucosaActivity extends AppCompatActivity {
         glucosaData.put("id", idActividad);
 
         db.collection("glucose").add(glucosaData)
-                .addOnSuccessListener(docRef -> Toast.makeText(this, "Nivel de glucosa añadido correctamente.", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(docRef -> {
+                    Toast.makeText(this, "Nivel de glucosa añadido correctamente.", Toast.LENGTH_SHORT).show();
+                    glucosaInput.setText("");
+                    loadGlucoseData();
+                    startActivity(new Intent(this, GlucosaActivity.class));
+                })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar el nivel de glucosa.", Toast.LENGTH_LONG).show());
     }
 
+    /**
+     * Muestra u oculta la gráfica de glucosa.
+     */
+    private void showGraphic() {
+        if (isChartVisible) {
+            anyChartView.setVisibility(View.GONE);
+            isChartVisible = false;
+        } else {
+            anyChartView.setVisibility(View.VISIBLE);
+            isChartVisible = true;
+        }
+    }
 
     /**
      * Vuelve a la actividad principal.
      */
     private void navigateToMain() {
-
         startActivity(new Intent(this, MainActivity.class));
     }
-
 
     /**
      * Obtiene el ID más alto registrado en la colección 'glucose' y prepara el siguiente ID para una nueva entrada.
      */
     private void obtenerIdMasAltoActividad() {
-        // Consulta a la colección 'activities' para encontrar el documento con el ID más alto.
         db.collection("glucose")
                 .whereEqualTo("idUser", idUser)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -200,7 +232,7 @@ public class GlucosaActivity extends AppCompatActivity {
                                                 if (highestId > Integer.MAX_VALUE) {
                                                     System.out.println("El ID excede el máximo valor para un int");
                                                 } else {
-                                                    idActividad = (int) highestId + 1;
+                                                    idActividad = highestId + 1;
                                                     System.out.println("El ID de la próxima actividad será: " + idActividad);
                                                 }
                                             } else {
@@ -217,5 +249,82 @@ public class GlucosaActivity extends AppCompatActivity {
                         });
                     }
                 });
+    }
+
+    /**
+     * Carga los datos de glucosa desde Firestore para el usuario actual.
+     * Ordena los documentos por el campo 'id' en orden descendente y limita a los 20 documentos más recientes.
+     * Cada entrada se agrega a una lista de datos que se utiliza para actualizar el gráfico.
+     */
+    private void loadGlucoseData() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("GlucosaActivity", "Cargando datos para el usuario: " + idUser);
+
+        db.collection("glucose")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(20)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (value != null) {
+                            List<DataEntry> entries = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : value) {
+                                Log.d("GlucosaActivity", "Documento recuperado: " + document.getData());
+
+                                if (document.contains("glucose") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
+                                    Long glucoseNumber = document.getLong("glucose");
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+                                    Long id = document.getLong("id");
+
+                                    Log.d("GlucosaActivity", "ID: " + id + " Glucosa: " + glucoseNumber + " Fecha: " + day + "/" + month + "/" + year);
+
+                                    if (glucoseNumber != null && day != null && month != null && year != null) {
+                                        String date = day + "/" + month + "/" + year + " " + id;
+                                        entries.add(new ValueDataEntry(date, glucoseNumber));
+                                    }
+                                } else {
+                                    Log.d("GlucosaActivity", "Documento sin 'glucose', 'day', 'month', 'year' o 'id': " + document.getId());
+                                }
+                            }
+                            Log.d("GlucosaActivity", "Número de entradas: " + entries.size());
+                            if (!entries.isEmpty()) {
+                                runOnUiThread(() -> updateChart(entries));
+                            } else {
+                                Toast.makeText(GlucosaActivity.this, "No se encontraron datos de glucosa.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Actualiza el gráfico de líneas con los datos proporcionados.
+     *
+     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
+     */
+    private void updateChart(List<DataEntry> entries) {
+        AnyChartView anyChartView = findViewById(R.id.any_chart_glucosa);
+
+        Cartesian cartesian = AnyChart.line();
+
+        cartesian.title("Evolución del Nivel de Glucosa");
+
+        Line series = cartesian.line(entries);
+        series.name("Glucosa");
+
+        anyChartView.setChart(cartesian);
+
+        anyChartView.invalidate();
     }
 }
