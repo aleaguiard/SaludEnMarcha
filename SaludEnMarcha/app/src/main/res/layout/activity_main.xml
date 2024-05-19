@@ -136,8 +136,8 @@
                         android:layout_width="144dp"
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
-                        android:drawableLeft="@drawable/ic_calendar"
-                        android:text="@string/calendario"
+                        android:drawableLeft="@drawable/ic_resumen"
+                        android:text="@string/resumen"
                         tools:ignore="RtlHardcoded" />
 
                 </TableRow>
@@ -162,8 +162,8 @@
                         android:layout_width="144dp"
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
-                        android:drawableLeft="@drawable/ic_resumen"
-                        android:text="@string/resumen"
+                        android:drawableLeft="@drawable/ic_grafica"
+                        android:text="Gráficas"
                         tools:ignore="RtlHardcoded" />
 
                 </TableRow>
