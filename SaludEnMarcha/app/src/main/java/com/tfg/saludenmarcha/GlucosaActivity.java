@@ -84,6 +84,7 @@ public class GlucosaActivity extends AppCompatActivity {
      */
     private void initializeUI() {
         glucosaInput = findViewById(R.id.glucosa_text);
+        glucosaInput.requestFocus();
         saveButton = findViewById(R.id.buttonSaveGlucosa);
         datePickerButton = findViewById(R.id.glucosa_picker_button);
         volverButton = findViewById(R.id.volverGlucosaButton);

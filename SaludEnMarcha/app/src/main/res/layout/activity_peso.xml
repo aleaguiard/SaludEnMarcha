@@ -7,37 +7,40 @@
     android:layout_height="match_parent"
     tools:context=".PesoActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="164dp"
-        android:layout_height="103dp"
-        android:layout_marginTop="80dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_icon"
-        android:contentDescription="@string/logo" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView3">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="164dp"
+                android:layout_height="103dp"
+                android:layout_marginTop="80dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/date_picker_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/app_icon"
+                android:contentDescription="@string/logo" />
 
             <Button
                 android:id="@+id/peso_picker_button"
                 style="@style/MyButtonStyle"
                 android:layout_width="160dp"
                 android:layout_height="48dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="128dp"
+                android:layout_marginEnd="50dp"
                 android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="32dp"
                 android:hint="@string/peso"
                 android:inputType="number"
@@ -64,7 +67,7 @@
                 style="@style/MyButtonStyle"
                 android:layout_width="136dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/guardar" />
 
             <Button

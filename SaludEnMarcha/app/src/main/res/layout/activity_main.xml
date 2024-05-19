@@ -75,7 +75,7 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_glucosa"
-                        android:text="@string/glucosa"
+                        android:text="@string/glucosa_"
                         tools:ignore="RtlHardcoded" />
 
                     <Button
@@ -101,7 +101,7 @@
                         android:layout_height="48dp"
                         android:layout_margin="16dp"
                         android:drawableLeft="@drawable/ic_peso"
-                        android:text="@string/peso"
+                        android:text="@string/peso_"
                         tools:ignore="RtlHardcoded" />
 
                     <Button

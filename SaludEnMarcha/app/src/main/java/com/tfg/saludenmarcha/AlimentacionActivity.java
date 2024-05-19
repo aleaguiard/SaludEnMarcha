@@ -76,6 +76,7 @@ public class AlimentacionActivity extends AppCompatActivity {
     private void initUI() {
         // Obtención de referencias a los componentes de la interfaz de usuario desde el layout
         breakfastInput = findViewById(R.id.breakfast_input);
+        breakfastInput.requestFocus();
         lunchInput = findViewById(R.id.lunch_input);
         dinnerInput = findViewById(R.id.dinner_input);
         saveButton = findViewById(R.id.save_button);

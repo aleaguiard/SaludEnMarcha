@@ -80,6 +80,7 @@ public class TensionActivity extends AppCompatActivity {
     private void initializeUI() {
         // Asigna cada vista a su variable correspondiente.
         sistolicaInput = findViewById(R.id.tension_sistolica_text);
+        sistolicaInput.requestFocus();
         diastolicaInput = findViewById(R.id.tension_diastolica_text);
         pulsoInput = findViewById(R.id.pulso_text);
         saveButton = findViewById(R.id.buttonSaveTension);

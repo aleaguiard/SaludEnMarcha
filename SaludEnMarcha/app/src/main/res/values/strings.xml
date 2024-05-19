@@ -53,6 +53,7 @@
     <string name="cena">Cena:</string>
     <string name="grafica">Gráfica</string>
     <string name="peso">Peso:</string>
+    <string name="peso_">Peso</string>
     <string name="nombre_medicaci_n">Nombre medicación:</string>
     <string name="dosis">Dosis:</string>
     <string name="historial_de_alimentaci_n">Historial de Alimentación</string>
@@ -61,7 +62,7 @@
     <string name="detalles_de_la_actividad">DETALLES DE LA ACTIVIDAD</string>
     <string name="solo_usar_en_caso_de_emergencia_real">Solo usar en caso de emergencia real</string>
     <string name="llamar_112">Llamar 112</string>
-    <string name="glucosa">Glucosa:</string>
+    <string name="glucosa_">Glucosa</string>
     <string name="creado_por_alejandro_aguiar_y_alberto_arroyo">Creado por Alejandro Aguiar y Alberto Arroyo</string>
     <string name="actividad">Actividad</string>
     <string name="nutrici_n">Nutrición</string>
@@ -80,5 +81,6 @@
     <string name="sist_lica_mmhg">Sistólica (mmHg)</string>
     <string name="pulso_ppm">Pulso ppm:</string>
     <string name="diast_lica_mmhg">Diastólica (mmHg)</string>
+    <string name="glucosa">Glucosa:</string>
 
 </resources>

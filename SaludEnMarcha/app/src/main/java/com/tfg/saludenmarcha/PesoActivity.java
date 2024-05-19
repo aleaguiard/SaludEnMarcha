@@ -85,6 +85,7 @@ public class PesoActivity extends AppCompatActivity {
      */
     private void initializeUI() {
         pesoInput = findViewById(R.id.peso_text);
+        pesoInput.requestFocus();
         saveButton = findViewById(R.id.buttonSavePeso);
         datePickerButton = findViewById(R.id.peso_picker_button);
         graficaPesoButton = findViewById(R.id.graficaPesoButton);

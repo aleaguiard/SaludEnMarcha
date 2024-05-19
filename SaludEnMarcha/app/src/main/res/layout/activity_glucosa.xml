@@ -102,11 +102,7 @@
                     android:layout_height="200dp" />
 
             </androidx.cardview.widget.CardView>
-
-
         </LinearLayout>
-
-
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
