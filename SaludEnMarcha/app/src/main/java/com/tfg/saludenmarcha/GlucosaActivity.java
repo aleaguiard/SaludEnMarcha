@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * GlucosaActivity es una actividad que permite al usuario registrar y gestionar sus niveles de glucosa diarios.
  * El usuario puede ingresar su nivel de glucosa, seleccionar una fecha específica y guardar los datos en Firebase Firestore.

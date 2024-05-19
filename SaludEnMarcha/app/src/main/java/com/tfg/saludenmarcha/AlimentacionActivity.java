@@ -8,13 +8,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,6 +49,7 @@ public class AlimentacionActivity extends AppCompatActivity {
 
     // Variables para almacenar la fecha seleccionada por el usuario
     private int selectedDay, selectedMonth, selectedYear;
+    private long idActividad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,9 @@ public class AlimentacionActivity extends AppCompatActivity {
 
         // Configuración de los listeners para los botones
         setupListeners();
+
+        // Obtener el ID más alto al iniciar
+        obtenerIdMasAltoActividad();
     }
 
     /**
@@ -83,7 +98,13 @@ public class AlimentacionActivity extends AppCompatActivity {
         // Inicialización de FirebaseAuth y Firestore
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        idUser = mAuth.getCurrentUser().getUid();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            idUser = currentUser.getUid();
+        } else {
+            // Redirigir al usuario a la pantalla de login o mostrar un mensaje adecuado
+            // startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     /**
@@ -142,10 +163,64 @@ public class AlimentacionActivity extends AppCompatActivity {
         meal.put("day", selectedDay);
         meal.put("month", selectedMonth);
         meal.put("year", selectedYear);
+        meal.put("id", idActividad);
 
         // Adición del documento a la colección de Firestore
         db.collection("meals").add(meal)
-                .addOnSuccessListener(documentReference -> Toast.makeText(this, "Alimentación añadida correctamente: ", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Alimentación añadida correctamente: ", Toast.LENGTH_SHORT).show();
+                    // Limpiar los campos de entrada después de guardar
+                    breakfastInput.setText("");
+                    lunchInput.setText("");
+                    dinnerInput.setText("");
+                    // Recargar los datos
+                    obtenerIdMasAltoActividad();
+                })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la alimentación", Toast.LENGTH_LONG).show());
+    }
+
+    /**
+     * Obtiene el ID más alto registrado en la colección 'meals' y prepara el siguiente ID para una nueva entrada.
+     */
+    private void obtenerIdMasAltoActividad() {
+        db.collection("meals")
+                .whereEqualTo("idUser", idUser)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+                        CollectionReference activitiesRef = db.collection("meals");
+                        Query query = activitiesRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
+                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        idActividad = 0;
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            if (document.contains("id")) {
+                                                long highestId = document.getLong("id");
+                                                if (highestId > Integer.MAX_VALUE) {
+                                                    System.out.println("El ID excede el máximo valor para un int");
+                                                } else {
+                                                    idActividad = highestId + 1;
+                                                    System.out.println("El ID de la próxima actividad será: " + idActividad);
+                                                }
+                                            } else {
+                                                System.out.println("Documento no contiene el campo 'id'.");
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("No se encontraron documentos.");
+                                    }
+                                } else {
+                                    System.out.println("Error obteniendo documentos: " + task.getException());
+                                }
+                            }
+                        });
+                    }
+                });
     }
 }
