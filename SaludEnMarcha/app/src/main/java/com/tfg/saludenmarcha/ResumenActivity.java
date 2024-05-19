@@ -73,7 +73,7 @@ public class ResumenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendario);
+        setContentView(R.layout.activity_resumen);
         EdgeToEdge.enable(this);  // Habilita la visualización en pantalla completa
 
         // Inicialización de los componentes de la interfaz de usuario

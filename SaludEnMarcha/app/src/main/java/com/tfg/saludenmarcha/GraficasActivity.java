@@ -48,7 +48,7 @@ public class GraficasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resumen);
+        setContentView(R.layout.activity_graficas);
         EdgeToEdge.enable(this);  // Habilita la visualización en pantalla completa
 
         // Inicialización de los componentes de la interfaz de usuario
