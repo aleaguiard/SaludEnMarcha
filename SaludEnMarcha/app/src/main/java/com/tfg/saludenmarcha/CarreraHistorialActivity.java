@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -35,14 +36,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
+import com.google.firebase.firestore.EventListener;
 public class CarreraHistorialActivity extends AppCompatActivity {
     // Declaración de variables para los TextViews y el botón
     private TextView tipoActividadText;
@@ -64,6 +68,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private GoogleMap mMap;
     ArrayList<LatLng> rutaGps;
     List<GeoPoint> geoPoints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +85,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         volverButton = findViewById(R.id.volverHistorialButton);
         deleteActivityButton = findViewById(R.id.deleteActivityButton);
         deleteActivityButton.setVisibility(View.GONE);
-        //deleteActivityButton.setVisibility(View.VISIBLE);
 
         // Inicialización de Firestore
         db = FirebaseFirestore.getInstance();
@@ -109,7 +113,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        //Boton volver
+
+        // Botón volver
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +129,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
             return insets;
         });
 
-        //Boton para borrar la actividad
-        // Configurar OnClickListener para el botón de eliminación de actividad
+        // Botón para borrar la actividad
         deleteActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +169,51 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Cargar la última actividad al iniciar
+        fetchLatestActivity();
     }
+
+    // Método para buscar la actividad más reciente en la base de datos
+    private void fetchLatestActivity() {
+        // Verificar si el ID de usuario está disponible
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        db.collection("activities")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(1)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (value != null && !value.isEmpty()) {
+                            DocumentSnapshot document = value.getDocuments().get(0);
+                            Long day = document.getLong("day");
+                            Long month = document.getLong("month");
+                            Long year = document.getLong("year");
+
+                            if (day != null && month != null && year != null) {
+                                String date = day + "/" + month + "/" + year;
+                                Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada el " + date, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            showActivity(document);
+                        } else {
+                            Toast.makeText(CarreraHistorialActivity.this, "No hay actividades registradas.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
     // Método para buscar las actividades de una fecha específica en la base de datos
     private void fetchActivitiesForDate(int year, int month, int day) {
@@ -198,7 +246,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                         if (mMap != null) {
                             mMap.clear();
                         }
-                        //Quitar boton de borrar actividad
+                        // Quitar botón de borrar actividad
                         deleteActivityButton.setVisibility(View.GONE);
                         Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
                     }
@@ -218,7 +266,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         for (DocumentSnapshot document : activityDocuments) {
             Map<String, Object> activityData = document.getData();
             if (activityData != null && activityData.containsKey("activityType")) {
-                //activityNames.add((String) activityData.get("activityType"));
                 String activityType = (String) activityData.get("activityType");
                 String hour = activityData.get("startHour").toString();
                 String minute = activityData.get("startMinute").toString();
@@ -256,7 +303,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         currentActivityDocument = document.getReference();
         Map<String, Object> activity = document.getData();
         tipoActividadText.setText("Tipo de actividad: " + activity.get("activityType"));
-        //distanciaTotalText.setText("Distancia total: " + activity.get("totalDistance") + " km");
         double distanciaTotal = (double) activity.get("totalDistance");
         String distanciaFormateada = String.format("%.2f", distanciaTotal); // Formatea la distancia con dos decimales
         distanciaTotalText.setText("Distancia total: " + distanciaFormateada + " km");
@@ -309,7 +355,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         }
     }
 
-
     // Método para dibujar las polilíneas en el mapa
     private void drawPolylineOnMap(ArrayList<LatLng> rutaGpsLatLng) {
         // Agregar las polilíneas al mapa
@@ -323,5 +368,4 @@ public class CarreraHistorialActivity extends AppCompatActivity {
 
         mMap.addPolyline(polylineOptions);
     }
-
 }
