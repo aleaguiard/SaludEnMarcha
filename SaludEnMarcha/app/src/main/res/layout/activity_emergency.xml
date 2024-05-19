@@ -37,7 +37,7 @@
         android:id="@+id/buttonVolver"
         android:layout_width="128dp"
         android:layout_height="48dp"
-        style="@style/MyButtonStyle"
+        style="@style/MyButtonStyleVolver"
         android:text="@string/botonVolver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

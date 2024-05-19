@@ -32,13 +32,12 @@
             android:gravity="center"
             android:orientation="vertical">
 
-
             <Button
                 android:id="@+id/peso_picker_button"
                 style="@style/MyButtonStyle"
                 android:layout_width="160dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="128dp"
                 android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +82,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/botonVolver"
-                android:textColor="#000000"
                 tools:ignore="TextContrastCheck" />
 
             <androidx.cardview.widget.CardView

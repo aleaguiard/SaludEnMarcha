@@ -39,9 +39,9 @@
                 android:layout_width="160dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="128dp"
+                android:layout_marginTop="136dp"
                 android:layout_marginEnd="50dp"
-                android:text="Seleccionar Fecha"
+                android:text="@string/seleccionar_fecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/imageView3" />

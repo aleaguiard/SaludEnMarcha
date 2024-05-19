@@ -96,7 +96,7 @@
                 style="@style/MyButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/historial_de_alimentaci_n" />
 
             <Button
@@ -104,7 +104,7 @@
                 style="@style/MyButtonStyleVolver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/botonVolver"
                 tools:ignore="TextContrastCheck" />
 
