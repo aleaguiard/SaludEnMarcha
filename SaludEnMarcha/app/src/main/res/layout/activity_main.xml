@@ -131,7 +131,7 @@
                         tools:ignore="RtlHardcoded" />
 
                     <Button
-                        android:id="@+id/buttonCalendario"
+                        android:id="@+id/buttonResumen"
                         style="@style/MyButtonStyle"
                         android:layout_width="144dp"
                         android:layout_height="48dp"
@@ -157,7 +157,7 @@
                         tools:ignore="RtlHardcoded" />
 
                     <Button
-                        android:id="@+id/buttonResumen"
+                        android:id="@+id/buttonGraficas"
                         style="@style/MyButtonStyle"
                         android:layout_width="144dp"
                         android:layout_height="48dp"

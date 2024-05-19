@@ -118,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
         setupButtonClick(R.id.buttonHistorial, CarreraHistorialActivity.class);
         setupButtonClick(R.id.buttonNutricion, AlimentacionActivity.class);
         setupButtonClick(R.id.buttonTension, TensionActivity.class);
-        setupButtonClick(R.id.buttonCalendario, CalendarioActivity.class);
         setupButtonClick(R.id.buttonResumen, ResumenActivity.class);
+        setupButtonClick(R.id.buttonGraficas, GraficasActivity.class);
     }
 
     @Override
