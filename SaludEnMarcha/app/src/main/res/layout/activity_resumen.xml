@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,18 +25,18 @@
                 android:layout_width="164dp"
                 android:layout_height="103dp"
                 android:layout_marginTop="80dp"
+                android:contentDescription="@string/logo"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/datepicker_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon"
-                android:contentDescription="@string/logo" />
+                app:srcCompat="@drawable/app_icon" />
 
             <Button
-                style="@style/MyButtonStyle"
                 android:id="@+id/datepicker_button"
+                style="@style/MyButtonStyle"
                 android:layout_width="160dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="50dp"
@@ -48,17 +49,17 @@
 
             <TextView
                 android:id="@+id/result_text"
+                style="@style/CajaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="32dp"
+                android:gravity="center"
                 android:padding="16dp"
+                android:singleLine="false"
                 android:text=""
                 android:textSize="18sp"
-                android:singleLine="false"
-                android:gravity="center"
-                style="@style/CajaTexto"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/datepicker_button" />
