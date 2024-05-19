@@ -19,6 +19,9 @@
         android:theme="@style/Theme.SaludEnMarcha.Light"
         tools:targetApi="31">
         <activity
+            android:name=".CalendarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".MedicacionActivity"
             android:exported="false" />
         <activity
