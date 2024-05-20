@@ -192,17 +192,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         picker.show(getSupportFragmentManager(), picker.toString());
     }
 
-    //***************************
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Navega a la actividad principal.
