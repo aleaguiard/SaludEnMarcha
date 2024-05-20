@@ -3,24 +3,37 @@ package com.tfg.saludenmarcha;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
+import com.anychart.chart.common.dataentry.DataEntry;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Align;
 import com.anychart.enums.Anchor;
-import com.anychart.enums.Position;
+import com.anychart.enums.LegendLayout;
 import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.text.HAlign;
+import com.anychart.graphics.vector.text.VAlign;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -29,33 +42,39 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GraficasActivity es una actividad que muestra gráficos de AnyChartView para los últimos 10 registros
  * de las colecciones de glucosa, presión y pulso, y peso en Firebase Firestore.
  */
 public class GraficasActivity extends AppCompatActivity {
+    // Variables de interfaz de usuario para los campos de entrada y los botones.
+    private EditText sistolicaInput, diastolicaInput, pulsoInput;
+    private Button saveButton, datePickerButton, historialButton, volverButton;
 
-    // Variables para los componentes de la interfaz de usuario
-    private AnyChartView anyChartGlucose, anyChartPressurePulse, anyChartWeights;
-    private Button volverButton;
-
-    // Variables para manejo de Firebase Firestore y autenticación
-    private FirebaseFirestore db;
+    // Variables para la autenticación de Firebase y la base de datos Firestore.
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private String idUser;
+    private AnyChartView anyChartView;
+    private boolean isChartVisible = false;
+
+    // Variables para almacenar la fecha seleccionada por el usuario.
+    private int selectedDay, selectedMonth, selectedYear;
+    private long idActividad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graficas);
-        EdgeToEdge.enable(this);  // Habilita la visualización en pantalla completa
+        EdgeToEdge.enable(this);
 
         // Inicialización de los componentes de la interfaz de usuario
-        anyChartGlucose = findViewById(R.id.any_chart_glucose_graficas);
-        anyChartPressurePulse = findViewById(R.id.any_chart_pressure_pulse_graficas);
-        anyChartWeights = findViewById(R.id.any_chart_weights_graficas);
+        anyChartView = findViewById(R.id.any_chart_vertical);
         volverButton = findViewById(R.id.volverResumenButton);
 
         // Configuración de Firebase y autenticación
@@ -79,68 +98,6 @@ public class GraficasActivity extends AppCompatActivity {
         loadTensionData();
         loadWeightData();
     }
-
-
-    /**
-     * Carga los datos de peso desde Firestore y los muestra en el gráfico de AnyChartView.
-     */
-    private void loadWeightData() {
-        db.collection("weights")
-                .whereEqualTo("idUser", idUser)
-                .orderBy("id", Query.Direction.DESCENDING)
-                .limit(10)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("GraficasActivity", "Listen failed.", e);
-                            return;
-                        }
-
-                        List<DataEntry> entries = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : value) {
-                            Long weight = document.getLong("weight");
-                            Long day = document.getLong("day");
-                            Long month = document.getLong("month");
-                            Long year = document.getLong("year");
-                            String date = day + "/" + month + "/" + year;
-                            entries.add(new ValueDataEntry(date, weight));
-                        }
-
-                        updateChartWeight(anyChartWeights, "Peso", entries);
-                    }
-                });
-    }
-
-    /**
-     * Actualiza el gráfico de AnyChartView con los datos proporcionados.
-     *
-     * @param anyChartView La vista de AnyChartView a actualizar
-     * @param title        El título del gráfico
-     * @param entries      Los datos a mostrar en el gráfico
-     */
-    private void updateChartWeight(AnyChartView anyChartView, String title, List<DataEntry> entries) {
-        Cartesian cartesian = AnyChart.line();
-        cartesian.title(title);
-        cartesian.animation(true);
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.xAxis(0).title("Fecha");
-        cartesian.yAxis(0).title(title);
-        cartesian.yScale().minimum(0d);
-        Line line = cartesian.line(entries);
-        line.name(title);
-        line.tooltip()
-                .position(Position.CENTER_BOTTOM)
-                .anchor(Anchor.CENTER_BOTTOM)
-                .offsetX(0d)
-                .offsetY(5d);
-        anyChartView.setChart(cartesian);
-    }
-
-
-    /*
-    ********************************************************************
-     */
 
     /**
      * Carga los datos de glucosa desde Firestore para el usuario actual.
@@ -190,7 +147,7 @@ public class GraficasActivity extends AppCompatActivity {
                             }
                             Log.d("GraficasActivity", "Número de entradas: " + entries.size());
                             if (!entries.isEmpty()) {
-                                runOnUiThread(() -> updateChartGlucose(entries));
+                                updateChart("Glucosa", entries);
                             } else {
                                 Toast.makeText(GraficasActivity.this, "No se encontraron datos de glucosa.", Toast.LENGTH_SHORT).show();
                             }
@@ -200,22 +157,38 @@ public class GraficasActivity extends AppCompatActivity {
     }
 
     /**
-     * Actualiza el gráfico de líneas con los datos proporcionados.
-     *
-     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
+     * Carga los datos de peso desde Firestore y los muestra en el gráfico de AnyChartView.
      */
-    private void updateChartGlucose(List<DataEntry> entries) {
+    private void loadWeightData() {
+        db.collection("weights")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(10)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("GraficasActivity", "Listen failed.", e);
+                            return;
+                        }
 
-        Cartesian cartesian = AnyChart.line();
-
-        cartesian.title("Evolución del Nivel de Glucosa");
-
-        Line series = cartesian.line(entries);
-        series.name("Glucosa");
-
-        anyChartGlucose.setChart(cartesian);
-
-        anyChartGlucose.invalidate();
+                        List<DataEntry> entries = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : value) {
+                            Long weight = document.getLong("weight");
+                            Long day = document.getLong("day");
+                            Long month = document.getLong("month");
+                            Long year = document.getLong("year");
+                            String date = day + "/" + month + "/" + year;
+                            entries.add(new ValueDataEntry(date, weight));
+                        }
+                        Log.d("GraficasActivity", "Número de entradas de peso: " + entries.size());
+                        if (!entries.isEmpty()) {
+                            updateChart("Peso", entries);
+                        } else {
+                            Toast.makeText(GraficasActivity.this, "No se encontraron datos de peso.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     /**
@@ -234,7 +207,7 @@ public class GraficasActivity extends AppCompatActivity {
         db.collection("pressure-pulse")
                 .whereEqualTo("idUser", idUser)
                 .orderBy("id", Query.Direction.DESCENDING)
-                .limit(20)
+                .limit(10)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
@@ -272,7 +245,9 @@ public class GraficasActivity extends AppCompatActivity {
                             }
                             Log.d("TensionActivity", "Número de entradas: " + diastolicaEntries.size());
                             if (!diastolicaEntries.isEmpty() && !sistolicaEntries.isEmpty() && !pulseEntries.isEmpty()) {
-                                runOnUiThread(() -> updateChartPulse(diastolicaEntries, sistolicaEntries, pulseEntries));
+                                updateChart("Diastólica", diastolicaEntries);
+                                updateChart("Sistólica", sistolicaEntries);
+                                updateChart("Pulso", pulseEntries);
                             } else {
                                 Toast.makeText(GraficasActivity.this, "No se encontraron datos de tensión.", Toast.LENGTH_SHORT).show();
                             }
@@ -284,32 +259,26 @@ public class GraficasActivity extends AppCompatActivity {
     /**
      * Actualiza el gráfico de líneas con los datos proporcionados.
      *
-     * @param diastolicaEntries Lista de entradas de datos para la línea de presión diastólica.
-     * @param sistolicaEntries  Lista de entradas de datos para la línea de presión sistólica.
-     * @param pulseEntries      Lista de entradas de datos para la línea de pulso.
+     * @param title   El título de la serie de datos
+     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
      */
-    private void updateChartPulse(List<DataEntry> diastolicaEntries, List<DataEntry> sistolicaEntries, List<DataEntry> pulseEntries) {
+    private void updateChart(String title, List<DataEntry> entries) {
+        Cartesian cartesian = anyChartView.getChart() != null ? (Cartesian) anyChartView.getChart() : AnyChart.cartesian();
 
-        Cartesian cartesian = AnyChart.line();
+        Line line = cartesian.line(entries);
+        line.name(title);
 
-        cartesian.title("Evolución de la Tensión Arterial y Pulso");
-        // Crear las series de líneas y agregar los datos a cada serie.
-        Line sistolicaSeries = cartesian.line(sistolicaEntries);
-        sistolicaSeries.name("Sistólica");
+        cartesian.animation(true);
+        cartesian.title("Evolución de la Salud");
+        cartesian.yScale().minimum(0d);
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT).anchor(Anchor.LEFT_CENTER).offsetX(0d).offsetY(5d).format("{%Value}{groupsSeparator: }");
+        cartesian.xAxis(0).title("Fecha");
+        cartesian.yAxis(0).title("Valores");
 
-        Line diastolicaSeries = cartesian.line(diastolicaEntries);
-        diastolicaSeries.name("Diastólica");
+        cartesian.legend().enabled(true);
+        cartesian.legend().align(Align.CENTER).itemsLayout(LegendLayout.HORIZONTAL);
 
-
-        Line pulseSeries = cartesian.line(pulseEntries);
-        pulseSeries.name("Pulso");
-
-        // Configurar el gráfico con los datos de las series.
-        anyChartPressurePulse.setChart(cartesian);
-
-        // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
-        anyChartPressurePulse.invalidate();
+        anyChartView.setChart(cartesian);
+        anyChartView.invalidate();
     }
-
-
 }

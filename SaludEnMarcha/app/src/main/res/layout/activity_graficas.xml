@@ -10,91 +10,48 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/volverResumenButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="164dp"
                 android:layout_height="103dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/logo"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/volverResumenButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/app_icon" />
 
-            <Button
-                android:id="@+id/volverResumenButton"
-                style="@style/MyButtonStyleVolver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/botonVolver"
-                tools:ignore="TextContrastCheck" />
-
-            <androidx.cardview.widget.CardView
+            <com.anychart.AnyChartView
+                android:id="@+id/any_chart_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_glucose_graficas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_pressure_pulse_graficas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_weights_graficas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </androidx.cardview.widget.CardView>
+                android:layout_margin="10dp" />
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/volverResumenButton"
+        style="@style/MyButtonStyleVolver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/botonVolver"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+
