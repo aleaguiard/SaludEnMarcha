@@ -25,14 +25,14 @@
                 android:layout_width="164dp"
                 android:layout_height="103dp"
                 android:layout_marginTop="80dp"
+                android:contentDescription="@string/logo"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/date_picker_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon"
-                android:contentDescription="@string/logo" />
+                app:srcCompat="@drawable/app_icon" />
 
             <Button
                 android:id="@+id/tension_picker_button"
@@ -49,51 +49,51 @@
 
             <EditText
                 android:id="@+id/tension_sistolica_text"
+                style="@style/CajaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="34dp"
                 android:layout_marginEnd="32dp"
+                android:autofillHints=""
                 android:hint="@string/sist_lica_mmhg"
-                style="@style/CajaTexto"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date_picker_button"
-                android:autofillHints=""
                 tools:ignore="VisualLintTextFieldSize" />
 
 
             <EditText
                 android:id="@+id/tension_diastolica_text"
+                style="@style/CajaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
-                style="@style/CajaTexto"
+                android:autofillHints=""
                 android:hint="@string/diast_lica_mmhg"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tension_sistolica_text"
-                android:autofillHints=""
                 tools:ignore="VisualLintTextFieldSize" />
 
             <EditText
                 android:id="@+id/pulso_text"
+                style="@style/CajaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
-                style="@style/CajaTexto"
+                android:autofillHints=""
                 android:hint="@string/pulso_ppm"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tension_diastolica_text"
-                android:autofillHints=""
                 tools:ignore="VisualLintTextFieldSize" />
 
             <Button
@@ -126,6 +126,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/buttonSaveTension"
                 tools:ignore="TextContrastCheck" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

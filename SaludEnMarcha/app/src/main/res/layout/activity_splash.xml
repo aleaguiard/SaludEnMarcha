@@ -13,19 +13,20 @@
         android:layout_width="380dp"
         android:layout_height="178dp"
         android:layout_marginBottom="80dp"
+        android:animation="@anim/logo_animation"
+        android:contentDescription="@string/logo"
         android:src="@drawable/logo_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:animation="@anim/logo_animation"
-        android:contentDescription="@string/logo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/copyright_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="176dp"
+        android:animation="@anim/text_animation"
         android:gravity="center"
         android:text="@string/creado_por_alejandro_aguiar_y_alberto_arroyo"
         android:textColor="#000000"
@@ -33,7 +34,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splash_image"
-        android:animation="@anim/text_animation"/>
+        app:layout_constraintTop_toBottomOf="@+id/splash_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,14 +24,14 @@
                 android:layout_width="164dp"
                 android:layout_height="103dp"
                 android:layout_marginTop="80dp"
+                android:contentDescription="@string/logo"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/date_picker_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon"
-                android:contentDescription="@string/logo" />
+                app:srcCompat="@drawable/app_icon" />
 
             <Button
                 android:id="@+id/peso_picker_button"
@@ -54,12 +54,12 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="32dp"
+                android:autofillHints=""
                 android:hint="@string/peso"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/peso_picker_button"
-                android:autofillHints=""
                 tools:ignore="VisualLintTextFieldSize" />
 
             <Button

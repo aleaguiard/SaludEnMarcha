@@ -10,10 +10,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,18 +24,18 @@
                 android:id="@+id/imageView3"
                 android:layout_width="164dp"
                 android:layout_height="103dp"
-                android:layout_marginTop="80dp"
-                android:visibility="visible"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/app_icon"
-                android:contentDescription="@string/logo" />
+                android:layout_marginTop="80dp"
+                android:contentDescription="@string/logo"
+                android:visibility="visible"
+                app:srcCompat="@drawable/app_icon" />
 
             <TableLayout
                 android:id="@+id/buttonsTable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginTop="64dp">
 
                 <TableRow
                     android:layout_width="wrap_content"
@@ -173,26 +173,26 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageButton
                     android:id="@+id/themeBtn"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/ic_theme"
-                    android:contentDescription="@string/darkmode" />
+                    android:contentDescription="@string/darkmode"
+                    app:srcCompat="@drawable/ic_theme" />
 
                 <TextView
                     android:id="@+id/themeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:textSize="14sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
