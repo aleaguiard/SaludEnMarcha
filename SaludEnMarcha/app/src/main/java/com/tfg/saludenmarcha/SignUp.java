@@ -86,6 +86,7 @@ public class SignUp extends AppCompatActivity {
         }
         return true;
     }
+
     private boolean tamanoPassword(String password) {
         if (password.length() < 6) {
             Toast.makeText(SignUp.this, "La contraseña debe tener mínimo 6 caracteres", Toast.LENGTH_SHORT).show();

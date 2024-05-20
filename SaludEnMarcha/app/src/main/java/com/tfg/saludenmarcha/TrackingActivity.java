@@ -32,7 +32,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -316,6 +315,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * Método llamado cuando el mapa está listo para ser usado.
+     *
      * @param googleMap La instancia de GoogleMap que se puede usar para modificar el mapa.
      */
     @Override
@@ -364,8 +364,9 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * Método llamado cuando se han solicitado permisos al usuario.
-     * @param requestCode El código de solicitud pasado en requestPermissions(android.app.Activity, String[], int).
-     * @param permissions La lista de permisos solicitados.
+     *
+     * @param requestCode  El código de solicitud pasado en requestPermissions(android.app.Activity, String[], int).
+     * @param permissions  La lista de permisos solicitados.
      * @param grantResults Los resultados de las solicitudes de permisos correspondientes.
      */
     @Override
@@ -385,6 +386,7 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * Verifica si todos los permisos solicitados han sido concedidos.
+     *
      * @param grantResults Los resultados de las solicitudes de permisos correspondientes.
      * @return true si todos los permisos han sido concedidos, false en caso contrario.
      */

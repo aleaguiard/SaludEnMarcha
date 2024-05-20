@@ -199,8 +199,6 @@ public class MedicacionActivity extends AppCompatActivity {
                 });
     }
 
-    // TODO: Revisar cuando se click en ultimas medicaciones y esta vacío
-
     /**
      * Muestra las 5 últimas medicaciones en un AlertDialog.
      */

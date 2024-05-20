@@ -47,6 +47,7 @@ public class EmergencyActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showCallConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("¿Llamar al 112?")

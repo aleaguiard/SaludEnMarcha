@@ -115,8 +115,8 @@ public class GraficasActivity extends AppCompatActivity {
      * Actualiza el gráfico de AnyChartView con los datos proporcionados.
      *
      * @param anyChartView La vista de AnyChartView a actualizar
-     * @param title El título del gráfico
-     * @param entries Los datos a mostrar en el gráfico
+     * @param title        El título del gráfico
+     * @param entries      Los datos a mostrar en el gráfico
      */
     private void updateChart(AnyChartView anyChartView, String title, List<DataEntry> entries) {
         Cartesian cartesian = AnyChart.line();

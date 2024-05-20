@@ -10,14 +10,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         android:foregroundGravity="center"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:gravity="center"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -25,14 +25,14 @@
                 android:layout_width="164dp"
                 android:layout_height="103dp"
                 android:layout_marginTop="80dp"
+                android:contentDescription="@string/logo"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/date_picker_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/app_icon"
-                android:contentDescription="@string/logo" />
+                app:srcCompat="@drawable/app_icon" />
 
             <Button
                 android:id="@+id/medicacion_picker_button"
@@ -69,13 +69,13 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
+                android:autofillHints=""
                 android:fontFamily="@font/font_body"
                 android:hint="@string/dosis"
                 android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date_picker_button"
-                android:autofillHints=""
                 tools:ignore="VisualLintTextFieldSize" />
 
             <Button
@@ -99,7 +99,7 @@
                 style="@style/MyButtonStyleVolver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/botonVolver"
                 tools:ignore="TextContrastCheck" />
 

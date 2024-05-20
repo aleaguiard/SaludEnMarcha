@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * TensionActivity es una actividad que permite al usuario registrar y gestionar sus datos de tensión arterial y pulso.
  * El usuario puede ingresar su presión sistólica, presión diastólica y pulso, seleccionar una fecha específica y guardar los datos en Firebase Firestore.
@@ -334,8 +335,8 @@ public class TensionActivity extends AppCompatActivity {
      * Actualiza el gráfico de líneas con los datos proporcionados.
      *
      * @param diastolicaEntries Lista de entradas de datos para la línea de presión diastólica.
-     * @param sistolicaEntries Lista de entradas de datos para la línea de presión sistólica.
-     * @param pulseEntries Lista de entradas de datos para la línea de pulso.
+     * @param sistolicaEntries  Lista de entradas de datos para la línea de presión sistólica.
+     * @param pulseEntries      Lista de entradas de datos para la línea de pulso.
      */
     private void updateChart(List<DataEntry> diastolicaEntries, List<DataEntry> sistolicaEntries, List<DataEntry> pulseEntries) {
         AnyChartView anyChartView = findViewById(R.id.any_chart_tension);

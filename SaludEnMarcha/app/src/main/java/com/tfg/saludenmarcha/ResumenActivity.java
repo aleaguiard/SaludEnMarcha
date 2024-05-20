@@ -1,29 +1,27 @@
 package com.tfg.saludenmarcha;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-
 import android.app.DatePickerDialog;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -127,9 +125,9 @@ public class ResumenActivity extends AppCompatActivity {
     /**
      * Consulta Firestore para obtener los datos correspondientes a la fecha seleccionada.
      *
-     * @param day Día seleccionado
+     * @param day   Día seleccionado
      * @param month Mes seleccionado
-     * @param year Año seleccionado
+     * @param year  Año seleccionado
      */
     private void fetchDataForDate(int day, int month, int year) {
         // Lista de colecciones a consultar en Firestore
