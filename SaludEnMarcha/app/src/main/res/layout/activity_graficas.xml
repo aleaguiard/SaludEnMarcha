@@ -55,7 +55,7 @@
                 app:cardElevation="8dp">
 
                 <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_glucose"
+                    android:id="@+id/any_chart_glucose_graficas"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
 
@@ -72,7 +72,7 @@
                 app:cardElevation="8dp">
 
                 <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_pressure_pulse"
+                    android:id="@+id/any_chart_pressure_pulse_graficas"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
 
@@ -89,7 +89,7 @@
                 app:cardElevation="8dp">
 
                 <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_weights"
+                    android:id="@+id/any_chart_weights_graficas"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
 

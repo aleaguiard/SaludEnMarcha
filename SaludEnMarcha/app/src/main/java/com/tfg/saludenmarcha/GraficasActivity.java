@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -52,9 +53,9 @@ public class GraficasActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);  // Habilita la visualización en pantalla completa
 
         // Inicialización de los componentes de la interfaz de usuario
-        anyChartGlucose = findViewById(R.id.any_chart_glucose);
-        anyChartPressurePulse = findViewById(R.id.any_chart_pressure_pulse);
-        anyChartWeights = findViewById(R.id.any_chart_weights);
+        anyChartGlucose = findViewById(R.id.any_chart_glucose_graficas);
+        anyChartPressurePulse = findViewById(R.id.any_chart_pressure_pulse_graficas);
+        anyChartWeights = findViewById(R.id.any_chart_weights_graficas);
         volverButton = findViewById(R.id.volverResumenButton);
 
         // Configuración de Firebase y autenticación
@@ -74,8 +75,8 @@ public class GraficasActivity extends AppCompatActivity {
         volverButton.setOnClickListener(v -> finish());
 
         // Cargar datos para cada gráfico
-        //loadGlucoseData();
-        //loadPressurePulseData();
+        loadGlucoseData();
+        loadTensionData();
         loadWeightData();
     }
 
@@ -106,7 +107,7 @@ public class GraficasActivity extends AppCompatActivity {
                             entries.add(new ValueDataEntry(date, weight));
                         }
 
-                        updateChart(anyChartWeights, "Peso", entries);
+                        updateChartWeight(anyChartWeights, "Peso", entries);
                     }
                 });
     }
@@ -118,7 +119,7 @@ public class GraficasActivity extends AppCompatActivity {
      * @param title        El título del gráfico
      * @param entries      Los datos a mostrar en el gráfico
      */
-    private void updateChart(AnyChartView anyChartView, String title, List<DataEntry> entries) {
+    private void updateChartWeight(AnyChartView anyChartView, String title, List<DataEntry> entries) {
         Cartesian cartesian = AnyChart.line();
         cartesian.title(title);
         cartesian.animation(true);
@@ -135,5 +136,180 @@ public class GraficasActivity extends AppCompatActivity {
                 .offsetY(5d);
         anyChartView.setChart(cartesian);
     }
+
+
+    /*
+    ********************************************************************
+     */
+
+    /**
+     * Carga los datos de glucosa desde Firestore para el usuario actual.
+     * Ordena los documentos por el campo 'id' en orden descendente y limita a los 20 documentos más recientes.
+     * Cada entrada se agrega a una lista de datos que se utiliza para actualizar el gráfico.
+     */
+    private void loadGlucoseData() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("GraficasActivity", "Cargando datos para el usuario: " + idUser);
+
+        db.collection("glucose")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(10)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (value != null) {
+                            List<DataEntry> entries = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : value) {
+                                Log.d("GraficasActivity", "Documento recuperado: " + document.getData());
+
+                                if (document.contains("glucose") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
+                                    Long glucoseNumber = document.getLong("glucose");
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+                                    Long id = document.getLong("id");
+
+                                    Log.d("GraficasActivity", "ID: " + id + " Glucosa: " + glucoseNumber + " Fecha: " + day + "/" + month + "/" + year);
+
+                                    if (glucoseNumber != null && day != null && month != null && year != null) {
+                                        String date = day + "/" + month + "/" + year + " " + id;
+                                        entries.add(new ValueDataEntry(date, glucoseNumber));
+                                    }
+                                } else {
+                                    Log.d("GraficasActivity", "Documento sin 'glucose', 'day', 'month', 'year' o 'id': " + document.getId());
+                                }
+                            }
+                            Log.d("GraficasActivity", "Número de entradas: " + entries.size());
+                            if (!entries.isEmpty()) {
+                                runOnUiThread(() -> updateChartGlucose(entries));
+                            } else {
+                                Toast.makeText(GraficasActivity.this, "No se encontraron datos de glucosa.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Actualiza el gráfico de líneas con los datos proporcionados.
+     *
+     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
+     */
+    private void updateChartGlucose(List<DataEntry> entries) {
+
+        Cartesian cartesian = AnyChart.line();
+
+        cartesian.title("Evolución del Nivel de Glucosa");
+
+        Line series = cartesian.line(entries);
+        series.name("Glucosa");
+
+        anyChartGlucose.setChart(cartesian);
+
+        anyChartGlucose.invalidate();
+    }
+
+    /**
+     * Carga los datos de tensión desde Firestore para el usuario actual.
+     * Ordena los documentos por el campo 'id' en orden descendente y limita a los 20 documentos más recientes.
+     * Cada entrada se agrega a una lista de datos que se utiliza para actualizar el gráfico.
+     */
+    private void loadTensionData() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("TensionActivity", "Cargando datos para el usuario: " + idUser);
+
+        db.collection("pressure-pulse")
+                .whereEqualTo("idUser", idUser)
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(20)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (value != null) {
+                            List<DataEntry> diastolicaEntries = new ArrayList<>();
+                            List<DataEntry> sistolicaEntries = new ArrayList<>();
+                            List<DataEntry> pulseEntries = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : value) {
+                                Log.d("TensionActivity", "Documento recuperado: " + document.getData());
+
+                                if (document.contains("sistolica") && document.contains("diastolica") && document.contains("pulse") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
+                                    Long sistolica = document.getLong("sistolica");
+                                    Long diastolica = document.getLong("diastolica");
+                                    Long pulse = document.getLong("pulse");
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+                                    Long id = document.getLong("id");
+
+                                    Log.d("TensionActivity", "ID: " + id + " Sistolica: " + sistolica + " Diastolica: " + diastolica + " Pulse: " + pulse + " Fecha: " + day + "/" + month + "/" + year);
+
+                                    if (sistolica != null && diastolica != null && pulse != null && day != null && month != null && year != null) {
+                                        String date = day + "/" + month + "/" + year + " " + id;
+                                        diastolicaEntries.add(new ValueDataEntry(date, diastolica));
+                                        sistolicaEntries.add(new ValueDataEntry(date, sistolica));
+                                        pulseEntries.add(new ValueDataEntry(date, pulse));
+                                    }
+                                } else {
+                                    Log.d("TensionActivity", "Documento sin 'sistolica', 'diastolica', 'pulse', 'day', 'month', 'year' o 'id': " + document.getId());
+                                }
+                            }
+                            Log.d("TensionActivity", "Número de entradas: " + diastolicaEntries.size());
+                            if (!diastolicaEntries.isEmpty() && !sistolicaEntries.isEmpty() && !pulseEntries.isEmpty()) {
+                                runOnUiThread(() -> updateChartPulse(diastolicaEntries, sistolicaEntries, pulseEntries));
+                            } else {
+                                Toast.makeText(GraficasActivity.this, "No se encontraron datos de tensión.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Actualiza el gráfico de líneas con los datos proporcionados.
+     *
+     * @param diastolicaEntries Lista de entradas de datos para la línea de presión diastólica.
+     * @param sistolicaEntries  Lista de entradas de datos para la línea de presión sistólica.
+     * @param pulseEntries      Lista de entradas de datos para la línea de pulso.
+     */
+    private void updateChartPulse(List<DataEntry> diastolicaEntries, List<DataEntry> sistolicaEntries, List<DataEntry> pulseEntries) {
+
+        Cartesian cartesian = AnyChart.line();
+
+        cartesian.title("Evolución de la Tensión Arterial y Pulso");
+        // Crear las series de líneas y agregar los datos a cada serie.
+        Line sistolicaSeries = cartesian.line(sistolicaEntries);
+        sistolicaSeries.name("Sistólica");
+
+        Line diastolicaSeries = cartesian.line(diastolicaEntries);
+        diastolicaSeries.name("Diastólica");
+
+
+        Line pulseSeries = cartesian.line(pulseEntries);
+        pulseSeries.name("Pulso");
+
+        // Configurar el gráfico con los datos de las series.
+        anyChartPressurePulse.setChart(cartesian);
+
+        // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
+        anyChartPressurePulse.invalidate();
+    }
+
 
 }
