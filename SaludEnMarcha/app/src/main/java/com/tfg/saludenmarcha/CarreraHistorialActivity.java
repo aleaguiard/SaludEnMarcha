@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -23,13 +25,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +71,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private GoogleMap mMap;
     private ArrayList<LatLng> rutaGps;
     private List<GeoPoint> geoPoints;
+    private List<Calendar> activityDates = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +88,9 @@ public class CarreraHistorialActivity extends AppCompatActivity {
 
         // Establecer listeners para los componentes de la interfaz
         setupListeners();
+
+        // Load the dates of the activities
+        loadActivityDates();
 
         // Cargar la última actividad al iniciar
         fetchLatestActivity();
@@ -133,16 +146,63 @@ public class CarreraHistorialActivity extends AppCompatActivity {
      * Abre el DatePicker para seleccionar una fecha.
      */
     private void openDatePicker(View view) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
 
-        new DatePickerDialog(CarreraHistorialActivity.this, (datePicker, y, m, d) -> {
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        constraintsBuilder.setValidator(new CalendarConstraints.DateValidator() {
+            @Override
+            public boolean isValid(long date) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(date);
+                for (Calendar activityDate : activityDates) {
+                    if (activityDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
+                            activityDate.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                            activityDate.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                // No need to write anything to the parcel
+            }
+        });
+
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        final MaterialDatePicker<Long> picker = builder.build();
+        picker.addOnPositiveButtonClickListener(selection -> {
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.setTimeInMillis(selection);
+            int selectedDay = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int selectedMonth = selectedDate.get(Calendar.MONTH) + 1;
+            int selectedYear = selectedDate.get(Calendar.YEAR);
             // El usuario ha seleccionado una fecha, se buscan las actividades de esa fecha en la base de datos
-            fetchActivitiesForDate(y, m + 1, d);
-        }, year, month, day).show();
+            fetchActivitiesForDate(selectedYear, selectedMonth, selectedDay);
+        });
+
+        picker.show(getSupportFragmentManager(), picker.toString());
     }
+
+    //***************************
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Navega a la actividad principal.
@@ -239,23 +299,30 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 .whereEqualTo("day", day)
                 .whereEqualTo("month", month)
                 .whereEqualTo("year", year)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                        if (documents.size() == 1) {
-                            // Solo hay una actividad, mostrarla
-                            showActivity(documents.get(0));
-                        } else {
-                            // Hay más de una actividad, permitir al usuario elegir
-                            showActivityOptions(documents);
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            return;
                         }
-                    } else {
-                        Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
+
+                        if (value != null && !value.isEmpty()) {
+                            List<DocumentSnapshot> documents = value.getDocuments();
+                            if (documents.size() == 1) {
+                                // Solo hay una actividad, mostrarla
+                                showActivity(documents.get(0));
+                            } else {
+                                // Hay más de una actividad, permitir al usuario elegir
+                                showActivityOptions(documents);
+                            }
+                        } else {
+                            Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                })
-                .addOnFailureListener(e -> Toast.makeText(CarreraHistorialActivity.this, "Error: ", Toast.LENGTH_LONG).show());
+                });
     }
+
 
     /**
      * Muestra un diálogo para que el usuario elija entre varias actividades.
@@ -362,6 +429,35 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         if (mMap != null) {
             mMap.addPolyline(polylineOptions);
         }
+    }
+
+    private void loadActivityDates() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        db.collection("activities")
+                .whereEqualTo("idUser", idUser)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        activityDates.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Long day = document.getLong("day");
+                            Long month = document.getLong("month");
+                            Long year = document.getLong("year");
+
+                            if (day != null && month != null && year != null) {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(year.intValue(), month.intValue() - 1, day.intValue());
+                                activityDates.add(calendar);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Error cargando fechas de actividades.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
 

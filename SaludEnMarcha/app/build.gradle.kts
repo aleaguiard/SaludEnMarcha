@@ -42,6 +42,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation ("com.google.code.gson:gson:2.8.8")
     implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
+    implementation ("com.google.android.material:material:1.12.0")
+    //implementation ("com.prolificinteractive:material-calendarview:2.0.1")
     //implementation ("com.google.firebase:firebase-admin:9.2.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
