@@ -24,10 +24,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
+
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * ResumenActivity es una actividad que permite al usuario seleccionar una fecha y ver los registros
- * correspondientes de varias colecciones de Firebase Firestore para esa fecha.
- * Las colecciones incluidas son: actividades, glucosa, alimentación, medicación, tensión y pulso, y peso.
+ * ResumenActivity es una actividad que permite al usuario seleccionar una fecha y obtener un resumen
+ * de los datos registrados en varias colecciones de Firestore para la fecha seleccionada.
  */
 public class ResumenActivity extends AppCompatActivity {
 
@@ -52,6 +86,9 @@ public class ResumenActivity extends AppCompatActivity {
         put("pressure-pulse", "Tensión y Pulso");
         put("weights", "Peso");
     }};
+
+    // Lista para almacenar las fechas de las actividades
+    private List<Calendar> activityDates = new ArrayList<>();
 
     // Clase interna para almacenar los detalles de los documentos
     private class DocumentDetails {
@@ -101,6 +138,9 @@ public class ResumenActivity extends AppCompatActivity {
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
+
+        // Cargar las fechas de las actividades
+        loadActivityDates();
     }
 
     /**
@@ -109,17 +149,49 @@ public class ResumenActivity extends AppCompatActivity {
      * @param view La vista que activa el método.
      */
     private void openDatePicker(View view) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
 
-        new DatePickerDialog(this, (datePicker, y, m, d) -> {
-            selectedDay = d;
-            selectedMonth = m + 1;  // Meses comienzan en 0, por eso se añade 1
-            selectedYear = y;
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        constraintsBuilder.setValidator(new CalendarConstraints.DateValidator() {
+            @Override
+            public boolean isValid(long date) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(date);
+                for (Calendar activityDate : activityDates) {
+                    if (activityDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
+                            activityDate.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                            activityDate.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(android.os.Parcel dest, int flags) {
+                // No need to write anything to the parcel
+            }
+        });
+
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        final MaterialDatePicker<Long> picker = builder.build();
+        picker.addOnPositiveButtonClickListener(selection -> {
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.setTimeInMillis(selection);
+            selectedDay = selectedDate.get(Calendar.DAY_OF_MONTH);
+            selectedMonth = selectedDate.get(Calendar.MONTH) + 1;
+            selectedYear = selectedDate.get(Calendar.YEAR);
             fetchDataForDate(selectedDay, selectedMonth, selectedYear);
-        }, year, month, day).show();
+        });
+
+        picker.show(getSupportFragmentManager(), picker.toString());
     }
 
     /**
@@ -179,7 +251,6 @@ public class ResumenActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Muestra los resultados en el TextView resultText.
      *
@@ -194,9 +265,9 @@ public class ResumenActivity extends AppCompatActivity {
 
                     Long timeElapsed = details.document.getLong("timeElapsed");
                     if (timeElapsed != null) {
-                        long hours = TimeUnit.MILLISECONDS.toHours(timeElapsed);
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
-                        long seconds = TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
+                        long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(timeElapsed);
+                        long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
+                        long seconds = java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
                         result.append("Tiempo: ").append(String.format("%02d:%02d:%02d", hours, minutes, seconds)).append("\n");
                     } else {
                         result.append("Tiempo: N/A\n");
@@ -235,4 +306,58 @@ public class ResumenActivity extends AppCompatActivity {
         runOnUiThread(() -> resultText.setText(result.toString()));
     }
 
+    /**
+     * Carga las fechas de las actividades desde todas las colecciones de Firestore.
+     */
+    private void loadActivityDates() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<String> collections = new ArrayList<>();
+        collections.add("activities");
+        collections.add("glucose");
+        collections.add("meals");
+        collections.add("medications");
+        collections.add("pressure-pulse");
+        collections.add("weights");
+
+        pendingQueries = collections.size();
+
+        for (String collection : collections) {
+            db.collection(collection)
+                    .whereEqualTo("idUser", idUser)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Toast.makeText(ResumenActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            if (value != null) {
+                                for (QueryDocumentSnapshot document : value) {
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+
+                                    if (day != null && month != null && year != null) {
+                                        Calendar calendar = Calendar.getInstance();
+                                        calendar.set(year.intValue(), month.intValue() - 1, day.intValue());
+                                        if (!activityDates.contains(calendar)) {
+                                            activityDates.add(calendar);
+                                        }
+                                    }
+                                }
+                            }
+
+                            pendingQueries--;
+                            if (pendingQueries == 0) {
+                                // All queries are done, you can update the DatePicker or UI here if needed
+                            }
+                        }
+                    });
+        }
+    }
 }
