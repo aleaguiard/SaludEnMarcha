@@ -1,55 +1,24 @@
 package com.tfg.saludenmarcha;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.graphics.Insets;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -114,6 +83,7 @@ public class ResumenActivity extends AppCompatActivity {
         // Inicialización de los componentes de la interfaz de usuario
         datePickerButton = findViewById(R.id.datepicker_button);
         resultText = findViewById(R.id.result_text);
+        resultText.setVisibility(View.GONE);
         volverButton = findViewById(R.id.volverCalendarioButton);
 
         // Configuración de Firebase y autenticación
@@ -233,9 +203,6 @@ public class ResumenActivity extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : value) {
                                     documentDetailsList.add(new DocumentDetails(document, collectionNames.get(collection)));
                                 }
-                            } else {
-                                // Si no hay documentos, agregar un mensaje indicando que no hay registros
-                                result.append(collectionNames.get(collection)).append(": No hay registros.\n");
                             }
                         } else {
                             // Si hubo un error en la consulta, agregar un mensaje indicando el error
@@ -245,11 +212,18 @@ public class ResumenActivity extends AppCompatActivity {
                         pendingQueries--;  // Decrementar el contador de consultas pendientes
                         if (pendingQueries == 0) {
                             // Si todas las consultas han terminado, mostrar los resultados
-                            displayResults(result);
+                            if (documentDetailsList.isEmpty()) {
+                                resultText.setVisibility(View.GONE);
+                                Toast.makeText(this, "No hay datos disponibles para la fecha seleccionada.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                resultText.setVisibility(View.VISIBLE);
+                                displayResults(result);
+                            }
                         }
                     });
         }
     }
+
 
     /**
      * Muestra los resultados en el TextView resultText.
@@ -257,54 +231,54 @@ public class ResumenActivity extends AppCompatActivity {
      * @param result StringBuilder que contiene los resultados acumulados
      */
     private void displayResults(StringBuilder result) {
-        for (DocumentDetails details : documentDetailsList) {
-            result.append("\nDetalles de ").append(details.collectionName).append(":\n");
-            switch (details.collectionName) {
-                case "Actividades":
-                    result.append("Tipo de actividad: ").append(details.document.getString("activityType")).append("\n");
+    for (DocumentDetails details : documentDetailsList) {
+        result.append("<br><u><b>Detalles de ").append(details.collectionName).append(":</b></u><br>");
+        switch (details.collectionName) {
+            case "Actividades":
+                result.append("<b>Tipo de actividad:</b> ").append(details.document.getString("activityType")).append("<br>");
 
-                    Long timeElapsed = details.document.getLong("timeElapsed");
-                    if (timeElapsed != null) {
-                        long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(timeElapsed);
-                        long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
-                        long seconds = java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
-                        result.append("Tiempo: ").append(String.format("%02d:%02d:%02d", hours, minutes, seconds)).append("\n");
-                    } else {
-                        result.append("Tiempo: N/A\n");
-                    }
+                Long timeElapsed = details.document.getLong("timeElapsed");
+                if (timeElapsed != null) {
+                    long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(timeElapsed);
+                    long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
+                    long seconds = java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
+                    result.append("<b>Tiempo:</b> ").append(String.format("%02d:%02d:%02d", hours, minutes, seconds)).append("<br>");
+                } else {
+                    result.append("<b>Tiempo:</b> N/A<br>");
+                }
 
-                    result.append("Distancia total: ").append(details.document.getDouble("totalDistance")).append("\n");
-                    break;
+                result.append("<b>Distancia total:</b> ").append(details.document.getDouble("totalDistance")).append("<br>");
+                break;
 
-                case "Glucosa":
-                    result.append("Valor de glucosa: ").append(details.document.getLong("glucose")).append("\n");
-                    break;
+            case "Glucosa":
+                result.append("<b>Valor de glucosa:</b> ").append(details.document.getLong("glucose")).append("<br>");
+                break;
 
-                case "Tensión y Pulso":
-                    result.append("Sistólica: ").append(details.document.getLong("sistolica")).append("\n")
-                            .append("Diastólica: ").append(details.document.getLong("diastolica")).append("\n")
-                            .append("Pulso: ").append(details.document.getLong("pulse")).append("\n");
-                    break;
+            case "Tensión y Pulso":
+                result.append("<b>Sistólica:</b> ").append(details.document.getLong("sistolica")).append("<br>")
+                        .append("<b>Diastólica:</b> ").append(details.document.getLong("diastolica")).append("<br>")
+                        .append("<b>Pulso:</b> ").append(details.document.getLong("pulse")).append("<br>");
+                break;
 
-                case "Medicación":
-                    result.append("Nombre de la medicación: ").append(details.document.getString("medicationName")).append("\n")
-                            .append("Dosis: ").append(details.document.getString("dose")).append("\n");
-                    break;
+            case "Medicación":
+                result.append("<b>Nombre de la medicación:</b> ").append(details.document.getString("medicationName")).append("<br>")
+                        .append("<b>Dosis:</b> ").append(details.document.getString("dose")).append("<br>");
+                break;
 
-                case "Alimentación":
-                    result.append("Desayuno: ").append(details.document.getString("breakfast")).append("\n")
-                            .append("Comida: ").append(details.document.getString("lunch")).append("\n")
-                            .append("Cena: ").append(details.document.getString("dinner")).append("\n");
-                    break;
+            case "Alimentación":
+                result.append("<b>Desayuno:</b> ").append(details.document.getString("breakfast")).append("<br>")
+                        .append("<b>Comida:</b> ").append(details.document.getString("lunch")).append("<br>")
+                        .append("<b>Cena:</b> ").append(details.document.getString("dinner")).append("<br>");
+                break;
 
-                case "Peso":
-                    result.append("Peso: ").append(details.document.getLong("weight")).append("\n");
-                    break;
-            }
+            case "Peso":
+                result.append("<b>Peso:</b> ").append(details.document.getLong("weight")).append("<br>");
+                break;
         }
-
-        runOnUiThread(() -> resultText.setText(result.toString()));
     }
+
+    runOnUiThread(() -> resultText.setText(Html.fromHtml(result.toString())));
+}
 
     /**
      * Carga las fechas de las actividades desde todas las colecciones de Firestore.
