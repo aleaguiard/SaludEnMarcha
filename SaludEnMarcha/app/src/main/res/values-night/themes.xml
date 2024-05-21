@@ -12,4 +12,8 @@
         <item name="android:backgroundTint">@color/blue2</item>
     </style>
 
+    <style name="CajaTexto" parent="Theme.Material3.DayNight">
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
 </resources>

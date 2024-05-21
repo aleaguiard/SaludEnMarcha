@@ -54,6 +54,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="32dp"
                 android:autofillHints=""
+                style="@style/CajaTexto"
                 android:fontFamily="@font/font_body"
                 android:hint="@string/nombre_medicaci_n"
                 android:inputType="text"
@@ -64,6 +65,7 @@
 
             <EditText
                 android:id="@+id/dosis_text"
+                style="@style/CajaTexto"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="32dp"

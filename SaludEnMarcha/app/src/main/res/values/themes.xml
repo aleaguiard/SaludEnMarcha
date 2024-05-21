@@ -14,7 +14,7 @@
     </style>
 
     <style name="CajaTexto" parent="Theme.Material3.DayNight">
-        <item name="android:textColorHint">@color/grey3</item>
+        <item name="android:textColorHint">@color/grey</item>
     </style>
 
 </resources>
