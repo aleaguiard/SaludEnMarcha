@@ -139,7 +139,7 @@ public class GraficasActivity extends AppCompatActivity {
 
 
     /*
-    ********************************************************************
+     ********************************************************************
      */
 
     /**
@@ -310,6 +310,5 @@ public class GraficasActivity extends AppCompatActivity {
         // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
         anyChartPressurePulse.invalidate();
     }
-
 
 }

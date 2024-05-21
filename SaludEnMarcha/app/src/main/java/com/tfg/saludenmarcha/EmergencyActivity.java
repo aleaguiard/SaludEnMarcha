@@ -64,8 +64,7 @@ public class EmergencyActivity extends AppCompatActivity {
 
     private void makeEmergencyCall() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:123456"));
+        intent.setData(Uri.parse("tel:112"));
         startActivity(intent);
     }
-
 }
