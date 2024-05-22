@@ -159,18 +159,23 @@ public class TensionActivity extends AppCompatActivity {
             return;
         }
 
-        // Validar los rangos de presión sistólica y diastólica con valores realistas
-        if (sistolica < 90 || sistolica > 180) {
-            Toast.makeText(this, "La presión sistólica debe estar entre 90 y 180 mmHg.", Toast.LENGTH_LONG).show();
-            return;
+        // Validar los rangos y dar feedback específico
+        if (sistolica < 90) {
+            Toast.makeText(this, "Presión sistólica muy baja. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+        } else if (sistolica > 120) {
+            Toast.makeText(this, "Presión sistólica alta. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
         }
-        if (diastolica < 60 || diastolica > 120) {
-            Toast.makeText(this, "La presión diastólica debe estar entre 60 y 120 mmHg.", Toast.LENGTH_LONG).show();
-            return;
+
+        if (diastolica < 60) {
+            Toast.makeText(this, "Presión diastólica muy baja. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+        } else if (diastolica > 80) {
+            Toast.makeText(this, "Presión diastólica alta. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
         }
-        if (pulso < 40 || pulso > 180) {
-            Toast.makeText(this, "El pulso debe estar entre 40 y 180.", Toast.LENGTH_LONG).show();
-            return;
+
+        if (pulso < 40) {
+            Toast.makeText(this, "Pulso bajo. Si experimentas síntomas, considera consultar a un médico.", Toast.LENGTH_LONG).show();
+        } else if (pulso > 100) {
+            Toast.makeText(this, "Pulso alto. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
         }
 
         // Verifica que la fecha haya sido seleccionada
