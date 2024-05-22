@@ -28,12 +28,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +51,7 @@ import java.util.Map;
  */
 public class PesoActivity extends AppCompatActivity {
     // Variables de interfaz de usuario para entrada y botones
-    private EditText pesoInput;
+    private EditText pesoInput, alturaInput;
     private Button saveButton, datePickerButton, volverButton, graficaPesoButton;
 
     // Variables para manejo de Firebase Firestore y autenticación
@@ -78,6 +81,7 @@ public class PesoActivity extends AppCompatActivity {
         //Pie pie = AnyChart.pie(); //grafico  circular
         // Cargar los datos de peso desde Firebase
         loadWeightData();
+        loadHeightData();
     }
 
     /**
@@ -86,6 +90,7 @@ public class PesoActivity extends AppCompatActivity {
     private void initializeUI() {
         pesoInput = findViewById(R.id.peso_text);
         pesoInput.requestFocus();
+        alturaInput = findViewById(R.id.altura_text);
         saveButton = findViewById(R.id.buttonSavePeso);
         datePickerButton = findViewById(R.id.peso_picker_button);
         graficaPesoButton = findViewById(R.id.graficaPesoButton);
@@ -123,9 +128,13 @@ public class PesoActivity extends AppCompatActivity {
      */
     private void setupListeners() {
         datePickerButton.setOnClickListener(this::openDatePicker);
-        saveButton.setOnClickListener(this::saveWeight);
+        saveButton.setOnClickListener(this::saveAllData);
         graficaPesoButton.setOnClickListener(v -> showGraphic());
         volverButton.setOnClickListener(v -> navigateToMain());
+    }
+    private void saveAllData(View view) {
+        saveWeight(view);
+        saveHeightData();
     }
 
     /**
@@ -370,6 +379,77 @@ public class PesoActivity extends AppCompatActivity {
         // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
         anyChartView.invalidate();
     }
+
+    //para la altura
+
+    private void loadHeightData() {
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("PesoActivity", "Cargando datos para el usuario: " + idUser);
+
+        DocumentReference heightDoc = db.collection("heights").document(idUser);
+
+        heightDoc.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    Log.d("PesoActivity", "Documento de altura recuperado: " + document.getData());
+                    Long heightNumber = document.getLong("height");
+                    Toast.makeText(this, "Altura guardada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
+
+                    if (heightNumber != null) {
+                        alturaInput.setText(String.valueOf(heightNumber));
+                    } else {
+                        Log.d("PesoActivity", "Campo 'height' no encontrado.");
+                        alturaInput.setText("");
+                    }
+                } else {
+                    Log.d("PesoActivity", "No se encontraron datos de altura.");
+                    Toast.makeText(PesoActivity.this, "No se encontraron datos de altura.", Toast.LENGTH_SHORT).show();
+                    alturaInput.setText("");
+                }
+            } else {
+                Log.d("PesoActivity", "Error al cargar documento: ", task.getException());
+                Toast.makeText(PesoActivity.this, "Error al cargar los datos de altura.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void saveHeightData() {
+        String alturaStr = alturaInput.getText().toString();
+        if (alturaStr.isEmpty()) {
+            Toast.makeText(this, "El campo de altura no puede estar vacío.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        long altura;
+        try {
+            altura = Long.parseLong(alturaStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Por favor, ingresa un número válido.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Guarda o actualiza el documento con la altura del usuario.
+        Map<String, Object> data = new HashMap<>();
+        data.put("height", altura);
+
+        db.collection("heights").document(idUser) // Usar idUser como ID del documento.
+                .set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Altura guardada correctamente.", Toast.LENGTH_SHORT).show();
+                    alturaInput.setText(String.valueOf(altura)); // Actualizar la vista con el valor guardado
+                    loadHeightData(); // Recargar los datos para reflejar los cambios
+                    startActivity(new Intent(this, GlucosaActivity.class)); // Cambiar de actividad si es necesario
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la altura.", Toast.LENGTH_LONG).show());
+    }
+
+
 
 
 
