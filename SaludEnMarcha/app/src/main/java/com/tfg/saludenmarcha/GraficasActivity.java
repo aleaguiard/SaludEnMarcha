@@ -85,57 +85,101 @@ public class GraficasActivity extends AppCompatActivity {
      * Carga los datos de peso desde Firestore y los muestra en el gráfico de AnyChartView.
      */
     private void loadWeightData() {
+        // Verificar si el ID de usuario está disponible.
+        if (idUser == null || idUser.isEmpty()) {
+            Toast.makeText(this, "ID de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("PesoActivity", "Cargando datos para el usuario: " + idUser);
+
+        // Consulta a la colección 'weights' para obtener los datos de peso del usuario actual, ordenados por 'id' en orden descendente.
         db.collection("weights")
                 .whereEqualTo("idUser", idUser)
                 .orderBy("id", Query.Direction.DESCENDING)
-                .limit(10)
+                .limit(10)  // Limitar a los 20 documentos con los IDs más altos para el usuario específico.
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
+                        // Verificar si hay un error al escuchar los cambios en la base de datos.
                         if (e != null) {
-                            Log.w("GraficasActivity", "Listen failed.", e);
                             return;
                         }
 
-                        List<DataEntry> entries = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : value) {
-                            Long weight = document.getLong("weight");
-                            Long day = document.getLong("day");
-                            Long month = document.getLong("month");
-                            Long year = document.getLong("year");
-                            String date = day + "/" + month + "/" + year;
-                            entries.add(new ValueDataEntry(date, weight));
-                        }
+                        // Si hay resultados, procesar los documentos recuperados.
+                        if (value != null) {
+                            List<DataEntry> entries = new ArrayList<>();
+                            List<DataEntry> imcEntry = new ArrayList<>();
+                            List<DataEntry> imcResultEntry = new ArrayList<>();
+                            // Iterar sobre los documentos recuperados.
+                            for (QueryDocumentSnapshot document : value) {
+                                Log.d("PesoActivity", "Documento recuperado: " + document.getData());
 
-                        updateChartWeight(anyChartWeights, "Peso", entries);
+                                // Verificar si el documento tiene los campos 'weight', 'day', 'month', 'year', y 'id'.
+                                if (document.contains("weight") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
+                                    Long weightNumber = document.getLong("weight");
+                                    Long imcNumber = document.getLong("imc");
+                                    Long day = document.getLong("day");
+                                    Long month = document.getLong("month");
+                                    Long year = document.getLong("year");
+                                    Long id = document.getLong("id");
+                                    String imcResult = document.getString("resultIMC");
+
+                                    Log.d("PesoActivity", "ID: " + id + " Weight: " + weightNumber + " Date: " + day + "/" + month + "/" + year);
+
+                                    if (weightNumber != null && day != null && month != null && year != null) {
+                                        // Ensamblar la fecha en un formato legible y diferenciar entre pesos del mismo día usando 'id'.
+                                        String date = day + "/" + month + "/" + year + " (" + " IMC: "+imcResult + ")";
+                                        entries.add(new ValueDataEntry(date, weightNumber));
+                                        imcEntry.add(new ValueDataEntry(date, imcNumber));
+                                    }
+                                } else {
+                                    Log.d("PesoActivity", "Documento sin 'weight', 'day', 'month', 'year' o 'id': " + document.getId());
+                                }
+                            }
+                            Log.d("PesoActivity", "Número de entradas: " + entries.size());
+                            if (!entries.isEmpty()) {
+                                // Asegurarse de actualizar el gráfico en el hilo principal.
+                                runOnUiThread(() -> updateChart(entries, imcEntry));
+                            } else {
+                                Toast.makeText(GraficasActivity.this, "No se encontraron datos de peso.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 });
     }
 
+
     /**
-     * Actualiza el gráfico de AnyChartView con los datos proporcionados.
+     * Actualiza el gráfico de líneas con los datos proporcionados.
      *
-     * @param anyChartView La vista de AnyChartView a actualizar
-     * @param title        El título del gráfico
-     * @param entries      Los datos a mostrar en el gráfico
+     * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
      */
-    private void updateChartWeight(AnyChartView anyChartView, String title, List<DataEntry> entries) {
+    private void updateChart(List<DataEntry> entries, List<DataEntry> imcEntries) {
+
+        // Crear una instancia del gráfico de líneas.
         Cartesian cartesian = AnyChart.line();
+
+        // Establecer el título del gráfico.
+        cartesian.title("Evolución del Peso");
+
+        // Invertir el eje X
         cartesian.xScale().inverted(true);
-        cartesian.title(title);
-        cartesian.animation(true);
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.xAxis(0).title("Fecha");
-        cartesian.yAxis(0).title(title);
-        cartesian.yScale().minimum(0d);
-        Line line = cartesian.line(entries);
-        line.name(title);
-        line.tooltip()
-                .position(Position.CENTER_BOTTOM)
-                .anchor(Anchor.CENTER_BOTTOM)
-                .offsetX(0d)
-                .offsetY(5d);
-        anyChartView.setChart(cartesian);
+
+        // Crear una serie de líneas y agregar los datos a la serie.
+        Line series = cartesian.line(entries);
+        series.name("Peso");
+        series.stroke("2 #0000FF"); // Establece el color de la línea del peso a azul
+
+        Line imcSeries = cartesian.line(imcEntries);
+        imcSeries.name("IMC");
+        imcSeries.stroke("2 #FF0000"); // Establece el color de la línea del IMC a rojo
+
+        // Configurar el gráfico con los datos de la serie.
+        anyChartWeights.setChart(cartesian);
+
+        // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
+        anyChartWeights.invalidate();
     }
 
 
@@ -293,7 +337,6 @@ public class GraficasActivity extends AppCompatActivity {
     private void updateChartPulse(List<DataEntry> diastolicaEntries, List<DataEntry> sistolicaEntries, List<DataEntry> pulseEntries) {
 
         Cartesian cartesian = AnyChart.line();
-        cartesian.xScale().inverted(true);
 
         cartesian.title("Evolución de la Tensión Arterial y Pulso");
         // Crear las series de líneas y agregar los datos a cada serie.

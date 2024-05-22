@@ -65,6 +65,7 @@ public class PesoActivity extends AppCompatActivity {
 
     // Variable para almacenar el peso y el ID de la actividad
     private Long weight = null;
+    private Long height = null;
     private long idActividad;
     private boolean isChartVisible = false;
 
@@ -82,6 +83,7 @@ public class PesoActivity extends AppCompatActivity {
         // Cargar los datos de peso desde Firebase
         loadWeightData();
         loadHeightData();
+
     }
 
     /**
@@ -181,7 +183,9 @@ public class PesoActivity extends AppCompatActivity {
             Toast.makeText(this, "Por favor, selecciona una fecha", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        double alturaMetros = height / 100.0; // Asegúrate de que height está en centímetros
+        double imc = peso / (alturaMetros * alturaMetros); // Calcula el IMC
+        String resultadoIMC = classifyIMC(imc); // Clasifica el IMC
         Map<String, Object> pesoData = new HashMap<>();
         pesoData.put("idUser", idUser);
         pesoData.put("weight", peso);
@@ -189,6 +193,8 @@ public class PesoActivity extends AppCompatActivity {
         pesoData.put("month", selectedMonth);
         pesoData.put("year", selectedYear);
         pesoData.put("id", idActividad);
+        pesoData.put("imc", imc); // Guarda el IMC también
+        pesoData.put("resultIMC", resultadoIMC); // Guarda el resultado del IMC (Bajo, Normal, Alto
 
         db.collection("weights").add(pesoData)
                 .addOnSuccessListener(docRef -> {
@@ -285,6 +291,13 @@ public class PesoActivity extends AppCompatActivity {
                 });
     }
 
+    // Función para clasificar el IMC
+    private String classifyIMC(double imc) {
+        if (imc < 18.5) return "Bajo";
+        if (imc >= 18.5 && imc <= 24.9) return "Normal";
+        return "Alto";
+    }
+
     /**
      * Carga los datos de peso desde Firestore para el usuario actual.
      * Ordena los documentos por el campo 'id' en orden descendente y limita a los 20 documentos más recientes.
@@ -315,6 +328,8 @@ public class PesoActivity extends AppCompatActivity {
                         // Si hay resultados, procesar los documentos recuperados.
                         if (value != null) {
                             List<DataEntry> entries = new ArrayList<>();
+                            List<DataEntry> imcEntry = new ArrayList<>();
+                            List<DataEntry> imcResultEntry = new ArrayList<>();
                             // Iterar sobre los documentos recuperados.
                             for (QueryDocumentSnapshot document : value) {
                                 Log.d("PesoActivity", "Documento recuperado: " + document.getData());
@@ -322,17 +337,20 @@ public class PesoActivity extends AppCompatActivity {
                                 // Verificar si el documento tiene los campos 'weight', 'day', 'month', 'year', y 'id'.
                                 if (document.contains("weight") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
                                     Long weightNumber = document.getLong("weight");
+                                    Long imcNumber = document.getLong("imc");
                                     Long day = document.getLong("day");
                                     Long month = document.getLong("month");
                                     Long year = document.getLong("year");
                                     Long id = document.getLong("id");
+                                    String imcResult = document.getString("resultIMC");
 
                                     Log.d("PesoActivity", "ID: " + id + " Weight: " + weightNumber + " Date: " + day + "/" + month + "/" + year);
 
                                     if (weightNumber != null && day != null && month != null && year != null) {
                                         // Ensamblar la fecha en un formato legible y diferenciar entre pesos del mismo día usando 'id'.
-                                        String date = day + "/" + month + "/" + year + " " + id;
+                                        String date = day + "/" + month + "/" + year + " (" + " IMC: "+imcResult + ")";
                                         entries.add(new ValueDataEntry(date, weightNumber));
+                                        imcEntry.add(new ValueDataEntry(date, imcNumber));
                                     }
                                 } else {
                                     Log.d("PesoActivity", "Documento sin 'weight', 'day', 'month', 'year' o 'id': " + document.getId());
@@ -341,7 +359,7 @@ public class PesoActivity extends AppCompatActivity {
                             Log.d("PesoActivity", "Número de entradas: " + entries.size());
                             if (!entries.isEmpty()) {
                                 // Asegurarse de actualizar el gráfico en el hilo principal.
-                                runOnUiThread(() -> updateChart(entries));
+                                runOnUiThread(() -> updateChart(entries, imcEntry));
                             } else {
                                 Toast.makeText(PesoActivity.this, "No se encontraron datos de peso.", Toast.LENGTH_SHORT).show();
                             }
@@ -356,7 +374,7 @@ public class PesoActivity extends AppCompatActivity {
      *
      * @param entries Lista de entradas de datos que se utilizarán para actualizar el gráfico.
      */
-    private void updateChart(List<DataEntry> entries) {
+    private void updateChart(List<DataEntry> entries, List<DataEntry> imcEntries) {
         // Obtener la vista del gráfico desde el layout.
         AnyChartView anyChartView = findViewById(R.id.any_chart_peso);
 
@@ -372,6 +390,11 @@ public class PesoActivity extends AppCompatActivity {
         // Crear una serie de líneas y agregar los datos a la serie.
         Line series = cartesian.line(entries);
         series.name("Peso");
+        series.stroke("2 #0000FF"); // Establece el color de la línea del peso a azul
+
+        Line imcSeries = cartesian.line(imcEntries);
+        imcSeries.name("IMC");
+        imcSeries.stroke("2 #FF0000"); // Establece el color de la línea del IMC a rojo
 
         // Configurar el gráfico con los datos de la serie.
         anyChartView.setChart(cartesian);
@@ -379,6 +402,7 @@ public class PesoActivity extends AppCompatActivity {
         // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
         anyChartView.invalidate();
     }
+
 
     //para la altura
 
@@ -399,7 +423,7 @@ public class PesoActivity extends AppCompatActivity {
                     Log.d("PesoActivity", "Documento de altura recuperado: " + document.getData());
                     Long heightNumber = document.getLong("height");
                     Toast.makeText(this, "Altura guardada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
-
+                    height = heightNumber;
                     if (heightNumber != null) {
                         alturaInput.setText(String.valueOf(heightNumber));
                     } else {
@@ -444,13 +468,9 @@ public class PesoActivity extends AppCompatActivity {
                     Toast.makeText(this, "Altura guardada correctamente.", Toast.LENGTH_SHORT).show();
                     alturaInput.setText(String.valueOf(altura)); // Actualizar la vista con el valor guardado
                     loadHeightData(); // Recargar los datos para reflejar los cambios
-                    startActivity(new Intent(this, GlucosaActivity.class)); // Cambiar de actividad si es necesario
+                    startActivity(new Intent(this, PesoActivity.class)); // Cambiar de actividad si es necesario
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la altura.", Toast.LENGTH_LONG).show());
     }
-
-
-
-
 
 }
