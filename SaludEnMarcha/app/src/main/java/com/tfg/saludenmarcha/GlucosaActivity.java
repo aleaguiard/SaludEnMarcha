@@ -319,6 +319,7 @@ public class GlucosaActivity extends AppCompatActivity {
         AnyChartView anyChartView = findViewById(R.id.any_chart_glucosa);
 
         Cartesian cartesian = AnyChart.line();
+        cartesian.xScale().inverted(true);
 
         cartesian.title("Evolución del Nivel de Glucosa");
 

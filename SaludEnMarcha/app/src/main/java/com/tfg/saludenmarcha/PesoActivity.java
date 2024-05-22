@@ -357,6 +357,9 @@ public class PesoActivity extends AppCompatActivity {
         // Establecer el título del gráfico.
         cartesian.title("Evolución del Peso");
 
+        // Invertir el eje X
+        cartesian.xScale().inverted(true);
+
         // Crear una serie de líneas y agregar los datos a la serie.
         Line series = cartesian.line(entries);
         series.name("Peso");
@@ -367,6 +370,7 @@ public class PesoActivity extends AppCompatActivity {
         // Forzar la invalidación de la vista para asegurar que se actualice visualmente.
         anyChartView.invalidate();
     }
+
 
 
 }

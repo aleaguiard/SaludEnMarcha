@@ -342,8 +342,9 @@ public class TensionActivity extends AppCompatActivity {
         AnyChartView anyChartView = findViewById(R.id.any_chart_tension);
 
         Cartesian cartesian = AnyChart.line();
-
+        cartesian.xScale().inverted(true);
         cartesian.title("Evolución de la Tensión Arterial y Pulso");
+        // Ajustar los márgenes del gráfico
         // Crear las series de líneas y agregar los datos a cada serie.
         Line sistolicaSeries = cartesian.line(sistolicaEntries);
         sistolicaSeries.name("Sistólica");

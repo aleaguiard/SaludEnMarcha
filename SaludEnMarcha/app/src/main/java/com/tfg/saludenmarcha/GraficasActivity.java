@@ -121,6 +121,7 @@ public class GraficasActivity extends AppCompatActivity {
      */
     private void updateChartWeight(AnyChartView anyChartView, String title, List<DataEntry> entries) {
         Cartesian cartesian = AnyChart.line();
+        cartesian.xScale().inverted(true);
         cartesian.title(title);
         cartesian.animation(true);
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
@@ -207,6 +208,7 @@ public class GraficasActivity extends AppCompatActivity {
     private void updateChartGlucose(List<DataEntry> entries) {
 
         Cartesian cartesian = AnyChart.line();
+        cartesian.xScale().inverted(true);
 
         cartesian.title("Evolución del Nivel de Glucosa");
 
@@ -291,6 +293,7 @@ public class GraficasActivity extends AppCompatActivity {
     private void updateChartPulse(List<DataEntry> diastolicaEntries, List<DataEntry> sistolicaEntries, List<DataEntry> pulseEntries) {
 
         Cartesian cartesian = AnyChart.line();
+        cartesian.xScale().inverted(true);
 
         cartesian.title("Evolución de la Tensión Arterial y Pulso");
         // Crear las series de líneas y agregar los datos a cada serie.
