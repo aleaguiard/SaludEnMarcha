@@ -317,7 +317,7 @@ public class MedicacionActivity extends AppCompatActivity {
                 .putExtra(CalendarContract.Events.DESCRIPTION, "Dosis: " + dose)
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, "Casa")
                 .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                // .putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=30"); // Repetir diariamente durante 30 días
+                //.putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=30"); // Repetir diariamente durante 30 días
 
         // Intent explícito para Google Calendar
         intent.setPackage("com.google.android.calendar");
