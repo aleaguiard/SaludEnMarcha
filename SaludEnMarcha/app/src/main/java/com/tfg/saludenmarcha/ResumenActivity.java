@@ -1,5 +1,6 @@
 package com.tfg.saludenmarcha;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.material.datepicker.CalendarConstraints;
@@ -37,6 +39,7 @@ public class ResumenActivity extends AppCompatActivity {
     // Variables para los componentes de la interfaz de usuario
     private Button datePickerButton, volverButton;
     private TextView resultText;
+    private CardView cardViewShare;
 
     // Variables para manejo de Firebase Firestore y autenticación
     private FirebaseFirestore db;
@@ -85,6 +88,7 @@ public class ResumenActivity extends AppCompatActivity {
         resultText = findViewById(R.id.result_text);
         resultText.setVisibility(View.GONE);
         volverButton = findViewById(R.id.volverCalendarioButton);
+        cardViewShare = findViewById(R.id.cardViewShare);
 
         // Configuración de Firebase y autenticación
         db = FirebaseFirestore.getInstance();
@@ -107,6 +111,25 @@ public class ResumenActivity extends AppCompatActivity {
             v.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                     insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
+        });
+
+        // Establecer el OnLongClickListener para el CardView
+        cardViewShare.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String textToShare = resultText.getText().toString();
+                shareText(textToShare);
+                return true;
+            }
+
+            // Método para compartir texto con otras aplicaciones
+            private void shareText(String text) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+                shareIntent.setType("text/plain");
+                startActivity(Intent.createChooser(shareIntent, "Compartir texto vía"));
+            }
         });
 
         // Cargar las fechas de las actividades
@@ -231,54 +254,54 @@ public class ResumenActivity extends AppCompatActivity {
      * @param result StringBuilder que contiene los resultados acumulados
      */
     private void displayResults(StringBuilder result) {
-    for (DocumentDetails details : documentDetailsList) {
-        result.append("<br><u><b>Detalles de ").append(details.collectionName).append(":</b></u><br>");
-        switch (details.collectionName) {
-            case "Actividades":
-                result.append("<b>Tipo de actividad:</b> ").append(details.document.getString("activityType")).append("<br>");
+        for (DocumentDetails details : documentDetailsList) {
+            result.append("<br><u><b>Detalles de ").append(details.collectionName).append(":</b></u><br>");
+            switch (details.collectionName) {
+                case "Actividades":
+                    result.append("<b>Tipo de actividad:</b> ").append(details.document.getString("activityType")).append("<br>");
 
-                Long timeElapsed = details.document.getLong("timeElapsed");
-                if (timeElapsed != null) {
-                    long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(timeElapsed);
-                    long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
-                    long seconds = java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
-                    result.append("<b>Tiempo:</b> ").append(String.format("%02d:%02d:%02d", hours, minutes, seconds)).append("<br>");
-                } else {
-                    result.append("<b>Tiempo:</b> N/A<br>");
-                }
+                    Long timeElapsed = details.document.getLong("timeElapsed");
+                    if (timeElapsed != null) {
+                        long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(timeElapsed);
+                        long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(timeElapsed) % 60;
+                        long seconds = java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(timeElapsed) % 60;
+                        result.append("<b>Tiempo:</b> ").append(String.format("%02d:%02d:%02d", hours, minutes, seconds)).append("<br>");
+                    } else {
+                        result.append("<b>Tiempo:</b> N/A<br>");
+                    }
 
-                result.append("<b>Distancia total:</b> ").append(details.document.getDouble("totalDistance")).append("<br>");
-                break;
+                    result.append("<b>Distancia total:</b> ").append(details.document.getDouble("totalDistance")).append("<br>");
+                    break;
 
-            case "Glucosa":
-                result.append("<b>Valor de glucosa:</b> ").append(details.document.getLong("glucose")).append("<br>");
-                break;
+                case "Glucosa":
+                    result.append("<b>Valor de glucosa:</b> ").append(details.document.getLong("glucose")).append("<br>");
+                    break;
 
-            case "Tensión y Pulso":
-                result.append("<b>Sistólica:</b> ").append(details.document.getLong("sistolica")).append("<br>")
-                        .append("<b>Diastólica:</b> ").append(details.document.getLong("diastolica")).append("<br>")
-                        .append("<b>Pulso:</b> ").append(details.document.getLong("pulse")).append("<br>");
-                break;
+                case "Tensión y Pulso":
+                    result.append("<b>Sistólica:</b> ").append(details.document.getLong("sistolica")).append("<br>")
+                            .append("<b>Diastólica:</b> ").append(details.document.getLong("diastolica")).append("<br>")
+                            .append("<b>Pulso:</b> ").append(details.document.getLong("pulse")).append("<br>");
+                    break;
 
-            case "Medicación":
-                result.append("<b>Nombre de la medicación:</b> ").append(details.document.getString("medicationName")).append("<br>")
-                        .append("<b>Dosis:</b> ").append(details.document.getString("dose")).append("<br>");
-                break;
+                case "Medicación":
+                    result.append("<b>Nombre de la medicación:</b> ").append(details.document.getString("medicationName")).append("<br>")
+                            .append("<b>Dosis:</b> ").append(details.document.getString("dose")).append("<br>");
+                    break;
 
-            case "Alimentación":
-                result.append("<b>Desayuno:</b> ").append(details.document.getString("breakfast")).append("<br>")
-                        .append("<b>Comida:</b> ").append(details.document.getString("lunch")).append("<br>")
-                        .append("<b>Cena:</b> ").append(details.document.getString("dinner")).append("<br>");
-                break;
+                case "Alimentación":
+                    result.append("<b>Desayuno:</b> ").append(details.document.getString("breakfast")).append("<br>")
+                            .append("<b>Comida:</b> ").append(details.document.getString("lunch")).append("<br>")
+                            .append("<b>Cena:</b> ").append(details.document.getString("dinner")).append("<br>");
+                    break;
 
-            case "Peso":
-                result.append("<b>Peso:</b> ").append(details.document.getLong("weight")).append("<br>");
-                break;
+                case "Peso":
+                    result.append("<b>Peso:</b> ").append(details.document.getLong("weight")).append("<br>");
+                    break;
+            }
         }
-    }
 
-    runOnUiThread(() -> resultText.setText(Html.fromHtml(result.toString())));
-}
+        runOnUiThread(() -> resultText.setText(Html.fromHtml(result.toString())));
+    }
 
     /**
      * Carga las fechas de las actividades desde todas las colecciones de Firestore.
