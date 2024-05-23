@@ -80,6 +80,12 @@
                 app:layout_constraintTop_toBottomOf="@id/date_picker_button"
                 tools:ignore="VisualLintTextFieldSize" />
 
+            <CheckBox
+                android:id="@+id/addToCalendarCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir al Calendario de Google" />
+
             <Button
                 android:id="@+id/buttonSaveMedicacion"
                 style="@style/MyButtonStyle"

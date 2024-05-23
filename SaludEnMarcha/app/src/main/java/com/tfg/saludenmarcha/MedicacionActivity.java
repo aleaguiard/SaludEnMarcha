@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -56,6 +58,10 @@ public class MedicacionActivity extends AppCompatActivity {
     private String idUser;
     private long idActividad;
 
+    // Inicializa el CheckBox para añadir al calendario
+    CheckBox addToCalendarCheckBox;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +85,8 @@ public class MedicacionActivity extends AppCompatActivity {
         datePickerButton = findViewById(R.id.medicacion_picker_button);  // Botón para seleccionar la fecha
         graficaButton = findViewById(R.id.graficaMedicacionButton);  // Botón para mostrar la gráfica
         volverButton = findViewById(R.id.volverMedicacionButton);  // Botón para volver a la actividad principal
+        final Calendar c= Calendar.getInstance();
+        addToCalendarCheckBox = findViewById(R.id.addToCalendarCheckBox);
 
         // Ajuste de la vista para adaptarse a los bordes de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -178,6 +186,11 @@ public class MedicacionActivity extends AppCompatActivity {
                     medicacionInput.setText("");
                     dosisInput.setText("");
                     obtenerIdMasAltoActividad();  // Obtener el ID más alto después de guardar
+                    // Verifica si el CheckBox está marcado
+                    CheckBox addToCalendarCheckBox = findViewById(R.id.addToCalendarCheckBox);
+                    if (addToCalendarCheckBox.isChecked()) {
+                        addMedicationToCalendar(medicationName, dose);
+                    }
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la medicación.", Toast.LENGTH_LONG).show());
     }
@@ -283,4 +296,35 @@ public class MedicacionActivity extends AppCompatActivity {
                 .setPositiveButton("OK", null)
                 .show();
     }
+
+
+    private void addMedicationToCalendar(String medicationName, String dose) {
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(selectedYear, selectedMonth - 1, selectedDay, 8, 0); // Establece la hora de inicio (8:00 AM)
+
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(selectedYear, selectedMonth - 1, selectedDay, 9, 0); // Establece la hora de finalización (9:00 AM)
+
+        // Combina el nombre de la medicación y la dosis en el título
+        String eventTitle = "Medicamento: " +medicationName + " - Dosis: " + dose;
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                .putExtra(CalendarContract.Events.TITLE, eventTitle)
+                .putExtra(CalendarContract.Events.DESCRIPTION, "Dosis: " + dose)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, "Casa")
+                .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                // .putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=30"); // Repetir diariamente durante 30 días
+
+        // Intent explícito para Google Calendar
+        intent.setPackage("com.google.android.calendar");
+        startActivity(intent);
+    }
+
+
+
+
 }
