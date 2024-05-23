@@ -25,6 +25,9 @@ import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -124,13 +127,35 @@ public class TensionActivity extends AppCompatActivity {
      * Abre un diálogo de DatePicker para que el usuario seleccione una fecha.
      */
     private void openDatePicker(View view) {
-        final Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(TensionActivity.this, (datePicker, year, month, day) -> {
-            selectedDay = day;
-            selectedMonth = month + 1;  // Meses en Calendar están basados en 0.
-            selectedYear = year;
+        // Construir un CalendarConstraints para limitar la selección de fechas
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        constraintsBuilder.setValidator(DateValidatorPointForward.now());  // Opcional: Restringir fechas pasadas
+
+        // Crear un MaterialDatePicker
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        // Aplica el estilo personalizado al DatePicker
+        //builder.setTheme(R.style.CustomDayTodayStyle);
+        //builder.setTheme(R.style.CustomDaySelectedStyle);
+
+        MaterialDatePicker<Long> datePicker = builder.build();
+
+        // Mostrar el DatePicker
+        datePicker.show(getSupportFragmentManager(), datePicker.toString());
+
+        // Configurar el callback para manejar la fecha seleccionada
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(selection);
+
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            selectedMonth = calendar.get(Calendar.MONTH) + 1;  // Ajustar por índice base 0
+            selectedYear = calendar.get(Calendar.YEAR);
+
             Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
     }
 
     /**
@@ -160,23 +185,34 @@ public class TensionActivity extends AppCompatActivity {
         }
 
         // Validar los rangos y dar feedback específico
+        StringBuilder messageBuilder = new StringBuilder();
+
+        // Validar presión sistólica
         if (sistolica < 90) {
-            Toast.makeText(this, "Presión sistólica muy baja. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Presión sistólica muy baja. Considera consultar a un médico.\n");
         } else if (sistolica > 120) {
-            Toast.makeText(this, "Presión sistólica alta. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Presión sistólica alta. Considera consultar a un médico.\n");
         }
 
+        // Validar presión diastólica
         if (diastolica < 60) {
-            Toast.makeText(this, "Presión diastólica muy baja. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Presión diastólica muy baja. Considera consultar a un médico.\n");
         } else if (diastolica > 80) {
-            Toast.makeText(this, "Presión diastólica alta. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Presión diastólica alta. Considera consultar a un médico.\n");
         }
 
+        // Validar pulso
         if (pulso < 40) {
-            Toast.makeText(this, "Pulso bajo. Si experimentas síntomas, considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Pulso bajo. Si experimentas síntomas, considera consultar a un médico.\n");
         } else if (pulso > 100) {
-            Toast.makeText(this, "Pulso alto. Considera consultar a un médico.", Toast.LENGTH_LONG).show();
+            messageBuilder.append("Pulso alto. Considera consultar a un médico.\n");
         }
+
+        // Mostrar el Toast si hay mensajes acumulados
+        if (messageBuilder.length() > 0) {
+            Toast.makeText(this, messageBuilder.toString(), Toast.LENGTH_LONG).show();
+        }
+
 
         // Verifica que la fecha haya sido seleccionada
         if (selectedDay == 0 || selectedMonth == 0 || selectedYear == 0) {

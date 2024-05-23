@@ -25,6 +25,9 @@ import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -129,17 +132,35 @@ public class GlucosaActivity extends AppCompatActivity {
      * Abre el DatePicker para seleccionar una fecha.
      */
     private void openDatePicker(View view) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        // Construir un CalendarConstraints para limitar la selección de fechas
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        constraintsBuilder.setValidator(DateValidatorPointForward.now());  // Opcional: Restringir fechas pasadas
 
-        new DatePickerDialog(GlucosaActivity.this, (datePicker, y, m, d) -> {
-            selectedDay = d;
-            selectedMonth = m + 1;  // Ajustar por índice base 0
-            selectedYear = y;
+        // Crear un MaterialDatePicker
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        // Aplica el estilo personalizado al DatePicker
+        //builder.setTheme(R.style.CustomDayTodayStyle);
+        //builder.setTheme(R.style.CustomDaySelectedStyle);
+
+        MaterialDatePicker<Long> datePicker = builder.build();
+
+        // Mostrar el DatePicker
+        datePicker.show(getSupportFragmentManager(), datePicker.toString());
+
+        // Configurar el callback para manejar la fecha seleccionada
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(selection);
+
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            selectedMonth = calendar.get(Calendar.MONTH) + 1;  // Ajustar por índice base 0
+            selectedYear = calendar.get(Calendar.YEAR);
+
             Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
-        }, year, month, day).show();
+        });
     }
 
     /**

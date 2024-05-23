@@ -25,6 +25,9 @@ import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -143,17 +146,31 @@ public class PesoActivity extends AppCompatActivity {
      * Abre el DatePicker para seleccionar una fecha.
      */
     private void openDatePicker(View view) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        // Construir un CalendarConstraints para limitar la selección de fechas
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        constraintsBuilder.setValidator(DateValidatorPointForward.now());  // Opcional: Restringir fechas pasadas
 
-        new DatePickerDialog(PesoActivity.this, (datePicker, y, m, d) -> {
-            selectedDay = d;
-            selectedMonth = m + 1;  // Ajustar por índice base 0
-            selectedYear = y;
+        // Crear un MaterialDatePicker
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        MaterialDatePicker<Long> datePicker = builder.build();
+
+        // Mostrar el DatePicker
+        datePicker.show(getSupportFragmentManager(), datePicker.toString());
+
+        // Configurar el callback para manejar la fecha seleccionada
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(selection);
+
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            selectedMonth = calendar.get(Calendar.MONTH) + 1;  // Ajustar por índice base 0
+            selectedYear = calendar.get(Calendar.YEAR);
+
             Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
-        }, year, month, day).show();
+        });
     }
 
     /**
@@ -412,8 +429,6 @@ public class PesoActivity extends AppCompatActivity {
             return;
         }
 
-        Log.d("PesoActivity", "Cargando datos para el usuario: " + idUser);
-
         DocumentReference heightDoc = db.collection("heights").document(idUser);
 
         heightDoc.get().addOnCompleteListener(task -> {
@@ -422,21 +437,18 @@ public class PesoActivity extends AppCompatActivity {
                 if (document != null && document.exists()) {
                     Log.d("PesoActivity", "Documento de altura recuperado: " + document.getData());
                     Long heightNumber = document.getLong("height");
-                    Toast.makeText(this, "Altura guardada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Altura cargada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
                     height = heightNumber;
                     if (heightNumber != null) {
                         alturaInput.setText(String.valueOf(heightNumber));
                     } else {
-                        Log.d("PesoActivity", "Campo 'height' no encontrado.");
                         alturaInput.setText("");
                     }
                 } else {
-                    Log.d("PesoActivity", "No se encontraron datos de altura.");
                     Toast.makeText(PesoActivity.this, "No se encontraron datos de altura.", Toast.LENGTH_SHORT).show();
                     alturaInput.setText("");
                 }
             } else {
-                Log.d("PesoActivity", "Error al cargar documento: ", task.getException());
                 Toast.makeText(PesoActivity.this, "Error al cargar los datos de altura.", Toast.LENGTH_SHORT).show();
             }
         });

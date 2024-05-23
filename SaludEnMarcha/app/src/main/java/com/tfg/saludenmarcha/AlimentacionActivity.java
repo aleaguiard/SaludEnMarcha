@@ -3,6 +3,7 @@ package com.tfg.saludenmarcha;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +18,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -114,7 +118,7 @@ public class AlimentacionActivity extends AppCompatActivity {
      */
     private void setupListeners() {
         // Listener para el botón de selección de fecha que abre un DatePickerDialog
-        datePickerButton.setOnClickListener(v -> openDatePicker());
+        datePickerButton.setOnClickListener(this::openDatePicker);
 
         // Listener para el botón de guardar que guarda los datos de las comidas en Firestore
         saveButton.setOnClickListener(v -> saveMealData());
@@ -129,17 +133,32 @@ public class AlimentacionActivity extends AppCompatActivity {
     /**
      * Abre un DatePickerDialog para seleccionar la fecha.
      */
-    private void openDatePicker() {
-        // Configuración del DatePickerDialog con la fecha actual como predeterminada
-        final Calendar c = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            selectedDay = dayOfMonth;
-            selectedMonth = monthOfYear + 1;  // Ajuste porque Calendar.MONTH es 0-indexed
-            selectedYear = year;
-            Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
-        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+    private void openDatePicker(View view) {
+        // Construir un CalendarConstraints para limitar la selección de fechas
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+        //constraintsBuilder.setValidator(DateValidatorPointForward.now());  // Opcional: Restringir fechas pasadas
 
-        datePickerDialog.show();
+        // Crear un MaterialDatePicker
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Selecciona una fecha");
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        MaterialDatePicker<Long> datePicker = builder.build();
+
+        // Mostrar el DatePicker
+        datePicker.show(getSupportFragmentManager(), datePicker.toString());
+
+        // Configurar el callback para manejar la fecha seleccionada
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(selection);
+
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            selectedMonth = calendar.get(Calendar.MONTH) + 1;  // Ajustar por índice base 0
+            selectedYear = calendar.get(Calendar.YEAR);
+
+            Toast.makeText(this, "Fecha seleccionada: " + selectedDay + "/" + selectedMonth + "/" + selectedYear, Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
