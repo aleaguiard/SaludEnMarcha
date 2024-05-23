@@ -52,6 +52,7 @@ public class GraficasActivity extends AppCompatActivity {
         showPressureButton = findViewById(R.id.showGraphicPulso);
         showWeightButton = findViewById(R.id.showGraphicPeso);
         cardView = findViewById(R.id.cardView);
+        cardView.setVisibility(CardView.GONE);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -185,6 +186,7 @@ public class GraficasActivity extends AppCompatActivity {
         // Crear una nueva instancia de AnyChartView
         anyChartView = new AnyChartView(this);
         cardView.addView(anyChartView);
+        cardView.setVisibility(CardView.VISIBLE);
 
         // Crear una instancia de CartesianChart
         Cartesian cartesian = AnyChart.line();
@@ -222,6 +224,8 @@ public class GraficasActivity extends AppCompatActivity {
         // Crear una nueva instancia de AnyChartView
         anyChartView = new AnyChartView(this);
         cardView.addView(anyChartView);
+        cardView.setVisibility(CardView.VISIBLE);
+
         // Crear una instancia de CartesianChart
         Cartesian cartesian = AnyChart.line();
 
