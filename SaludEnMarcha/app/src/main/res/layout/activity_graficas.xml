@@ -44,56 +44,63 @@
                 android:text="@string/botonVolver"
                 tools:ignore="TextContrastCheck" />
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/showGraphicPulso"
+                    style="@style/MyButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/pa_fc"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/showGraphicPeso"
+                    style="@style/MyButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/peso_"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/showGraphicGlucosa"
+                    style="@style/MyButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/glucosa_"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/chart_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                android:layout_height="match_parent">
 
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_glucose_graficas"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    app:cardElevation="8dp">
 
-            </androidx.cardview.widget.CardView>
+                    <com.anychart.AnyChartView
+                        android:id="@+id/any_chart_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_pressure_pulse_graficas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_weights_graficas"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-            </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>
