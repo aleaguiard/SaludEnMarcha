@@ -82,5 +82,6 @@
     <string name="pulso_ppm">Pulso ppm:</string>
     <string name="diast_lica_mmhg">Diastólica (mmHg)</string>
     <string name="glucosa">Glucosa:</string>
+    <string name="share_text">*Mantén pulsado para compartir</string>
 
 </resources>

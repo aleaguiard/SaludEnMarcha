@@ -52,9 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:clickable="true"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                android:clickable="true">
+                app:cardElevation="8dp">
 
                 <TextView
                     android:id="@+id/result_text"
@@ -62,8 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:padding="8dp"
                     android:gravity="left"
+                    android:padding="8dp"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +71,17 @@
 
             </androidx.cardview.widget.CardView>
 
+            <TextView
+                android:id="@+id/textShare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/share_text">
+
+            </TextView>
 
 
             <Button

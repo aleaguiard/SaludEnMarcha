@@ -38,7 +38,7 @@ public class ResumenActivity extends AppCompatActivity {
 
     // Variables para los componentes de la interfaz de usuario
     private Button datePickerButton, volverButton;
-    private TextView resultText;
+    private TextView resultText, textShare;
     private CardView cardViewShare;
 
     // Variables para manejo de Firebase Firestore y autenticación
@@ -89,6 +89,8 @@ public class ResumenActivity extends AppCompatActivity {
         resultText.setVisibility(View.GONE);
         volverButton = findViewById(R.id.volverCalendarioButton);
         cardViewShare = findViewById(R.id.cardViewShare);
+        textShare = findViewById(R.id.textShare);
+        textShare.setVisibility(View.GONE);
 
         // Configuración de Firebase y autenticación
         db = FirebaseFirestore.getInstance();
@@ -205,7 +207,7 @@ public class ResumenActivity extends AppCompatActivity {
         collections.add("weights");
 
         // StringBuilder para acumular los resultados de las consultas
-        StringBuilder result = new StringBuilder("Datos para la fecha " + day + "/" + month + "/" + year + ":\n");
+        StringBuilder result = new StringBuilder("Datos para la fecha " + day + "/" + month + "/" + year + ":\n<br>");
         documentDetailsList.clear();  // Limpiar la lista de detalles de documentos antes de realizar nuevas consultas
         pendingQueries = collections.size();  // Inicializar el contador de consultas pendientes
 
@@ -229,7 +231,7 @@ public class ResumenActivity extends AppCompatActivity {
                             }
                         } else {
                             // Si hubo un error en la consulta, agregar un mensaje indicando el error
-                            result.append(collectionNames.get(collection)).append(": Error al obtener datos.\n");
+                            result.append(collectionNames.get(collection)).append(": Error al obtener datos.<br>");
                         }
 
                         pendingQueries--;  // Decrementar el contador de consultas pendientes
@@ -246,7 +248,6 @@ public class ResumenActivity extends AppCompatActivity {
                     });
         }
     }
-
 
     /**
      * Muestra los resultados en el TextView resultText.
@@ -300,8 +301,11 @@ public class ResumenActivity extends AppCompatActivity {
             }
         }
 
-        runOnUiThread(() -> resultText.setText(Html.fromHtml(result.toString())));
+        runOnUiThread(() -> resultText.setText(Html.fromHtml(result.toString(), Html.FROM_HTML_MODE_LEGACY)));
+        textShare.setVisibility(View.VISIBLE);
+
     }
+
 
     /**
      * Carga las fechas de las actividades desde todas las colecciones de Firestore.
