@@ -1,12 +1,13 @@
 package com.tfg.saludenmarcha;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,8 +45,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 /**
  * CarreraHistorialActivity es una actividad que muestra el historial de actividades realizadas por el usuario.
  * El usuario puede seleccionar una fecha para ver las actividades realizadas ese día.

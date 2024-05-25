@@ -1,6 +1,5 @@
 package com.tfg.saludenmarcha;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +38,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,7 +65,6 @@ public class PesoActivity extends AppCompatActivity {
     private int selectedDay, selectedMonth, selectedYear;
 
     // Variable para almacenar el peso y el ID de la actividad
-    private Long weight = null;
     private Long height = null;
     private long idActividad;
     private boolean isChartVisible = false;

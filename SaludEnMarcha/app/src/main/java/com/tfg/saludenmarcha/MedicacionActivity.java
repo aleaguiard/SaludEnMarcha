@@ -1,7 +1,6 @@
 package com.tfg.saludenmarcha;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,9 +25,7 @@ import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -85,7 +81,6 @@ public class MedicacionActivity extends AppCompatActivity {
         datePickerButton = findViewById(R.id.medicacion_picker_button);  // Botón para seleccionar la fecha
         graficaButton = findViewById(R.id.graficaMedicacionButton);  // Botón para mostrar la gráfica
         volverButton = findViewById(R.id.volverMedicacionButton);  // Botón para volver a la actividad principal
-        final Calendar c= Calendar.getInstance();
         addToCalendarCheckBox = findViewById(R.id.addToCalendarCheckBox);
 
         // Ajuste de la vista para adaptarse a los bordes de la pantalla
