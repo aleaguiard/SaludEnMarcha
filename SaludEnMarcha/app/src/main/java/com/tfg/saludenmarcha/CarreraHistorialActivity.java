@@ -45,6 +45,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 /**
  * CarreraHistorialActivity es una actividad que muestra el historial de actividades realizadas por el usuario.
  * El usuario puede seleccionar una fecha para ver las actividades realizadas ese día.
@@ -269,7 +270,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             // Mostrar la actividad
                             //Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada el " + date, Toast.LENGTH_LONG).show()
                             //showActivityDialog("Mostrando la última actividad realizada el " + date);
-                            showMessage("Mostrando la última actividad realizada el " + date);
+                            showMessage("*Mostrando la última actividad realizada el " + date);
 
                         }
                         showActivity(document);
@@ -296,7 +297,8 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
     }
-      //DIALOGO DE INFORMACION DE ACTIVIDAD
+
+    //DIALOGO DE INFORMACION DE ACTIVIDAD
     private void showNoActivityDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("No hay actividades registradas")

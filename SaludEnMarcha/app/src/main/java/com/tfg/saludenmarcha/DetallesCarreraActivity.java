@@ -239,7 +239,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
         volverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetallesCarreraActivity.this, TrackingActivity.class);
+                Intent intent = new Intent(DetallesCarreraActivity.this, ActividadMenuActivity.class);
                 startActivity(intent);
             }
         });
