@@ -153,7 +153,7 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             activityTypeTextView.setText(carreraData.getActivityType());
 
             totalDistance = carreraData.getTotalDistance();
-            totalDistanceTextView.setText(String.format(Locale.getDefault(), "%.2f km", totalDistance));
+            totalDistanceTextView.setText(String.format(Locale.getDefault(), "Distancia: %.2f km", totalDistance));
 
             //timeElapsed = carreraData.getTimeElapsed();
             //timeElapsedTextView.setText(String.format(Locale.getDefault(), "%d ms", timeElapsed));
@@ -166,21 +166,25 @@ public class DetallesCarreraActivity extends AppCompatActivity {
             int seconds = (int) ((timeElapsed % 60000) / 1000);
 
             // Actualiza el TextView con el tiempo formateado
-            timeElapsedTextView.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
+            // Formatear y mostrar el tiempo transcurrido
+            timeElapsedTextView.setText(String.format(Locale.getDefault(), "Tiempo transcurrido: %02d:%02d:%02d", hours, minutes, seconds));
 
-
+            // Obtener y mostrar la hora de inicio
             startHour = carreraData.getStartHour();
             startMinute = carreraData.getStartMinute();
-            startTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", startHour, startMinute));
+            startTimeTextView.setText(String.format(Locale.getDefault(), "Hora de inicio: %02d:%02d", startHour, startMinute));
 
+            // Obtener y mostrar la hora de finalización
             endHour = carreraData.getEndHour();
             endMinute = carreraData.getEndMinute();
-            endTimeTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", endHour, endMinute));
+            endTimeTextView.setText(String.format(Locale.getDefault(), "Hora de finalización: %02d:%02d", endHour, endMinute));
 
+            // Obtener y mostrar la fecha
             day = carreraData.getDay();
             month = carreraData.getMonth();
             year = carreraData.getYear();
-            dateTextView.setText(String.format(Locale.getDefault(), "%02d/%02d/%d", day, month, year));
+            dateTextView.setText(String.format(Locale.getDefault(), "Fecha: %02d/%02d/%d", day, month, year));
+
         }
     }
 
