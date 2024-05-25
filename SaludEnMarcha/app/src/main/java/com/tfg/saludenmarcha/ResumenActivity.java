@@ -270,17 +270,17 @@ public class ResumenActivity extends AppCompatActivity {
                         result.append("<b>Tiempo:</b> N/A<br>");
                     }
 
-                    result.append("<b>Distancia total:</b> ").append(details.document.getDouble("totalDistance")).append("<br>");
+                    result.append("<b>Distancia total:</b> ").append(details.document.getDouble("totalDistance")).append(" km").append("<br>");
                     break;
 
                 case "Glucosa":
-                    result.append("<b>Valor de glucosa:</b> ").append(details.document.getLong("glucose")).append("<br>");
+                    result.append("<b>Valor de glucosa:</b> ").append(details.document.getLong("glucose")).append(" mg/dl").append("<br>");
                     break;
 
                 case "Tensión y Pulso":
-                    result.append("<b>Sistólica:</b> ").append(details.document.getLong("sistolica")).append("<br>")
-                            .append("<b>Diastólica:</b> ").append(details.document.getLong("diastolica")).append("<br>")
-                            .append("<b>Pulso:</b> ").append(details.document.getLong("pulse")).append("<br>");
+                    result.append("<b>Sistólica:</b> ").append(details.document.getLong("sistolica")).append(" mmHg").append("<br>")
+                            .append("<b>Diastólica:</b> ").append(details.document.getLong("diastolica")).append(" mmHg").append("<br>")
+                            .append("<b>Pulso:</b> ").append(details.document.getLong("pulse")).append(" ppm").append("<br>");
                     break;
 
                 case "Medicación":
@@ -295,7 +295,7 @@ public class ResumenActivity extends AppCompatActivity {
                     break;
 
                 case "Peso":
-                    result.append("<b>Peso:</b> ").append(details.document.getLong("weight")).append("<br>");
+                    result.append("<b>Peso:</b> ").append(details.document.getLong("weight")).append(" kg").append("<br>");
                     break;
             }
         }

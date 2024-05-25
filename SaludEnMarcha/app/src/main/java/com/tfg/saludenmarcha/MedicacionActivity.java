@@ -291,7 +291,7 @@ public class MedicacionActivity extends AppCompatActivity {
      */
     private void showMedicationsDialog(List<String> medications) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Últimas 5 Medicaciones")
+        builder.setTitle("Últimas Medicaciones")
                 .setItems(medications.toArray(new String[0]), null)
                 .setPositiveButton("OK", null)
                 .show();
