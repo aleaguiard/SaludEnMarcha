@@ -44,7 +44,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 /**
  * CarreraHistorialActivity es una actividad que muestra el historial de actividades realizadas por el usuario.
  * El usuario puede seleccionar una fecha para ver las actividades realizadas ese día.
@@ -318,9 +319,9 @@ public class CarreraHistorialActivity extends AppCompatActivity {
      */
     private void showActivityOptions(List<DocumentSnapshot> activityDocuments) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Hay varias actividades ese mismo día. Seleccione una actividad");
+        builder.setTitle("Hay varias actividades ese mismo día. Seleccione una actividad:");
 
-        List<String> activityNames = new ArrayList<>();
+        List<SpannableString> activityNames = new ArrayList<>();
         for (DocumentSnapshot document : activityDocuments) {
             Map<String, Object> activityData = document.getData();
             if (activityData != null && activityData.containsKey("activityType")) {
@@ -328,14 +329,18 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                 String hour = activityData.get("startHour").toString();
                 String minute = activityData.get("startMinute").toString();
                 String activityInfo = activityType + " - " + hour + ":" + minute;
-                activityNames.add(activityInfo);
+
+                SpannableString spannableString = new SpannableString(activityInfo);
+                spannableString.setSpan(new UnderlineSpan(), 0, activityInfo.length(), 0);
+                activityNames.add(spannableString);
             }
         }
 
-        final String[] activityNamesArray = activityNames.toArray(new String[0]);
+        final CharSequence[] activityNamesArray = activityNames.toArray(new CharSequence[0]);
         builder.setItems(activityNamesArray, (dialog, which) -> showActivity(activityDocuments.get(which)));
         builder.show();
     }
+
 
     /**
      * Muestra los detalles de una actividad seleccionada.
