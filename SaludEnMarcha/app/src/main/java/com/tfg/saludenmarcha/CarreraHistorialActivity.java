@@ -60,6 +60,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private TextView tiempoText;
     private TextView horaInicioText;
     private TextView horaFinText;
+    private TextView messageTextViewUltimaActividad;
     private Button datePickerButton;
     private Button volverButton;
     private Button deleteActivityButton;
@@ -110,6 +111,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
         volverButton = findViewById(R.id.volverHistorialButton);
         deleteActivityButton = findViewById(R.id.deleteActivityButton);
         deleteActivityButton.setVisibility(View.GONE); // Ocultar botón de eliminar al inicio
+        messageTextViewUltimaActividad = findViewById(R.id.messageTextViewUltimaActividad);
 
         // Ajuste de la vista para adaptarse a los bordes de la pantalla
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -265,17 +267,46 @@ public class CarreraHistorialActivity extends AppCompatActivity {
 
                         if (day != null && month != null && year != null) {
                             String date = day + "/" + month + "/" + year;
-                            Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada el " + date, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada.", Toast.LENGTH_SHORT).show();
-                        }
+                            // Mostrar la actividad
+                            //Toast.makeText(CarreraHistorialActivity.this, "Mostrando la última actividad realizada el " + date, Toast.LENGTH_LONG).show()
+                            //showActivityDialog("Mostrando la última actividad realizada el " + date);
+                            showMessage("Mostrando la última actividad realizada el " + date);
 
+                        }
                         showActivity(document);
                     } else {
-                        Toast.makeText(CarreraHistorialActivity.this, "No hay actividades registradas.", Toast.LENGTH_SHORT).show();
+                        showMessage("No hay actividades registradas.");
+                        //showNoActivityDialog();
                     }
                 });
     }
+
+    //********************************************************************************
+
+    // Muestra un mensaje en la interfaz de usuario TEXTVIEW messageTextViewUltimaActividad
+    private void showMessage(String message) {
+        messageTextViewUltimaActividad.setText(message);
+        messageTextViewUltimaActividad.setVisibility(View.VISIBLE);
+    }
+
+    //DIALOGO DE INFORMACION DE ACTIVIDAD
+    private void showActivityDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Información de Actividad")
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+      //DIALOGO DE INFORMACION DE ACTIVIDAD
+    private void showNoActivityDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No hay actividades registradas")
+                .setMessage("No se encontraron actividades registradas para el usuario.")
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    //**********************************************************************************
 
     /**
      * Busca actividades para una fecha específica en Firestore.
@@ -283,7 +314,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     private void fetchActivitiesForDate(int year, int month, int day) {
         // Limpieza de los TextViews antes de realizar la búsqueda
         clearActivityDetails(); // Limpiar los detalles antes de la búsqueda
-
+        String date = day + "/" + month + "/" + year;
         db.collection("activities")
                 .whereEqualTo("idUser", idUser)
                 .whereEqualTo("day", day)
@@ -293,7 +324,6 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
-                            Toast.makeText(CarreraHistorialActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             return;
                         }
 
@@ -302,12 +332,14 @@ public class CarreraHistorialActivity extends AppCompatActivity {
                             if (documents.size() == 1) {
                                 // Solo hay una actividad, mostrarla
                                 showActivity(documents.get(0));
+                                showMessage("Mostrando la actividad realizada el " + date);
                             } else {
                                 // Hay más de una actividad, permitir al usuario elegir
-                                showActivityOptions(documents);
+                                showActivityOptions(documents, date);
+
                             }
                         } else {
-                            Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(CarreraHistorialActivity.this, "No hay datos de actividades para esta fecha", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -317,7 +349,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
     /**
      * Muestra un diálogo para que el usuario elija entre varias actividades.
      */
-    private void showActivityOptions(List<DocumentSnapshot> activityDocuments) {
+    private void showActivityOptions(List<DocumentSnapshot> activityDocuments, String date) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hay varias actividades ese mismo día. Seleccione una actividad:");
 
@@ -338,6 +370,7 @@ public class CarreraHistorialActivity extends AppCompatActivity {
 
         final CharSequence[] activityNamesArray = activityNames.toArray(new CharSequence[0]);
         builder.setItems(activityNamesArray, (dialog, which) -> showActivity(activityDocuments.get(which)));
+        showMessage("Mostrando la actividad realizada el " + date);
         builder.show();
     }
 

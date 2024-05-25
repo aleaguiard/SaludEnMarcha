@@ -235,7 +235,7 @@ public class MedicacionActivity extends AppCompatActivity {
     }
 
     /**
-     * Muestra las 5 últimas medicaciones en un AlertDialog.
+     * Muestra las últimas medicaciones en un AlertDialog.
      */
     private void showRecentMedications() {
         if (idUser == null || idUser.isEmpty()) {
