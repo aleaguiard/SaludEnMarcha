@@ -435,9 +435,9 @@ public class PesoActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document != null && document.exists()) {
-                    Log.d("PesoActivity", "Documento de altura recuperado: " + document.getData());
+                    //Log.d("PesoActivity", "Documento de altura recuperado: " + document.getData());
                     Long heightNumber = document.getLong("height");
-                    Toast.makeText(this, "Altura cargada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Altura cargada." + heightNumber +" cm", Toast.LENGTH_SHORT).show();
                     height = heightNumber;
                     if (heightNumber != null) {
                         alturaInput.setText(String.valueOf(heightNumber));
@@ -445,11 +445,11 @@ public class PesoActivity extends AppCompatActivity {
                         alturaInput.setText("");
                     }
                 } else {
-                    Toast.makeText(PesoActivity.this, "No se encontraron datos de altura.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PesoActivity.this, "No se encontraron datos de altura.", Toast.LENGTH_SHORT).show();
                     alturaInput.setText("");
                 }
             } else {
-                Toast.makeText(PesoActivity.this, "Error al cargar los datos de altura.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PesoActivity.this, "Error al cargar los datos de altura.", Toast.LENGTH_SHORT).show();
             }
         });
     }
