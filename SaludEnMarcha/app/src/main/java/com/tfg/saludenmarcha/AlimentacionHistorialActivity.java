@@ -202,9 +202,9 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
                             DocumentSnapshot document = value.getDocuments().get(0);
                             currentMealDocument = document.getReference();
                             Map<String, Object> meal = document.getData();
-                            breakfastText.setText("Desayuno: " + meal.get("breakfast"));
-                            lunchText.setText("Comida: " + meal.get("lunch"));
-                            dinnerText.setText("Cena: " + meal.get("dinner"));
+                            breakfastText.setText(meal.get("breakfast").toString());
+                            lunchText.setText(meal.get("lunch").toString());
+                            dinnerText.setText(meal.get("dinner").toString());
                         } else {
                             Toast.makeText(AlimentacionHistorialActivity.this, "No hay datos de comidas para esta fecha", Toast.LENGTH_SHORT).show();
                         }
@@ -226,19 +226,21 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
      */
     private void showEditDialog(String mealType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Editar " + mealType);
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         String currentText = "";
         switch (mealType) {
             case "breakfast":
+                builder.setTitle("Editar Desayuno");
                 currentText = breakfastText.getText().toString().replace("Desayuno: ", "");
                 break;
             case "lunch":
+                builder.setTitle("Editar Almuerzo");
                 currentText = lunchText.getText().toString().replace("Comida: ", "");
                 break;
             case "dinner":
+                builder.setTitle("Editar Cena");
                 currentText = dinnerText.getText().toString().replace("Cena: ", "");
                 break;
         }
@@ -274,13 +276,13 @@ public class AlimentacionHistorialActivity extends AppCompatActivity {
                             Toast.makeText(AlimentacionHistorialActivity.this, "Comida actualizada", Toast.LENGTH_SHORT).show();
                             switch (mealType) {
                                 case "breakfast":
-                                    breakfastText.setText("Desayuno: " + newValue);
+                                    breakfastText.setText(newValue);
                                     break;
                                 case "lunch":
-                                    lunchText.setText("Comida: " + newValue);
+                                    lunchText.setText(newValue);
                                     break;
                                 case "dinner":
-                                    dinnerText.setText("Cena: " + newValue);
+                                    dinnerText.setText(newValue);
                                     break;
                             }
                         }
