@@ -308,12 +308,7 @@ public class PesoActivity extends AppCompatActivity {
                 });
     }
 
-    // Función para clasificar el IMC
-    private String classifyIMC(double imc) {
-        if (imc < 18.5) return "Bajo";
-        if (imc >= 18.5 && imc <= 24.9) return "Normal";
-        return "Alto";
-    }
+
 
     /**
      * Carga los datos de peso desde Firestore para el usuario actual.
@@ -483,6 +478,13 @@ public class PesoActivity extends AppCompatActivity {
                     //startActivity(new Intent(this, PesoActivity.class)); // Cambiar de actividad si es necesario
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la altura.", Toast.LENGTH_LONG).show());
+    }
+
+    // Función para clasificar el IMC
+    private String classifyIMC(double imc) {
+        if (imc < 18.5) return "Bajo";
+        if (imc >= 18.5 && imc <= 24.9) return "Normal";
+        return "Alto";
     }
 
 }
