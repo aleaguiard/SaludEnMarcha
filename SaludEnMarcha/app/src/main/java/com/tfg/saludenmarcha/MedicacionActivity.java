@@ -249,16 +249,13 @@ public class MedicacionActivity extends AppCompatActivity {
                 .whereEqualTo("idUser", idUser)
                 .orderBy("id", Query.Direction.DESCENDING)
                 .limit(10)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .get()  // Utiliza get() en lugar de addSnapshotListener
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            return;
-                        }
-
-                        if (value != null) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                             List<String> medications = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : value) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("MedicacionActivity", "Documento recuperado: " + document.getData());
 
                                 if (document.contains("medicationName") && document.contains("dose") && document.contains("day") && document.contains("month") && document.contains("year") && document.contains("id")) {
@@ -285,6 +282,7 @@ public class MedicacionActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     /**
      * Muestra un AlertDialog con la lista de medicaciones.
