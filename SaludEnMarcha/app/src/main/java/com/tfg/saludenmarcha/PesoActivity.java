@@ -477,10 +477,10 @@ public class PesoActivity extends AppCompatActivity {
         db.collection("heights").document(idUser) // Usar idUser como ID del documento.
                 .set(data)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Altura guardada correctamente.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Altura guardada correctamente.", Toast.LENGTH_SHORT).show();
                     alturaInput.setText(String.valueOf(altura)); // Actualizar la vista con el valor guardado
                     loadHeightData(); // Recargar los datos para reflejar los cambios
-                    startActivity(new Intent(this, PesoActivity.class)); // Cambiar de actividad si es necesario
+                    //startActivity(new Intent(this, PesoActivity.class)); // Cambiar de actividad si es necesario
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Error al guardar la altura.", Toast.LENGTH_LONG).show());
     }
