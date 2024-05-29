@@ -2,7 +2,7 @@
 
 # UNIR – FP
 
-## Componentes del grupo:
+## Componentes del Grupo 3 - DAM:
 
 ### Alejandro Aguiar Díaz
 https://github.com/aleaguiard
