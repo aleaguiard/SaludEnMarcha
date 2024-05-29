@@ -21,16 +21,18 @@ La aplicación permite a los usuarios registrar su actividad física utilizando 
 Además, ofrece la posibilidad de registrar la ingesta de alimentos y otros parámetros de salud como la medicación, el pulso y el peso. 
 También incluye un botón de emergencia que conecta al usuario con el servicio de emergencias 112 en caso de necesidad urgente.
 
+## Video de funcionalidad actividad GPS
+
+[![Video de funcionalidad actividad GPS](https://img.youtube.com/vi/I4r7qviXQro/0.jpg)](https://youtu.be/I4r7qviXQro)
+
+## Otro video de ejemplo
+
+[![Otro video de ejemplo](https://img.youtube.com/vi/s4cBCk83yH0/0.jpg)](https://youtu.be/s4cBCk83yH0)
+
 
 ![Imagen](img/mock.png)
 
-## Video de funcionalidad de la aplicación.
 
-[![](https://markdown-videos.deta.dev/youtu.be/s4cBCk83yH0)](https://youtu.be/s4cBCk83yH0)
-
-## Video de funcionalidad actividad GPS.
-
-[![](https://markdown-videos.deta.dev/youtu.be/I4r7qviXQro)](https://youtu.be/I4r7qviXQro)
 
 ## Diagrama de Base de Datos Firebase
 
