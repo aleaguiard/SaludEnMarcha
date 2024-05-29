@@ -25,15 +25,14 @@ También incluye un botón de emergencia que conecta al usuario con el servicio 
 
 [![SaludEnMarcha funcionalidad](https://img.youtube.com/vi/s4cBCk83yH0/0.jpg)](https://youtu.be/s4cBCk83yH0)
 
-## Video de funcionalidad actividad GPS
+## Video de funcionalidad actividad GPS.
 
 [![Video de funcionalidad actividad GPS](https://img.youtube.com/vi/I4r7qviXQro/0.jpg)](https://youtu.be/I4r7qviXQro)
 
 
-
+## Mock-ups.
 
 ![Imagen](img/mock.png)
-
 
 
 ## Diagrama de Base de Datos Firebase
